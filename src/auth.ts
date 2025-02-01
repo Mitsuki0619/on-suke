@@ -1,6 +1,6 @@
-import NextAuth from "next-auth";
-import { PrismaAdapter } from "@auth/prisma-adapter";
 import prisma from "@/lib/prisma";
+import { PrismaAdapter } from "@auth/prisma-adapter";
+import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 import { NextResponse } from "next/server";
 
@@ -29,6 +29,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
   },
   pages: {
-    signIn: "/auth/login",
+    signIn: "/auth/sign-in",
   },
 });
