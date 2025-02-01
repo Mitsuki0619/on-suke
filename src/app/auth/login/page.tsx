@@ -1,4 +1,4 @@
-import SignInWithGoogleButton from "@/app/login/components/sign-in-with-google-button";
+import { signInWithGoogle } from "@/app/auth/login/actions";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -8,9 +8,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Icons } from "@/components/ui/icons";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Link } from "lucide-react";
+import Link from "next/link";
 
 export default function LoginPage() {
   return (
@@ -39,11 +40,16 @@ export default function LoginPage() {
             ログイン
           </Button>
           <div className="mt-4 text-center text-sm">または</div>
-          <SignInWithGoogleButton />
+          <form className="w-full" action={signInWithGoogle}>
+            <Button variant="outline" className="w-full mt-2">
+              <Icons.google className="w-5 h-5 mr-2" />
+              Signin with Google
+            </Button>
+          </form>
           <div className="mt-4 text-center text-sm">
             アカウントをお持ちでない方は
             <Button variant="link" asChild className="p-0 h-auto">
-              <Link href="/sign-up">サインアップ</Link>
+              <Link href="/auth/register">サインアップ</Link>
             </Button>
           </div>
         </CardFooter>

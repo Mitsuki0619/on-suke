@@ -10,12 +10,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   callbacks: {
     async authorized({ request, auth }) {
       if (auth?.user) {
-        if (request.nextUrl.pathname === "/login") {
+        if (request.nextUrl.pathname.startsWith("/auth")) {
           return NextResponse.redirect(new URL("/", request.url));
         }
         return true;
       }
-      if (request.nextUrl.pathname === "/login") {
+      if (request.nextUrl.pathname.startsWith("/auth")) {
         return true;
       }
       return false;
@@ -29,6 +29,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
   },
   pages: {
-    signIn: "/login",
+    signIn: "/auth/login",
   },
 });
