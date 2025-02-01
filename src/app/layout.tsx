@@ -1,9 +1,9 @@
+import { Sidebar } from "@/components/ui/sidebar";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import type React from "react"; // Added import for React
 import "./globals.css";
 import { Providers } from "./providers";
-import RootLayoutContent from "../components/layout/root-layout-content";
-import type React from "react"; // Added import for React
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,7 +21,12 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Providers>
-          <RootLayoutContent>{children}</RootLayoutContent>
+          <div className="flex h-screen">
+            <Sidebar />
+            <main className="flex-1 overflow-y-auto p-8 bg-main-background">
+              {children}
+            </main>
+          </div>
         </Providers>
       </body>
     </html>

@@ -1,29 +1,19 @@
-"use client";
-
-import Link from "next/link";
-import { useSession, signOut } from "next-auth/react";
+import { auth } from "@/auth";
+import { AccountPopover } from "@/components/ui/account-popover";
 import {
-  LayoutDashboard,
   Calendar,
+  LayoutDashboard,
   Plus,
-  Settings,
-  LogOut,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import Link from "next/link";
 
-export function Sidebar() {
-  const { data: session, status } = useSession();
+export async function Sidebar() {
+  const session = await auth();
 
   return (
     <div className="w-64 bg-sidebar text-white h-full p-4 flex flex-col">
       <div className="text-2xl font-bold mb-8">on-suke</div>
-      {status === "authenticated" && (
+      {session?.user && (
         <>
           <nav className="space-y-2 flex-grow">
             <Link
@@ -48,49 +38,7 @@ export function Sidebar() {
               <span>カレンダーを追加</span>
             </Link>
           </nav>
-          <div className="mt-auto">
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="ghost"
-                  className="w-full justify-start text-white hover:bg-sidebar-hover"
-                >
-                  <Avatar className="h-8 w-8 mr-2">
-                    <AvatarImage
-                      src={session.user?.image || ""}
-                      alt={session.user?.name || ""}
-                    />
-                    <AvatarFallback>
-                      {session.user?.name?.[0] || "U"}
-                    </AvatarFallback>
-                  </Avatar>
-                  {session.user?.name}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-56">
-                <div className="space-y-2">
-                  <Button
-                    variant="ghost"
-                    className="w-full justify-start"
-                    asChild
-                  >
-                    <Link href="/settings">
-                      <Settings className="mr-2 h-4 w-4" />
-                      設定
-                    </Link>
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    className="w-full justify-start text-red-500 hover:text-red-600 hover:bg-red-100"
-                    onClick={() => signOut()}
-                  >
-                    <LogOut className="mr-2 h-4 w-4" />
-                    ログアウト
-                  </Button>
-                </div>
-              </PopoverContent>
-            </Popover>
-          </div>
+          {session.user && <AccountPopover user={session.user} />}
         </>
       )}
     </div>
