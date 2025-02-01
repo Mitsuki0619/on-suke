@@ -2,13 +2,24 @@ import NextAuth from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import prisma from "@/lib/prisma";
 import Google from "next-auth/providers/google";
-
-const guestRoutes = ["/", "/login", "/register"];
+import { NextResponse } from "next/server";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
   providers: [Google],
   callbacks: {
+    async authorized({ request, auth }) {
+      if (auth?.user) {
+        if (request.nextUrl.pathname === "/login") {
+          return NextResponse.redirect(new URL("/", request.url));
+        }
+        return true;
+      }
+      if (request.nextUrl.pathname === "/login") {
+        return true;
+      }
+      return false;
+    },
     session: ({ session, user }) => ({
       ...session,
       user: {
@@ -16,5 +27,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         id: user.id,
       },
     }),
+  },
+  pages: {
+    signIn: "/login",
   },
 });
