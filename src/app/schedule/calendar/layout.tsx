@@ -2,17 +2,14 @@ import type { ReactNode } from "react";
 
 export default function CalendarPageLayout({
   children,
-  addModal,
-  editModal,
+  modal,
 }: {
   children: ReactNode;
-  addModal: ReactNode;
-  editModal: ReactNode;
+  modal: ReactNode;
 }) {
   return (
     <>
-      {editModal}
-      {addModal}
+      {modal}
       {children}
     </>
   );

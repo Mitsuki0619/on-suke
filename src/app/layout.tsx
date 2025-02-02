@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import type React from "react"; // Added import for React
 import "./globals.css";
 import { Providers } from "./providers";
+import { notoSansJp } from "./ui/fonts";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,13 +19,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="ja" className={notoSansJp.variable}>
       <body className={inter.className}>
         <Providers>
           <div className="flex h-screen">
             <Sidebar />
             <main className="flex-1 overflow-y-auto p-8 bg-main-background">
-              {children}
+              <div className="max-w-7xl">{children}</div>
             </main>
           </div>
         </Providers>

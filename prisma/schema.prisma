@@ -66,8 +66,10 @@ model Schedule {
   title               String
   description         String?
   note                String?
-  startTime           DateTime
-  endTime             DateTime
+  startTime           DateTime?
+  endTime             DateTime?
+  created_at          DateTime @default(now())
+  updated_at          DateTime @updatedAt
   notificationMethods NotificationMethod[]
   categories          Category[]           @relation("ScheduleCategories")
   categoryRelations   ScheduleCategory[]
@@ -81,6 +83,8 @@ model NotificationMethod {
   id         Int      @id @default(autoincrement())
   type       String
   scheduleId String   @map("schedule_id")
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
   schedule   Schedule @relation(fields: [scheduleId], references: [id])
 
   @@map("notification_methods")
@@ -89,6 +93,8 @@ model NotificationMethod {
 model Category {
   id                Int                @id @default(autoincrement())
   name              String
+  created_at        DateTime @default(now())
+  updated_at        DateTime @updatedAt
   schedules         Schedule[]         @relation("ScheduleCategories")
   scheduleRelations ScheduleCategory[]
 }
@@ -96,6 +102,8 @@ model Category {
 model ScheduleCategory {
   scheduleId String
   categoryId Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
   schedule   Schedule @relation(fields: [scheduleId], references: [id])
   category   Category @relation(fields: [categoryId], references: [id])
 
@@ -108,6 +116,8 @@ model Task {
   description String?
   status      TaskStatus @default(TO_DO)
   scheduleId  String     @map("schedule_id")
+  created_at  DateTime   @default(now())
+  updated_at  DateTime   @updatedAt
   schedule    Schedule   @relation("ScheduleTasks", fields: [scheduleId], references: [id])
   timelines   Timeline[] @relation("TaskTimeline")
   userId      String     @map("user_id")
@@ -120,6 +130,8 @@ model Url {
   id        String     @id @default(cuid())
   name      String
   url       String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
   schedules Schedule[] @relation("ScheduleUrls")
 
   @@map("urls")
@@ -128,6 +140,8 @@ model Url {
 model Timeline {
   id     String     @id @default(cuid())
   taskId Int        @map("task_id")
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
   task   Task       @relation("TaskTimeline", fields: [taskId], references: [id])
   time   DateTime
   status TaskStatus
