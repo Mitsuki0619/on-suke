@@ -76,3 +76,16 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* react-big-calendar */
+.rbc-day-bg {
+  background-color: #f8f8f8;
+}
+
+.rbc-date-cell:last-child {
+  color: blue;
+}
+
+.rbc-date-cell:first-child {
+  color: red;
+}
