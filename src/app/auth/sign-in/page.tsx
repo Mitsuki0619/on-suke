@@ -5,10 +5,10 @@ import { Icons } from "@/components/ui/icons";
 
 export default function SignInPage() {
   return (
-    <div className="flex items-center justify-center min-h-screen">
+    <div className="flex items-center justify-center h-full">
       <Card className="w-[350px]">
         <CardHeader>
-          <CardTitle className="text-lg text-center">サインイン</CardTitle>
+          <CardTitle className="text-md text-center">ログイン</CardTitle>
         </CardHeader>
         <CardContent>
           <form className="w-full" action={signInWithGoogle}>

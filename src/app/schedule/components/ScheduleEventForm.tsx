@@ -38,7 +38,7 @@ export function ScheduleEventForm() {
   });
 
   const [categoriesValueState, setCategoriesValueState] = useState(
-    fields.categories.initialValue
+    fields.categories.initialValue,
   );
   const categoriesInputControl = useInputControl(fields.categories);
 

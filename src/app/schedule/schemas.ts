@@ -30,7 +30,7 @@ export const eventSchema = z.object({
         .string()
         .max(500, { message: "タスクの説明は500文字以下で入力してください" })
         .optional(),
-    })
+    }),
   ),
   urls: z.array(
     z.object({
@@ -41,6 +41,6 @@ export const eventSchema = z.object({
         .string({ required_error: "URLは必須です。" })
         .url("有効なURLを入力してください")
         .max(200, { message: "URLは200文字以下で入力してください" }),
-    })
+    }),
   ),
 });
