@@ -28,13 +28,25 @@ export function SchedulerToolbar(toolbar: Props) {
   return (
     <div className="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4">
       <div className="flex items-center gap-2">
-        <Button variant="outline" onClick={() => navigate("PREV")}>
+        <Button
+          variant="outline"
+          className="bg-white"
+          onClick={() => navigate("PREV")}
+        >
           前へ
         </Button>
-        <Button variant="outline" onClick={() => navigate("TODAY")}>
+        <Button
+          variant="outline"
+          className="bg-white"
+          onClick={() => navigate("TODAY")}
+        >
           今日
         </Button>
-        <Button variant="outline" onClick={() => navigate("NEXT")}>
+        <Button
+          variant="outline"
+          className="bg-white"
+          onClick={() => navigate("NEXT")}
+        >
           次へ
         </Button>
       </div>
@@ -43,6 +55,7 @@ export function SchedulerToolbar(toolbar: Props) {
         {Object.entries(viewNames).map(([key, label]) => (
           <Button
             key={key}
+            className="bg-white"
             variant="outline"
             onClick={() => toolbar.onView(key as View)}
           >

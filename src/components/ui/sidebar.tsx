@@ -3,7 +3,6 @@ import { AccountPopover } from "@/components/ui/account-popover";
 import {
   Calendar,
   LayoutDashboard,
-  Plus,
   ListTodo,
   Settings,
 } from "lucide-react";
@@ -13,7 +12,7 @@ export async function Sidebar() {
   const session = await auth();
 
   return (
-    <div className="w-64 bg-sidebar text-white h-full p-4 flex flex-col">
+    <div className="w-64 bg-primary text-white h-full p-4 flex flex-col">
       <div className="text-2xl font-bold mb-8">on-suke</div>
       {session?.user && (
         <>
