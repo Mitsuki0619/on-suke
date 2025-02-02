@@ -1,1 +1,5 @@
-export default function AddSchedulePage() {}
+import { ScheduleEventForm } from "@/app/schedule/components/ScheduleEventForm";
+
+export default function AddSchedulePage() {
+  return <ScheduleEventForm />;
+}

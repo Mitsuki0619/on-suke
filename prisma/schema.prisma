@@ -39,13 +39,15 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String     @id @default(cuid())
   name          String?
-  email         String?   @unique
-  emailVerified DateTime? @map("email_verified")
+  email         String?    @unique
+  emailVerified DateTime?  @map("email_verified")
   image         String?
   accounts      Account[]
   sessions      Session[]
+  schedules     Schedule[] @relation("UserSchedules")
+  tasks         Task[]     @relation("UserTasks")
 
   @@map("users")
 }
@@ -60,39 +62,58 @@ model VerificationToken {
 }
 
 model Schedule {
-  id          String     @id @default(cuid())
-  title       String
-  description String?
-  startTime   DateTime   @map("start_time")
-  endTime     DateTime   @map("end_time")
-  memo        String?
-  tasks       Task[]     @relation("ScheduleTasks")
-  categories  Category[] @relation("ScheduleCategories")
-  urls        Url[]      @relation("ScheduleUrls")
+  id                  String               @id @default(cuid())
+  title               String
+  description         String?
+  note                String?
+  startTime           DateTime
+  endTime             DateTime
+  notificationMethods NotificationMethod[]
+  categories          Category[]           @relation("ScheduleCategories")
+  categoryRelations   ScheduleCategory[]
+  tasks               Task[]               @relation("ScheduleTasks")
+  urls                Url[]                @relation("ScheduleUrls")
+  userId              String               @map("user_id")
+  user                User                 @relation("UserSchedules", fields: [userId], references: [id])
+}
 
-  @@map("schedules")
+model NotificationMethod {
+  id         Int      @id @default(autoincrement())
+  type       String
+  scheduleId String   @map("schedule_id")
+  schedule   Schedule @relation(fields: [scheduleId], references: [id])
+
+  @@map("notification_methods")
+}
+
+model Category {
+  id                Int                @id @default(autoincrement())
+  name              String
+  schedules         Schedule[]         @relation("ScheduleCategories")
+  scheduleRelations ScheduleCategory[]
+}
+
+model ScheduleCategory {
+  scheduleId String
+  categoryId Int
+  schedule   Schedule @relation(fields: [scheduleId], references: [id])
+  category   Category @relation(fields: [categoryId], references: [id])
+
+  @@id([scheduleId, categoryId])
 }
 
 model Task {
-  id          String     @id @default(cuid())
+  id          Int        @id @default(autoincrement())
   title       String
   description String?
   status      TaskStatus @default(TO_DO)
   scheduleId  String     @map("schedule_id")
   schedule    Schedule   @relation("ScheduleTasks", fields: [scheduleId], references: [id])
   timelines   Timeline[] @relation("TaskTimeline")
+  userId      String     @map("user_id")
+  user        User       @relation("UserTasks", fields: [userId], references: [id])
 
   @@map("tasks")
-}
-
-model Category {
-  id          String     @id @default(cuid())
-  name        String
-  description String?
-  color       String?
-  schedules   Schedule[] @relation("ScheduleCategories")
-
-  @@map("categories")
 }
 
 model Url {
@@ -106,7 +127,7 @@ model Url {
 
 model Timeline {
   id     String     @id @default(cuid())
-  taskId String     @map("task_id")
+  taskId Int        @map("task_id")
   task   Task       @relation("TaskTimeline", fields: [taskId], references: [id])
   time   DateTime
   status TaskStatus
