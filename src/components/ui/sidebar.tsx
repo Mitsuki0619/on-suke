@@ -1,11 +1,6 @@
 import { auth } from "@/auth";
 import { AccountPopover } from "@/components/ui/account-popover";
-import {
-  Calendar,
-  LayoutDashboard,
-  ListTodo,
-  Settings,
-} from "lucide-react";
+import { Calendar, LayoutDashboard, ListTodo, Settings } from "lucide-react";
 import Link from "next/link";
 
 export async function Sidebar() {

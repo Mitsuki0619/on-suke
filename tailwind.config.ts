@@ -50,13 +50,8 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // 新しいカスタムカラーを追加
-        sidebar: {
-          DEFAULT: "#2C3E50", // ダークブルーグレー
-          hover: "#34495E", // ホバー時の色
-        },
         main: {
-          background: "#ECF0F1", // ライトグレー
+          background: "hsl(var(--main-background))",
         },
       },
       borderRadius: {
