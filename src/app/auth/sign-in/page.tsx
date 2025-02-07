@@ -5,7 +5,7 @@ import { Icons } from "@/components/ui/icons";
 
 export default function SignInPage() {
   return (
-    <div className="flex items-center justify-center h-full">
+    <div className="flex items-center justify-center pt-72">
       <Card className="w-[350px]">
         <CardHeader>
           <CardTitle className="text-md text-center">ログイン</CardTitle>

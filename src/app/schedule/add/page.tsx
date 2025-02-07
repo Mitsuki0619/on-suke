@@ -1,8 +1,5 @@
-import { ScheduleEventForm } from "@/app/schedule/components/ScheduleEventForm";
-import {
-  Card,
-  CardContent,
-} from "@/components/ui/card";
+import { ScheduleEventForm } from "@/app/schedule/components/ScheduleEventForm/ScheduleEventForm.server";
+import { Card, CardContent } from "@/components/ui/card";
 
 export default function AddSchedulePage() {
   return (

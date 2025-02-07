@@ -8,26 +8,26 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import CheckboxBadge from "@/components/ui/checkbox-badge";
 import { FieldErrors } from "@/components/ui/field-error";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { useForm, useInputControl } from "@conform-to/react";
+import { getInputProps, useForm } from "@conform-to/react";
 import { parseWithZod } from "@conform-to/zod";
-import { Plus, PlusCircle, TrashIcon, X } from "lucide-react";
-import { useActionState, useState } from "react";
+import { Plus, PlusCircle, TrashIcon } from "lucide-react";
+import { useActionState } from "react";
 
-const categoriesOptions = [
-  { id: 1, name: "仕事" },
-  { id: 2, name: "個人" },
-  { id: 3, name: "家族" },
-  { id: 4, name: "趣味" },
-];
-
-export function ScheduleEventForm() {
+export function ScheduleEventFormClient({
+  categories,
+}: {
+  categories: {
+    id: number;
+    name: string;
+  }[];
+}) {
   const [lastResult, action] = useActionState(addEvent, undefined);
   const [form, fields] = useForm({
     lastResult,
@@ -37,32 +37,8 @@ export function ScheduleEventForm() {
     shouldRevalidate: "onInput",
   });
 
-  const [categoriesValueState, setCategoriesValueState] = useState(
-    fields.categories.initialValue,
-  );
-  const categoriesInputControl = useInputControl(fields.categories);
-
-  const categories = fields.categories.getFieldList();
   const tasks = fields.tasks.getFieldList();
   const urls = fields.urls.getFieldList();
-
-  const handleCheckCategory = (categoryId: number) => {
-    const parsedId = categoryId.toString();
-    if (!Array.isArray(categoriesValueState)) {
-      setCategoriesValueState([parsedId]);
-      categoriesInputControl.change([parsedId]);
-      return;
-    }
-    const newValue = (
-      categoriesValueState.includes(parsedId)
-        ? categoriesValueState.filter((c) => c !== parsedId)
-        : [...categoriesValueState, parsedId]
-    ).filter((c) => c != null);
-    setCategoriesValueState((prev) => {
-      return newValue;
-    });
-    categoriesInputControl.change(newValue);
-  };
 
   return (
     <form
@@ -76,10 +52,8 @@ export function ScheduleEventForm() {
         <div className="space-y-2">
           <Label htmlFor={fields.title.id}>タイトル</Label>
           <Input
-            id={fields.title.id}
+            {...getInputProps(fields.title, { type: "text" })}
             key={fields.title.key}
-            name={fields.title.name}
-            defaultValue={fields.title.initialValue}
           />
           <FieldErrors errors={fields.title.allErrors} />
         </div>
@@ -87,39 +61,32 @@ export function ScheduleEventForm() {
         <div className="space-y-2">
           <Label>カテゴリ</Label>
           <div className="flex flex-wrap gap-2">
-            {categoriesOptions.map((category) => {
-              const parsedId = category.id.toString();
-              const isChecked = categoriesValueState?.includes(parsedId);
-              return (
-                <Button
-                  type="button"
-                  key={category.id}
-                  variant="ghost"
-                  className="hover:bg-inherit w-min h-min p-0"
-                  onClick={() => handleCheckCategory(category.id)}
-                >
-                  <Badge
-                    key={category.id}
-                    variant={isChecked ? "default" : "outline"}
-                    className="cursor-pointer px-3 py-1"
-                  >
-                    {category.name}
-                    {isChecked && <X className="ml-1 h-3 w-3" />}
-                  </Badge>
-                </Button>
-              );
-            })}
+            {categories.map((category) => (
+              <CheckboxBadge
+                {...getInputProps(fields.categories, { type: "checkbox" })}
+                value={category.id}
+                defaultChecked={
+                  fields.categories.initialValue &&
+                  Array.isArray(fields.categories.initialValue)
+                    ? fields.categories.initialValue.includes(
+                        category.id.toString(),
+                      )
+                    : fields.categories.initialValue === category.id.toString()
+                }
+                key={`${category.id}-${fields.categories.key}`}
+                label={category.name}
+              />
+            ))}
           </div>
         </div>
+        <FieldErrors errors={fields.categories.allErrors} />
 
         {/* 概要入力 */}
         <div className="space-y-2">
           <Label htmlFor={fields.description.id}>概要</Label>
           <Textarea
-            id={fields.description.id}
+            {...getInputProps(fields.description, { type: "text" })}
             key={fields.description.key}
-            name={fields.description.name}
-            defaultValue={fields.description.initialValue}
             rows={5}
           />
           <FieldErrors errors={fields.description.allErrors} />
@@ -130,22 +97,16 @@ export function ScheduleEventForm() {
           <div className="space-y-2 w-52">
             <Label htmlFor={fields.startTime.id}>開始日時</Label>
             <Input
-              id={fields.startTime.id}
+              {...getInputProps(fields.startTime, { type: "datetime-local" })}
               key={fields.startTime.key}
-              name={fields.startTime.name}
-              defaultValue={fields.startTime.initialValue}
-              type="datetime-local"
             />
             <FieldErrors errors={fields.startTime.allErrors} />
           </div>
           <div className="space-y-2 w-52">
             <Label htmlFor={fields.endTime.id}>終了日時</Label>
             <Input
-              id={fields.endTime.id}
+              {...getInputProps(fields.endTime, { type: "datetime-local" })}
               key={fields.endTime.key}
-              name={fields.endTime.name}
-              defaultValue={fields.endTime.initialValue}
-              type="datetime-local"
             />
             <FieldErrors errors={fields.endTime.allErrors} />
           </div>
@@ -161,10 +122,10 @@ export function ScheduleEventForm() {
               <div className="space-y-2">
                 <Label htmlFor={fields.note.id}>メモ</Label>
                 <Textarea
-                  id={fields.note.id}
+                  {...getInputProps(fields.note, {
+                    type: "text",
+                  })}
                   key={fields.note.key}
-                  name={fields.note.name}
-                  defaultValue={fields.note.initialValue}
                   rows={3}
                 />
                 <FieldErrors errors={fields.note.allErrors} />
@@ -183,9 +144,8 @@ export function ScheduleEventForm() {
                       >
                         <div>
                           <Input
-                            key={title.id}
-                            name={title.name}
-                            defaultValue={title.initialValue}
+                            {...getInputProps(title, { type: "text" })}
+                            key={title.key}
                             placeholder="タスクタイトル"
                           />
                           <FieldErrors errors={title.allErrors} />
@@ -203,9 +163,8 @@ export function ScheduleEventForm() {
                         </div>
                         <div className="col-span-2">
                           <Textarea
-                            key={description.id}
-                            name={description.name}
-                            defaultValue={description.initialValue}
+                            {...getInputProps(description, { type: "text" })}
+                            key={description.key}
                             placeholder="タスク詳細"
                             rows={2}
                           />
@@ -243,18 +202,20 @@ export function ScheduleEventForm() {
                           <div className="flex gap-4 flex-1">
                             <div className="w-52">
                               <Input
-                                key={name.id}
-                                name={name.name}
-                                defaultValue={name.initialValue}
+                                {...getInputProps(name, {
+                                  type: "text",
+                                })}
                                 placeholder="名前"
+                                key={url.key}
                               />
                               <FieldErrors errors={name.allErrors} />
                             </div>
                             <div className="flex-1">
                               <Input
-                                key={url.id}
-                                name={url.name}
-                                defaultValue={url.initialValue}
+                                {...getInputProps(url, {
+                                  type: "text",
+                                })}
+                                key={url.key}
                                 placeholder="URL"
                               />
                               <FieldErrors errors={url.allErrors} />

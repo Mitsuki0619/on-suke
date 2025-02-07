@@ -3,11 +3,13 @@
 import { eventSchema } from "@/app/schedule/schemas";
 import { auth } from "@/auth";
 import prisma from "@/lib/prisma";
+import { flash } from "@/utils/flash";
 import { parseWithZod } from "@conform-to/zod";
 import { AuthError } from "next-auth";
 import { redirect } from "next/navigation";
+import "server-only";
 
-export async function addEvent(prevState: unknown, formData: FormData) {
+export async function addEvent(_: unknown, formData: FormData) {
   const submission = parseWithZod(formData, {
     schema: eventSchema,
   });
@@ -65,7 +67,8 @@ export async function addEvent(prevState: unknown, formData: FormData) {
         },
       });
     });
-    return submission.reply();
+    await flash("イベントが正常に追加されました！");
+    redirect("/schedule/calendar");
   } catch (e) {
     if (e instanceof AuthError) {
       return redirect("/auth/sign-in");

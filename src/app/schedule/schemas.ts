@@ -1,4 +1,5 @@
 import * as z from "zod";
+import { dateSchema } from "@/lib/zod";
 
 export const eventSchema = z.object({
   title: z
@@ -11,8 +12,8 @@ export const eventSchema = z.object({
     .string()
     .max(500, { message: "説明は500文字以下で入力してください" })
     .optional(),
-  startTime: z.string().optional(),
-  endTime: z.string().optional(),
+  startTime: dateSchema,
+  endTime: dateSchema,
   note: z
     .string()
     .max(500, { message: "メモは500文字以下で入力してください" })

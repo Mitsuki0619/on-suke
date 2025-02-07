@@ -1,3 +1,6 @@
+"use client";
+
+import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 
 export default function CalendarPageLayout({
@@ -7,9 +10,11 @@ export default function CalendarPageLayout({
   children: ReactNode;
   modal: ReactNode;
 }) {
+  const pathname = usePathname();
+  const shouldShowModal = pathname.endsWith("/schedule/add");
   return (
     <>
-      {modal}
+      {shouldShowModal && modal}
       {children}
     </>
   );
