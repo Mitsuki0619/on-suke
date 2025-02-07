@@ -1,5 +1,15 @@
 import { ScheduleCalendar } from "@/app/schedule/calendar/components/ScheduleCalendar";
+import { fetchSchedules } from "@/app/schedule/calendar/loaders";
 import { Button } from "@/components/ui/button";
+import {
+  startOfMonth,
+  endOfMonth,
+  setHours,
+  setMinutes,
+  setSeconds,
+  setMilliseconds,
+  formatISO,
+} from "date-fns";
 import { PlusCircle } from "lucide-react";
 import Link from "next/link";
 import "react-big-calendar/lib/css/react-big-calendar.css";
@@ -20,7 +30,39 @@ const events = [
   },
 ];
 
-export default function CalendarPage() {
+interface SearchParams {
+  date?: string;
+}
+
+export default async function CalendarPage({
+  searchParams,
+}: {
+  searchParams: SearchParams;
+}) {
+  const { date } = await searchParams;
+  const targetDate = date ? new Date(date) : new Date();
+
+  // 月の開始日 (00:00:00.000)
+  const startOfMonthISO = formatISO(
+    setMilliseconds(
+      setSeconds(setMinutes(setHours(startOfMonth(targetDate), 0), 0), 0),
+      0,
+    ),
+  );
+
+  // 月の終了日 (23:59:59.999)
+  const endOfMonthISO = formatISO(
+    setMilliseconds(
+      setSeconds(setMinutes(setHours(endOfMonth(targetDate), 23), 59), 59),
+      999,
+    ),
+  );
+
+  const schedules = await fetchSchedules({
+    from: startOfMonthISO,
+    to: endOfMonthISO,
+  });
+
   return (
     <div className="space-y-6">
       <h1 className="text-3xl font-bold">カレンダー</h1>
