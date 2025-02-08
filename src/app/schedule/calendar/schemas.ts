@@ -20,3 +20,20 @@ export const fetchSchedulesSchema = z
     message: "from は to より前の日時である必要があります",
     path: ["from"],
   });
+
+export const searchParamsSchema = z.object({
+  date: z.string().date().optional(),
+  view: z
+    .string()
+    .optional()
+    .refine(
+      (data) => {
+        return (
+          data === "month" || data === "week" || data === "day" || data == null
+        );
+      },
+      {
+        message: "無効なパラメータです",
+      },
+    ),
+});

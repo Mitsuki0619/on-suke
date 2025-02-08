@@ -1,37 +1,26 @@
 import { ScheduleCalendar } from "@/app/schedule/calendar/components/ScheduleCalendar";
 import { fetchSchedules } from "@/app/schedule/calendar/loaders";
+import { searchParamsSchema } from "@/app/schedule/calendar/schemas";
 import { Button } from "@/components/ui/button";
 import {
-  startOfMonth,
   endOfMonth,
+  endOfWeek,
+  formatISO,
   setHours,
+  setMilliseconds,
   setMinutes,
   setSeconds,
-  setMilliseconds,
-  formatISO,
+  startOfMonth,
+  startOfWeek,
 } from "date-fns";
 import { PlusCircle } from "lucide-react";
 import Link from "next/link";
+import type { Event } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-
-// 仮のイベントデータ
-const events = [
-  {
-    id: 1,
-    title: "ミーティング",
-    start: new Date(2023, 5, 15, 10, 0),
-    end: new Date(2023, 5, 15, 11, 0),
-  },
-  {
-    id: 2,
-    title: "昼食",
-    start: new Date(2023, 5, 15, 12, 0),
-    end: new Date(2023, 5, 15, 13, 0),
-  },
-];
 
 interface SearchParams {
   date?: string;
+  view?: string;
 }
 
 export default async function CalendarPage({
@@ -39,21 +28,38 @@ export default async function CalendarPage({
 }: {
   searchParams: SearchParams;
 }) {
-  const { date } = await searchParams;
-  const targetDate = date ? new Date(date) : new Date();
+  const { date, view } = await searchParams;
+  const { data, success, error } = searchParamsSchema.safeParse({ date, view });
+  if (!success) {
+    throw new Error(error.message);
+  }
+  const targetDate = data.date ? new Date(data.date) : new Date();
+  const startOfPeriod =
+    view === "month"
+      ? startOfMonth(targetDate)
+      : view === "week"
+        ? startOfWeek(targetDate)
+        : view === "day"
+          ? new Date(targetDate)
+          : startOfMonth(targetDate); // default to month if view is not specified
+  const endOfPeriod =
+    view === "month"
+      ? endOfMonth(targetDate)
+      : view === "week"
+        ? endOfWeek(targetDate)
+        : view === "day"
+          ? new Date(targetDate)
+          : endOfMonth(targetDate); // default to month if view is not specified
 
-  // 月の開始日 (00:00:00.000)
   const startOfMonthISO = formatISO(
     setMilliseconds(
-      setSeconds(setMinutes(setHours(startOfMonth(targetDate), 0), 0), 0),
+      setSeconds(setMinutes(setHours(startOfPeriod, 0), 0), 0),
       0,
     ),
   );
-
-  // 月の終了日 (23:59:59.999)
   const endOfMonthISO = formatISO(
     setMilliseconds(
-      setSeconds(setMinutes(setHours(endOfMonth(targetDate), 23), 59), 59),
+      setSeconds(setMinutes(setHours(endOfPeriod, 23), 59), 59),
       999,
     ),
   );
@@ -63,16 +69,25 @@ export default async function CalendarPage({
     to: endOfMonthISO,
   });
 
+  const events =
+    schedules?.map((s): Event => {
+      return {
+        title: s.title,
+        start: s.startTime ? new Date(s.startTime) : undefined,
+        end: s.endTime ? new Date(s.endTime) : undefined,
+      };
+    }) ?? [];
+
   return (
     <div className="space-y-6">
       <h1 className="text-3xl font-bold">カレンダー</h1>
       <Button className="mb-4" asChild>
-        <Link href="/schedule/add">
+        <Link href={`/schedule/add?date=${date || ""}&view=${view || ""}`}>
           <PlusCircle />
           予定を追加
         </Link>
       </Button>
-      <ScheduleCalendar events={events} />
+      <ScheduleCalendar date={data.date} view={data.view} events={events} />
     </div>
   );
 }
