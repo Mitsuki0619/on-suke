@@ -1,20 +1,21 @@
 "use client";
 
 import { SchedulerToolbar } from "@/app/schedule/calendar/components/ScheduleToolbar";
+import type { FetchSchedulesReturnType } from "@/app/schedule/calendar/loaders";
 import { localizer } from "@/lib/date-fns";
 import { format } from "date-fns";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Calendar, type Event, type View } from "react-big-calendar";
+import { Calendar, type View } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
 export function ScheduleCalendar({
-  events,
+  schedules,
   date,
   view,
 }: {
+  schedules: FetchSchedulesReturnType;
   date: string | undefined;
   view: "month" | "week" | "day" | undefined;
-  events: Event[];
 }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -37,6 +38,17 @@ export function ScheduleCalendar({
       `${pathname}?${createQueryString("date", format(newDate, "yyyy-MM-dd"))}`,
     );
   };
+  const events = schedules?.map((s) => {
+    return {
+      title: s.title,
+      start: s.startTime ? new Date(s.startTime) : undefined,
+      end: s.endTime ? new Date(s.endTime) : undefined,
+      existTasks: s.tasks.filter(
+        (t) => t.status === "TODO" || t.status === "WIP",
+      ).length,
+      color: s.category?.color ?? "606060",
+    };
+  });
   return (
     <Calendar
       date={validDate}
@@ -49,7 +61,35 @@ export function ScheduleCalendar({
       culture={"ja"}
       onNavigate={onNavigate}
       onView={onView}
-      components={{ toolbar: (props) => <SchedulerToolbar {...props} /> }}
+      eventPropGetter={(props) => ({
+        style: {
+          backgroundColor: `#${props.color}`,
+          border: "none",
+        },
+        className: "w-full h-full relative",
+      })}
+      components={{
+        toolbar: (props) => (
+          <SchedulerToolbar
+            label={props.label}
+            onNavigate={props.onNavigate}
+            onView={props.onView}
+          />
+        ),
+        event: (props) => (
+          <div>
+            {!props.continuesPrior && props.event.existTasks > 0 && (
+              <span
+                className="absolute -top-2 -left-4 flex h-5 w-5 items-center justify-center 
+              rounded-full bg-red-500 text-white text-xs font-bold"
+              >
+                {props.event.existTasks}
+              </span>
+            )}
+            {props.title}
+          </div>
+        ),
+      }}
     />
   );
 }

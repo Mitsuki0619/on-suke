@@ -10,10 +10,10 @@ import {
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import CheckboxBadge from "@/components/ui/checkbox-badge";
 import { FieldErrors } from "@/components/ui/field-error";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import RadioGroupBadge from "@/components/ui/radio-group-badge";
 import { Textarea } from "@/components/ui/textarea";
 import { getInputProps, useForm } from "@conform-to/react";
 import { parseWithZod } from "@conform-to/zod";
@@ -26,6 +26,7 @@ export function ScheduleEventFormClient({
   categories: {
     id: number;
     name: string;
+    color: string;
   }[];
 }) {
   const [lastResult, action] = useActionState(addEvent, undefined);
@@ -39,6 +40,15 @@ export function ScheduleEventFormClient({
 
   const tasks = fields.tasks.getFieldList();
   const urls = fields.urls.getFieldList();
+
+  const categoryOptions = [
+    { label: "なし", value: "", color: "606060" },
+    ...categories.map((cat) => ({
+      label: cat.name,
+      value: cat.id.toString(),
+      color: cat.color,
+    })),
+  ];
 
   return (
     <form
@@ -61,25 +71,14 @@ export function ScheduleEventFormClient({
         <div className="space-y-2">
           <Label>カテゴリ</Label>
           <div className="flex flex-wrap gap-2">
-            {categories.map((category) => (
-              <CheckboxBadge
-                {...getInputProps(fields.categories, { type: "checkbox" })}
-                value={category.id}
-                defaultChecked={
-                  fields.categories.initialValue &&
-                  Array.isArray(fields.categories.initialValue)
-                    ? fields.categories.initialValue.includes(
-                        category.id.toString(),
-                      )
-                    : fields.categories.initialValue === category.id.toString()
-                }
-                key={`${category.id}-${fields.categories.key}`}
-                label={category.name}
-              />
-            ))}
+            <RadioGroupBadge
+              options={categoryOptions}
+              name={fields.categoryId.name}
+              defaultValue={fields.categoryId.initialValue}
+            />
           </div>
         </div>
-        <FieldErrors errors={fields.categories.allErrors} />
+        <FieldErrors errors={fields.categoryId.allErrors} />
 
         {/* 概要入力 */}
         <div className="space-y-2">

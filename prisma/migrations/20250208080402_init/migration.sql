@@ -80,6 +80,7 @@ CREATE TABLE "Schedule" (
     "endTime" TIMESTAMP(3),
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
+    "categoryId" INTEGER,
     "user_id" TEXT NOT NULL,
 
     CONSTRAINT "Schedule_pkey" PRIMARY KEY ("id")
@@ -152,14 +153,6 @@ CREATE TABLE "_ScheduleUrls" (
     CONSTRAINT "_ScheduleUrls_AB_pkey" PRIMARY KEY ("A","B")
 );
 
--- CreateTable
-CREATE TABLE "_CategoryToSchedule" (
-    "A" INTEGER NOT NULL,
-    "B" TEXT NOT NULL,
-
-    CONSTRAINT "_CategoryToSchedule_AB_pkey" PRIMARY KEY ("A","B")
-);
-
 -- CreateIndex
 CREATE UNIQUE INDEX "accounts_provider_provider_account_id_key" ON "accounts"("provider", "provider_account_id");
 
@@ -175,9 +168,6 @@ CREATE UNIQUE INDEX "verification_tokens_identifier_token_key" ON "verification_
 -- CreateIndex
 CREATE INDEX "_ScheduleUrls_B_index" ON "_ScheduleUrls"("B");
 
--- CreateIndex
-CREATE INDEX "_CategoryToSchedule_B_index" ON "_CategoryToSchedule"("B");
-
 -- AddForeignKey
 ALTER TABLE "accounts" ADD CONSTRAINT "accounts_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
@@ -189,6 +179,9 @@ ALTER TABLE "settings" ADD CONSTRAINT "settings_user_id_fkey" FOREIGN KEY ("user
 
 -- AddForeignKey
 ALTER TABLE "masters" ADD CONSTRAINT "masters_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Schedule" ADD CONSTRAINT "Schedule_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Category"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Schedule" ADD CONSTRAINT "Schedule_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -213,9 +206,3 @@ ALTER TABLE "_ScheduleUrls" ADD CONSTRAINT "_ScheduleUrls_A_fkey" FOREIGN KEY ("
 
 -- AddForeignKey
 ALTER TABLE "_ScheduleUrls" ADD CONSTRAINT "_ScheduleUrls_B_fkey" FOREIGN KEY ("B") REFERENCES "urls"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "_CategoryToSchedule" ADD CONSTRAINT "_CategoryToSchedule_A_fkey" FOREIGN KEY ("A") REFERENCES "Category"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "_CategoryToSchedule" ADD CONSTRAINT "_CategoryToSchedule_B_fkey" FOREIGN KEY ("B") REFERENCES "Schedule"("id") ON DELETE CASCADE ON UPDATE CASCADE;

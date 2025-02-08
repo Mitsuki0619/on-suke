@@ -8,6 +8,7 @@ export async function fetchAllCategories() {
     select: {
       id: true,
       name: true,
+      color: true,
     },
   });
   return categories;

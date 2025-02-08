@@ -48,8 +48,8 @@ model User {
   sessions      Session[]
   schedules     Schedule[] @relation("UserSchedules")
   tasks         Task[]     @relation("UserTasks")
-  Settings      Settings[]
-  Master        Master[]
+  settings      Settings[]
+  master        Master[]
 
   @@map("users")
 }
@@ -71,7 +71,7 @@ model Master {
   updatedAt DateTime @updatedAt
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  categories   Category[]
+  categories Category[]
 
   @@map("masters")
 }
@@ -95,7 +95,8 @@ model Schedule {
   created_at          DateTime             @default(now())
   updated_at          DateTime             @updatedAt
   notificationMethods NotificationMethod[]
-  categories          Category[]
+  categoryId          Int?
+  category            Category?            @relation(fields: [categoryId], references: [id])
   tasks               Task[]               @relation("ScheduleTasks")
   urls                Url[]                @relation("ScheduleUrls")
   userId              String               @map("user_id")
@@ -114,14 +115,15 @@ model NotificationMethod {
 }
 
 model Category {
-  id         Int        @id @default(autoincrement())
+  id         Int      @id @default(autoincrement())
   name       String
   color      String
-  created_at DateTime   @default(now())
-  updated_at DateTime   @updatedAt
-  schedules  Schedule[]
-  masterId   String     @map("master_id")
-  master     Master     @relation(fields: [masterId], references: [id], onDelete: Cascade)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  masterId   String   @map("master_id")
+  master     Master   @relation(fields: [masterId], references: [id], onDelete: Cascade)
+
+  schedules Schedule[]
 }
 
 model Task {

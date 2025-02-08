@@ -26,10 +26,16 @@ export async function fetchSchedules(params: { from: string; to: string }) {
         title: true,
         startTime: true,
         endTime: true,
-        categories: {
+        tasks: {
+          select: {
+            status: true,
+          },
+        },
+        category: {
           select: {
             id: true,
             name: true,
+            color: true,
           },
         },
       },
@@ -67,6 +73,9 @@ export async function fetchSchedules(params: { from: string; to: string }) {
     if (e instanceof AuthError) {
       redirect("/login");
     }
-    return null;
   }
 }
+
+export type FetchSchedulesReturnType = Awaited<
+  ReturnType<typeof fetchSchedules>
+>;

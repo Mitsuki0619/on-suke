@@ -24,7 +24,7 @@ export async function addEvent(_: unknown, formData: FormData) {
     startTime,
     endTime,
     urls,
-    categories,
+    categoryId,
     note,
     tasks,
   } = submission.value;
@@ -39,6 +39,7 @@ export async function addEvent(_: unknown, formData: FormData) {
         data: {
           title,
           description,
+          categoryId,
           startTime,
           endTime,
           userId,
@@ -57,15 +58,10 @@ export async function addEvent(_: unknown, formData: FormData) {
               name: url.name,
             })),
           },
-          categories: {
-            connect: categories.map((catId) => ({
-              id: catId,
-            })),
-          },
         },
       });
     });
-    await flash("イベントが正常に追加されました！");
+    await flash("予定が追加されました！");
     redirect("/schedule/calendar");
   } catch (e) {
     if (e instanceof AuthError) {

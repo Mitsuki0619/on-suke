@@ -1,15 +1,10 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import type { Event, Messages, NavigateAction, View } from "react-big-calendar";
+import type { NavigateAction, View } from "react-big-calendar";
 
 interface Props {
-  date: Date;
-  view: View;
   label: string;
-  localizer: {
-    messages: Messages<Event>;
-  };
   onNavigate: (action: NavigateAction) => void;
   onView: (view: View) => void;
 }

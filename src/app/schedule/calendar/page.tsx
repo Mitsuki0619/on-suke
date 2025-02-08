@@ -15,7 +15,6 @@ import {
 } from "date-fns";
 import { PlusCircle } from "lucide-react";
 import Link from "next/link";
-import type { Event } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
 interface SearchParams {
@@ -26,7 +25,7 @@ interface SearchParams {
 export default async function CalendarPage({
   searchParams,
 }: {
-  searchParams: SearchParams;
+  searchParams: Promise<SearchParams>;
 }) {
   const { date, view } = await searchParams;
   const { data, success, error } = searchParamsSchema.safeParse({ date, view });
@@ -69,15 +68,6 @@ export default async function CalendarPage({
     to: endOfMonthISO,
   });
 
-  const events =
-    schedules?.map((s): Event => {
-      return {
-        title: s.title,
-        start: s.startTime ? new Date(s.startTime) : undefined,
-        end: s.endTime ? new Date(s.endTime) : undefined,
-      };
-    }) ?? [];
-
   return (
     <div className="space-y-6">
       <h1 className="text-3xl font-bold">カレンダー</h1>
@@ -87,7 +77,11 @@ export default async function CalendarPage({
           予定を追加
         </Link>
       </Button>
-      <ScheduleCalendar date={data.date} view={data.view} events={events} />
+      <ScheduleCalendar
+        date={data.date}
+        view={data.view}
+        schedules={schedules}
+      />
     </div>
   );
 }
