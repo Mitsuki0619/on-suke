@@ -48,7 +48,7 @@ export async function addEvent(_: unknown, formData: FormData) {
               title: task.title,
               userId,
               description: task.description,
-              status: "TO_DO",
+              status: "TODO",
             })),
           },
           urls: {
@@ -57,11 +57,9 @@ export async function addEvent(_: unknown, formData: FormData) {
               name: url.name,
             })),
           },
-          categoryRelations: {
-            create: categories.map((categoryId) => ({
-              category: {
-                connect: { id: categoryId },
-              },
+          categories: {
+            connect: categories.map((catId) => ({
+              id: catId,
             })),
           },
         },

@@ -1,5 +1,8 @@
 -- CreateEnum
-CREATE TYPE "TaskStatus" AS ENUM ('TO_DO', 'IN_PROGRESS', 'COMPLETED', 'ON_HOLD', 'CANCELLED');
+CREATE TYPE "TaskStatus" AS ENUM ('TODO', 'WIP', 'DONE', 'PENDING', 'ABOLISHED');
+
+-- CreateEnum
+CREATE TYPE "TaskPriority" AS ENUM ('HIGH', 'MIDDLE', 'LOW', 'URGENT');
 
 -- CreateTable
 CREATE TABLE "accounts" (
@@ -41,6 +44,26 @@ CREATE TABLE "users" (
 );
 
 -- CreateTable
+CREATE TABLE "settings" (
+    "id" TEXT NOT NULL,
+    "user_id" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "settings_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "masters" (
+    "id" TEXT NOT NULL,
+    "user_id" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "masters_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "verification_tokens" (
     "identifier" TEXT NOT NULL,
     "token" TEXT NOT NULL,
@@ -77,20 +100,12 @@ CREATE TABLE "notification_methods" (
 CREATE TABLE "Category" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
+    "color" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
+    "master_id" TEXT NOT NULL,
 
     CONSTRAINT "Category_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "ScheduleCategory" (
-    "scheduleId" TEXT NOT NULL,
-    "categoryId" INTEGER NOT NULL,
-    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updated_at" TIMESTAMP(3) NOT NULL,
-
-    CONSTRAINT "ScheduleCategory_pkey" PRIMARY KEY ("scheduleId","categoryId")
 );
 
 -- CreateTable
@@ -98,7 +113,7 @@ CREATE TABLE "tasks" (
     "id" SERIAL NOT NULL,
     "title" TEXT NOT NULL,
     "description" TEXT,
-    "status" "TaskStatus" NOT NULL DEFAULT 'TO_DO',
+    "status" "TaskStatus" NOT NULL DEFAULT 'TODO',
     "schedule_id" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
@@ -125,7 +140,6 @@ CREATE TABLE "timelines" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
     "time" TIMESTAMP(3) NOT NULL,
-    "status" "TaskStatus" NOT NULL,
 
     CONSTRAINT "timelines_pkey" PRIMARY KEY ("id")
 );
@@ -139,11 +153,11 @@ CREATE TABLE "_ScheduleUrls" (
 );
 
 -- CreateTable
-CREATE TABLE "_ScheduleCategories" (
+CREATE TABLE "_CategoryToSchedule" (
     "A" INTEGER NOT NULL,
     "B" TEXT NOT NULL,
 
-    CONSTRAINT "_ScheduleCategories_AB_pkey" PRIMARY KEY ("A","B")
+    CONSTRAINT "_CategoryToSchedule_AB_pkey" PRIMARY KEY ("A","B")
 );
 
 -- CreateIndex
@@ -162,7 +176,7 @@ CREATE UNIQUE INDEX "verification_tokens_identifier_token_key" ON "verification_
 CREATE INDEX "_ScheduleUrls_B_index" ON "_ScheduleUrls"("B");
 
 -- CreateIndex
-CREATE INDEX "_ScheduleCategories_B_index" ON "_ScheduleCategories"("B");
+CREATE INDEX "_CategoryToSchedule_B_index" ON "_CategoryToSchedule"("B");
 
 -- AddForeignKey
 ALTER TABLE "accounts" ADD CONSTRAINT "accounts_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -171,16 +185,19 @@ ALTER TABLE "accounts" ADD CONSTRAINT "accounts_user_id_fkey" FOREIGN KEY ("user
 ALTER TABLE "sessions" ADD CONSTRAINT "sessions_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "settings" ADD CONSTRAINT "settings_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "masters" ADD CONSTRAINT "masters_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "Schedule" ADD CONSTRAINT "Schedule_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "notification_methods" ADD CONSTRAINT "notification_methods_schedule_id_fkey" FOREIGN KEY ("schedule_id") REFERENCES "Schedule"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ScheduleCategory" ADD CONSTRAINT "ScheduleCategory_scheduleId_fkey" FOREIGN KEY ("scheduleId") REFERENCES "Schedule"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "ScheduleCategory" ADD CONSTRAINT "ScheduleCategory_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Category"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Category" ADD CONSTRAINT "Category_master_id_fkey" FOREIGN KEY ("master_id") REFERENCES "masters"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "tasks" ADD CONSTRAINT "tasks_schedule_id_fkey" FOREIGN KEY ("schedule_id") REFERENCES "Schedule"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -198,7 +215,7 @@ ALTER TABLE "_ScheduleUrls" ADD CONSTRAINT "_ScheduleUrls_A_fkey" FOREIGN KEY ("
 ALTER TABLE "_ScheduleUrls" ADD CONSTRAINT "_ScheduleUrls_B_fkey" FOREIGN KEY ("B") REFERENCES "urls"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "_ScheduleCategories" ADD CONSTRAINT "_ScheduleCategories_A_fkey" FOREIGN KEY ("A") REFERENCES "Category"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "_CategoryToSchedule" ADD CONSTRAINT "_CategoryToSchedule_A_fkey" FOREIGN KEY ("A") REFERENCES "Category"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "_ScheduleCategories" ADD CONSTRAINT "_ScheduleCategories_B_fkey" FOREIGN KEY ("B") REFERENCES "Schedule"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "_CategoryToSchedule" ADD CONSTRAINT "_CategoryToSchedule_B_fkey" FOREIGN KEY ("B") REFERENCES "Schedule"("id") ON DELETE CASCADE ON UPDATE CASCADE;
