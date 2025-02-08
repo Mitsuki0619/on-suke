@@ -100,3 +100,7 @@
 .rbc-time-slot {
   background-color: white;
 }
+
+.rbc-month-row {
+  overflow: visible !important;
+}

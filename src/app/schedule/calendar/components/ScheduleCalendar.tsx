@@ -4,6 +4,7 @@ import { SchedulerToolbar } from "@/app/schedule/calendar/components/ScheduleToo
 import type { FetchSchedulesReturnType } from "@/app/schedule/calendar/loaders";
 import { localizer } from "@/lib/date-fns";
 import { format } from "date-fns";
+import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Calendar, type View } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
@@ -37,6 +38,9 @@ export function ScheduleCalendar({
     router.push(
       `${pathname}?${createQueryString("date", format(newDate, "yyyy-MM-dd"))}`,
     );
+  };
+  const onShowMore = (_: unknown, date: Date) => {
+    router.push(`${pathname}?date=${format(date, "yyyy-MM-dd")}&view=day`);
   };
   const events = schedules?.map((s) => {
     return {
@@ -79,16 +83,23 @@ export function ScheduleCalendar({
         event: (props) => (
           <div>
             {!props.continuesPrior && props.event.existTasks > 0 && (
-              <span
-                className="absolute -top-2 -left-4 flex h-5 w-5 items-center justify-center 
-              rounded-full bg-red-500 text-white text-xs font-bold"
-              >
+              <span className="absolute -top-2 -left-4 flex h-5 w-5 items-center justify-center z-10 rounded-full bg-red-500 text-white text-xs font-bold">
                 {props.event.existTasks}
               </span>
             )}
             {props.title}
           </div>
         ),
+        showMore: (props) => {
+          return (
+            <Link
+              href={`${pathname}?date=${format(props.slotDate, "yyyy-MM-dd")}&view=day`}
+              className="text-xs text-primary ml-2"
+            >
+              +{props.count}つの予定
+            </Link>
+          );
+        },
       }}
     />
   );
