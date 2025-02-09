@@ -24,6 +24,18 @@ export function ScheduleCalendar({
 
   const validDate = date ? new Date(date) : new Date();
   const validView = view ?? "month";
+  const events = schedules?.map((s) => {
+    return {
+      id: s.id,
+      title: s.title,
+      start: s.startTime ? new Date(s.startTime) : undefined,
+      end: s.endTime ? new Date(s.endTime) : undefined,
+      existTasks: s.tasks.filter(
+        (t) => t.status === "TODO" || t.status === "WIP",
+      ).length,
+      color: s.category?.color ?? "606060",
+    };
+  });
 
   const createQueryString = (name: string, value: string) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -39,20 +51,11 @@ export function ScheduleCalendar({
       `${pathname}?${createQueryString("date", format(newDate, "yyyy-MM-dd"))}`,
     );
   };
-  const onShowMore = (_: unknown, date: Date) => {
-    router.push(`${pathname}?date=${format(date, "yyyy-MM-dd")}&view=day`);
+  const onSelectEvent = (event: NonNullable<typeof events>[number]) => {
+    router.push(
+      `/schedule/${event.id}/edit?date=${date || ""}&view=${view || ""}`,
+    );
   };
-  const events = schedules?.map((s) => {
-    return {
-      title: s.title,
-      start: s.startTime ? new Date(s.startTime) : undefined,
-      end: s.endTime ? new Date(s.endTime) : undefined,
-      existTasks: s.tasks.filter(
-        (t) => t.status === "TODO" || t.status === "WIP",
-      ).length,
-      color: s.category?.color ?? "606060",
-    };
-  });
   return (
     <Calendar
       date={validDate}
@@ -65,6 +68,7 @@ export function ScheduleCalendar({
       culture={"ja"}
       onNavigate={onNavigate}
       onView={onView}
+      onSelectEvent={onSelectEvent}
       eventPropGetter={(props) => ({
         style: {
           backgroundColor: `#${props.color}`,

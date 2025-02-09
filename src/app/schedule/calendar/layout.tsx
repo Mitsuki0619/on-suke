@@ -11,7 +11,8 @@ export default function CalendarPageLayout({
   modal: ReactNode;
 }) {
   const pathname = usePathname();
-  const shouldShowModal = pathname.endsWith("/schedule/add");
+  const shouldShowModal =
+    pathname.endsWith("/add") || pathname.endsWith("/edit");
   return (
     <>
       {shouldShowModal && modal}

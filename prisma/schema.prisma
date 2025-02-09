@@ -90,8 +90,8 @@ model Schedule {
   title               String
   description         String?
   note                String?
-  startTime           DateTime?
-  endTime             DateTime?
+  startTime           DateTime
+  endTime             DateTime
   created_at          DateTime             @default(now())
   updated_at          DateTime             @updatedAt
   notificationMethods NotificationMethod[]
@@ -127,15 +127,15 @@ model Category {
 }
 
 model Task {
-  id          Int          @id @default(autoincrement())
+  id          String       @id @default(cuid())
   title       String
   description String?
   status      TaskStatus   @default(TODO)
   priority    TaskPriority @default(MEDIUM)
   scheduleId  String       @map("schedule_id")
+  schedule    Schedule     @relation("ScheduleTasks", fields: [scheduleId], references: [id])
   created_at  DateTime     @default(now())
   updated_at  DateTime     @updatedAt
-  schedule    Schedule     @relation("ScheduleTasks", fields: [scheduleId], references: [id])
   timelines   Timeline[]   @relation("TaskTimeline")
   userId      String       @map("user_id")
   user        User         @relation("UserTasks", fields: [userId], references: [id])
@@ -159,19 +159,20 @@ enum TaskPriority {
 }
 
 model Url {
-  id         String     @id @default(cuid())
+  id         String   @id @default(cuid())
   name       String
   url        String
-  created_at DateTime   @default(now())
-  updated_at DateTime   @updatedAt
-  schedules  Schedule[] @relation("ScheduleUrls")
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  scheduleId String   @map("schedule_id")
+  schedule   Schedule @relation("ScheduleUrls", fields: [scheduleId], references: [id])
 
   @@map("urls")
 }
 
 model Timeline {
   id         String   @id @default(cuid())
-  taskId     Int      @map("task_id")
+  taskId     String   @map("task_id")
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
   task       Task     @relation("TaskTimeline", fields: [taskId], references: [id])

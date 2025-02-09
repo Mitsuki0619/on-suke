@@ -3,6 +3,7 @@
 import { auth } from "@/auth";
 import { NotFoundException } from "@/errors";
 import prisma from "@/lib/prisma";
+import { convertNullsToUndefined } from "@/utils/convertNullsToUndefined";
 import type { Schedule } from "@prisma/client";
 import { AuthError } from "next-auth";
 
@@ -20,8 +21,22 @@ export async function fetchSchedule(scheduleId: Schedule["id"]) {
       startTime: true,
       endTime: true,
       note: true,
-      tasks: true,
-      urls: true,
+      tasks: {
+        select: {
+          id: true,
+          title: true,
+          description: true,
+          status: true,
+          priority: true,
+        },
+      },
+      urls: {
+        select: {
+          id: true,
+          name: true,
+          url: true,
+        },
+      },
     },
     where: {
       id: scheduleId,
@@ -33,7 +48,7 @@ export async function fetchSchedule(scheduleId: Schedule["id"]) {
     throw new NotFoundException("予定が見つかりませんでした");
   }
 
-  return schedule;
+  return convertNullsToUndefined(schedule);
 }
 
 export type FetchScheduleReturnType = Awaited<ReturnType<typeof fetchSchedule>>;

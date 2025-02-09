@@ -11,8 +11,10 @@ import { useRouter } from "next/navigation";
 import { type ReactNode, useRef } from "react";
 
 export default function ScheduleEventFormModal({
+  type,
   children,
 }: {
+  type: "add" | "edit";
   children: ReactNode;
 }) {
   const { back } = useRouter();
@@ -35,7 +37,9 @@ export default function ScheduleEventFormModal({
           className="max-w-4xl max-h-[90vh] overflow-auto"
         >
           <DialogHeader>
-            <DialogTitle>予定の新規登録</DialogTitle>
+            <DialogTitle>
+              {type === "add" ? "予定の登録" : "予定の編集"}
+            </DialogTitle>
             <DialogDescription> </DialogDescription>
           </DialogHeader>
           {children}

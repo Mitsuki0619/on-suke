@@ -4,7 +4,15 @@ import { z, ZodError } from "zod";
 
 const dateSchema = (target: string) =>
   z.string({ required_error: `${target}は必須です` }).transform((str) => {
-    if (!str) return;
+    if (!str) {
+      throw new ZodError([
+        {
+          code: "custom",
+          message: "無効な日付形式です",
+          path: [],
+        },
+      ]);
+    }
     const date = new Date(str);
     if (Number.isNaN(date.getTime())) {
       throw new ZodError([
@@ -15,7 +23,6 @@ const dateSchema = (target: string) =>
         },
       ]);
     }
-
     return date.toISOString(); // ISO 8601 形式に変換
   });
 
@@ -38,7 +45,7 @@ const baseEventSchema = z.object({
     .optional(),
   tasks: z.array(
     z.object({
-      id: z.string().regex(/^\d+$/).transform(Number).optional(),
+      id: z.string().optional(),
       title: z
         .string({
           required_error: "タスクのタイトルは必須です",
@@ -60,7 +67,7 @@ const baseEventSchema = z.object({
   ),
   urls: z.array(
     z.object({
-      id: z.string().regex(/^\d+$/).transform(Number).optional(),
+      id: z.string().optional(),
       name: z
         .string({ required_error: "URLの名前は必須です" })
         .max(100, { message: "URLの名前は100文字以下で入力してください" }),

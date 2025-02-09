@@ -1,6 +1,10 @@
 "use client";
 
-import { createEventSchema, updateEventSchema } from "@/app/schedule/schemas";
+import {
+  type UpdateEventSchemaType,
+  createEventSchema,
+  updateEventSchema,
+} from "@/app/schedule/schemas";
 import {
   Accordion,
   AccordionContent,
@@ -13,7 +17,6 @@ import { FieldErrors } from "@/components/ui/field-error";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import RadioGroupBadge from "@/components/ui/radio-group-badge";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -21,6 +24,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { taskPriorityOptions } from "@/enums/taskPriority";
+import { taskStatusOptions } from "@/enums/taskStatus";
 import {
   type SubmissionResult,
   getInputProps,
@@ -28,33 +34,37 @@ import {
   useForm,
 } from "@conform-to/react";
 import { parseWithZod } from "@conform-to/zod";
-import { Plus, PlusCircle, TrashIcon } from "lucide-react";
+import type { Schedule } from "@prisma/client";
+import { CheckCircle, Plus, PlusCircle, TrashIcon } from "lucide-react";
 import { useActionState } from "react";
-import { taskStatusOptions } from "@/enums/taskStatus";
-import { taskPriorityOptions } from "@/enums/taskPriority";
 
 export function ScheduleEventFormClient({
-  serverAction,
+  eventMutateAction,
   categories,
-  type,
+  initialValues,
 }: {
-  serverAction: (
+  eventMutateAction: (
     _: unknown,
     formData: FormData,
   ) => Promise<SubmissionResult<string[]>>;
-  type: "edit" | "add";
+  scheduleId?: Schedule["id"];
+  initialValues?: UpdateEventSchemaType;
   categories: {
     id: number;
     name: string;
     color: string;
   }[];
 }) {
-  const [lastResult, action] = useActionState(serverAction, undefined);
+  const [lastResult, action] = useActionState(eventMutateAction, undefined);
   const [form, fields] = useForm({
     lastResult,
+    defaultValue: initialValues,
     onValidate: ({ formData }) => {
       return parseWithZod(formData, {
-        schema: type === "edit" ? updateEventSchema : createEventSchema,
+        schema:
+          initialValues?.scheduleId != null
+            ? updateEventSchema
+            : createEventSchema,
       });
     },
     shouldRevalidate: "onInput",
@@ -79,6 +89,13 @@ export function ScheduleEventFormClient({
       action={action}
       className="space-y-6"
     >
+      {initialValues?.scheduleId != null && (
+        <input
+          type="hidden"
+          value={initialValues?.scheduleId}
+          name="scheduleId"
+        />
+      )}
       <div className="space-y-4">
         {/* タイトル入力 */}
         <div className="space-y-2">
@@ -261,7 +278,7 @@ export function ScheduleEventFormClient({
                     );
                   })}
                   <Button
-                    variant="secondary"
+                    variant="link"
                     className="w-3/4 mt-2"
                     {...form.insert.getButtonProps({
                       name: fields.tasks.name,
@@ -328,7 +345,7 @@ export function ScheduleEventFormClient({
                       );
                     })}
                     <Button
-                      variant="secondary"
+                      variant="link"
                       className="w-3/4 mt-2"
                       {...form.insert.getButtonProps({
                         name: fields.urls.name,
@@ -349,8 +366,17 @@ export function ScheduleEventFormClient({
       {/* 登録 */}
       <div className="flex justify-end">
         <Button type="submit">
-          <PlusCircle />
-          新規登録
+          {initialValues != null ? (
+            <>
+              <CheckCircle />
+              保存
+            </>
+          ) : (
+            <>
+              <PlusCircle />
+              登録
+            </>
+          )}
         </Button>
       </div>
     </form>

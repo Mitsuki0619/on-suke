@@ -15,4 +15,7 @@ export const taskStatusOptions = Object.entries(TaskStatusLabels).map(
   }),
 );
 
-export const TaskStatusEnum = Object.keys(TaskStatus) as [TaskStatus, ...TaskStatus[]];
+export const TaskStatusEnum = Object.keys(TaskStatus) as [
+  TaskStatus,
+  ...TaskStatus[],
+];
