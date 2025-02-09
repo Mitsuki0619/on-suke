@@ -69,6 +69,7 @@ export function ScheduleCalendar({
         style: {
           backgroundColor: `#${props.color}`,
           border: "none",
+          overflow: "visible",
         },
         className: "w-full h-full relative",
       })}

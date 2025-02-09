@@ -127,17 +127,18 @@ model Category {
 }
 
 model Task {
-  id          Int        @id @default(autoincrement())
+  id          Int          @id @default(autoincrement())
   title       String
   description String?
-  status      TaskStatus @default(TODO)
-  scheduleId  String     @map("schedule_id")
-  created_at  DateTime   @default(now())
-  updated_at  DateTime   @updatedAt
-  schedule    Schedule   @relation("ScheduleTasks", fields: [scheduleId], references: [id])
-  timelines   Timeline[] @relation("TaskTimeline")
-  userId      String     @map("user_id")
-  user        User       @relation("UserTasks", fields: [userId], references: [id])
+  status      TaskStatus   @default(TODO)
+  priority    TaskPriority @default(MEDIUM)
+  scheduleId  String       @map("schedule_id")
+  created_at  DateTime     @default(now())
+  updated_at  DateTime     @updatedAt
+  schedule    Schedule     @relation("ScheduleTasks", fields: [scheduleId], references: [id])
+  timelines   Timeline[]   @relation("TaskTimeline")
+  userId      String       @map("user_id")
+  user        User         @relation("UserTasks", fields: [userId], references: [id])
 
   @@map("tasks")
 }
@@ -152,7 +153,7 @@ enum TaskStatus {
 
 enum TaskPriority {
   HIGH
-  MIDDLE
+  MEDIUM
   LOW
   URGENT
 }

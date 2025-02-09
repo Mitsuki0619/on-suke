@@ -28,6 +28,8 @@ export async function fetchSchedules(params: { from: string; to: string }) {
         endTime: true,
         tasks: {
           select: {
+            title: true,
+            description: true,
             status: true,
           },
         },

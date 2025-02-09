@@ -1,7 +1,6 @@
 "use client";
 
-import { addEvent } from "@/app/schedule/actions";
-import { eventSchema } from "@/app/schedule/schemas";
+import { createEventSchema, updateEventSchema } from "@/app/schedule/schemas";
 import {
   Accordion,
   AccordionContent,
@@ -15,25 +14,48 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import RadioGroupBadge from "@/components/ui/radio-group-badge";
 import { Textarea } from "@/components/ui/textarea";
-import { getInputProps, useForm } from "@conform-to/react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  type SubmissionResult,
+  getInputProps,
+  getSelectProps,
+  useForm,
+} from "@conform-to/react";
 import { parseWithZod } from "@conform-to/zod";
 import { Plus, PlusCircle, TrashIcon } from "lucide-react";
 import { useActionState } from "react";
+import { taskStatusOptions } from "@/enums/taskStatus";
+import { taskPriorityOptions } from "@/enums/taskPriority";
 
 export function ScheduleEventFormClient({
+  serverAction,
   categories,
+  type,
 }: {
+  serverAction: (
+    _: unknown,
+    formData: FormData,
+  ) => Promise<SubmissionResult<string[]>>;
+  type: "edit" | "add";
   categories: {
     id: number;
     name: string;
     color: string;
   }[];
 }) {
-  const [lastResult, action] = useActionState(addEvent, undefined);
+  const [lastResult, action] = useActionState(serverAction, undefined);
   const [form, fields] = useForm({
     lastResult,
     onValidate: ({ formData }) => {
-      return parseWithZod(formData, { schema: eventSchema });
+      return parseWithZod(formData, {
+        schema: type === "edit" ? updateEventSchema : createEventSchema,
+      });
     },
     shouldRevalidate: "onInput",
   });
@@ -135,21 +157,87 @@ export function ScheduleEventFormClient({
                 <Label>タスク</Label>
                 <div className="space-y-4 text-center">
                   {tasks.map((task, index) => {
-                    const { title, description } = task.getFieldset();
+                    const { title, description, status, priority } =
+                      task.getFieldset();
+                    const { key: _1, ...statusProps } = getSelectProps(status);
+                    const { key: _2, ...priorityProps } =
+                      getSelectProps(priority);
                     return (
                       <Card
                         key={task.key}
-                        className="p-4 border rounded-lg shadow-sm grid grid-cols-2 gap-y-3"
+                        className="p-4 border rounded-lg shadow-sm grid grid-cols-3 gap-y-3"
                       >
                         <div>
                           <Input
                             {...getInputProps(title, { type: "text" })}
-                            key={title.key}
                             placeholder="タスクタイトル"
+                            key={title.key}
                           />
                           <FieldErrors errors={title.allErrors} />
                         </div>
-                        <div className="text-end">
+                        <div className="flex justify-end gap-2 col-span-2">
+                          <div className="col-span-2 flex gap-4">
+                            <div className="flex items-center gap-3">
+                              <Label className="text-xs">ステータス</Label>
+                              <Select
+                                {...statusProps}
+                                defaultValue={statusProps.defaultValue?.toString()}
+                                onValueChange={(value) => {
+                                  form.update({
+                                    name: status.name,
+                                    value,
+                                  });
+                                }}
+                              >
+                                <SelectTrigger className="w-[120px] ">
+                                  <SelectValue placeholder="ステータスを選択" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {taskStatusOptions.map((option) => (
+                                    <SelectItem
+                                      key={option.value}
+                                      value={option.value}
+                                    >
+                                      {option.label}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                              <FieldErrors
+                                errors={task.getFieldset().status.allErrors}
+                              />
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <Label>優先度</Label>
+                              <Select
+                                {...priorityProps}
+                                defaultValue={priorityProps.defaultValue?.toString()}
+                                onValueChange={(value) => {
+                                  form.update({
+                                    name: priority.name,
+                                    value,
+                                  });
+                                }}
+                              >
+                                <SelectTrigger className="w-[120px] ">
+                                  <SelectValue placeholder="優先度を選択" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {taskPriorityOptions.map((option) => (
+                                    <SelectItem
+                                      key={option.value}
+                                      value={option.value}
+                                    >
+                                      {option.label}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                              <FieldErrors
+                                errors={task.getFieldset().priority.allErrors}
+                              />
+                            </div>
+                          </div>
                           <Button
                             variant="secondary"
                             {...form.remove.getButtonProps({
@@ -160,7 +248,7 @@ export function ScheduleEventFormClient({
                             <TrashIcon className="h-4 w-4" />
                           </Button>
                         </div>
-                        <div className="col-span-2">
+                        <div className="col-span-3">
                           <Textarea
                             {...getInputProps(description, { type: "text" })}
                             key={description.key}
@@ -177,7 +265,12 @@ export function ScheduleEventFormClient({
                     className="w-3/4 mt-2"
                     {...form.insert.getButtonProps({
                       name: fields.tasks.name,
-                      defaultValue: { title: "", description: "" },
+                      defaultValue: {
+                        title: "",
+                        description: "",
+                        status: "TODO",
+                        priority: "MEDIUM",
+                      },
                     })}
                   >
                     <Plus />

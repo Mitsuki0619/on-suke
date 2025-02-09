@@ -2,7 +2,7 @@
 CREATE TYPE "TaskStatus" AS ENUM ('TODO', 'WIP', 'DONE', 'PENDING', 'ABOLISHED');
 
 -- CreateEnum
-CREATE TYPE "TaskPriority" AS ENUM ('HIGH', 'MIDDLE', 'LOW', 'URGENT');
+CREATE TYPE "TaskPriority" AS ENUM ('HIGH', 'MEDIUM', 'LOW', 'URGENT');
 
 -- CreateTable
 CREATE TABLE "accounts" (
@@ -115,6 +115,7 @@ CREATE TABLE "tasks" (
     "title" TEXT NOT NULL,
     "description" TEXT,
     "status" "TaskStatus" NOT NULL DEFAULT 'TODO',
+    "priority" "TaskPriority" NOT NULL DEFAULT 'MEDIUM',
     "schedule_id" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
