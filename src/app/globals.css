@@ -87,3 +87,20 @@
 .rbc-today.rbc-day-slot {
   background-color: hsl(24.6 95% 94.1%);
 }
+
+.rbc-today .rbc-time-slot {
+  background-color: hsl(24.6 95% 94.1%);
+}
+
+.rbc-time-gutter,
+.rbc-time-header-gutter,
+.rbc-time-gutter .rbc-time-slot {
+  background-color: rgb(255, 223, 186);
+}
+.rbc-time-slot {
+  background-color: white;
+}
+
+.rbc-month-row {
+  overflow: visible !important;
+}

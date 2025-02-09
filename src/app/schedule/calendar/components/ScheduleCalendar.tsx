@@ -1,26 +1,65 @@
 "use client";
 
-import "react-big-calendar/lib/css/react-big-calendar.css";
-import { Calendar, type View, Views, type Event } from "react-big-calendar";
-import { localizer } from "@/lib/date-fns";
 import { SchedulerToolbar } from "@/app/schedule/calendar/components/ScheduleToolbar";
-import { useState, useCallback } from "react";
+import type { FetchSchedulesReturnType } from "@/app/schedule/calendar/loaders";
+import { localizer } from "@/lib/date-fns";
+import { format } from "date-fns";
+import Link from "next/link";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { Calendar, type View } from "react-big-calendar";
+import "react-big-calendar/lib/css/react-big-calendar.css";
 
-export function ScheduleCalendar({ events }: { events: Event[] }) {
-  const [view, setView] = useState<View>(Views.MONTH);
+export function ScheduleCalendar({
+  schedules,
+  date,
+  view,
+}: {
+  schedules: FetchSchedulesReturnType;
+  date: string | undefined;
+  view: "month" | "week" | "day" | undefined;
+}) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
+  const validDate = date ? new Date(date) : new Date();
+  const validView = view ?? "month";
+  const events = schedules?.map((s) => {
+    return {
+      id: s.id,
+      title: s.title,
+      start: s.startTime ? new Date(s.startTime) : undefined,
+      end: s.endTime ? new Date(s.endTime) : undefined,
+      existTasks: s.tasks.filter(
+        (t) => t.status === "TODO" || t.status === "WIP",
+      ).length,
+      color: s.category?.color ?? "606060",
+    };
+  });
+
+  const createQueryString = (name: string, value: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set(name, value);
+    return params.toString();
+  };
   const onView = (selectedView: View) => {
-    setView(selectedView);
+    router.push(`${pathname}?${createQueryString("view", selectedView)}`);
   };
 
-  const [date, setDate] = useState(new Date());
-  const onNavigate = useCallback((newDate: Date) => {
-    return setDate(newDate);
-  }, []);
+  const onNavigate = (newDate: Date) => {
+    router.push(
+      `${pathname}?${createQueryString("date", format(newDate, "yyyy-MM-dd"))}`,
+    );
+  };
+  const onSelectEvent = (event: NonNullable<typeof events>[number]) => {
+    router.push(
+      `/schedule/${event.id}/edit?date=${date || ""}&view=${view || ""}`,
+    );
+  };
   return (
     <Calendar
-      date={date}
-      view={view}
+      date={validDate}
+      view={validView}
       localizer={localizer}
       events={events}
       startAccessor="start"
@@ -29,7 +68,44 @@ export function ScheduleCalendar({ events }: { events: Event[] }) {
       culture={"ja"}
       onNavigate={onNavigate}
       onView={onView}
-      components={{ toolbar: (props) => <SchedulerToolbar {...props} /> }}
+      onSelectEvent={onSelectEvent}
+      eventPropGetter={(props) => ({
+        style: {
+          backgroundColor: `#${props.color}`,
+          border: "none",
+          overflow: "visible",
+        },
+        className: "w-full h-full relative",
+      })}
+      components={{
+        toolbar: (props) => (
+          <SchedulerToolbar
+            label={props.label}
+            onNavigate={props.onNavigate}
+            onView={props.onView}
+          />
+        ),
+        event: (props) => (
+          <div>
+            {!props.continuesPrior && props.event.existTasks > 0 && (
+              <span className="absolute -top-2 -left-4 flex h-5 w-5 items-center justify-center z-10 rounded-full bg-red-500 text-white text-xs font-bold">
+                {props.event.existTasks}
+              </span>
+            )}
+            {props.title}
+          </div>
+        ),
+        showMore: (props) => {
+          return (
+            <Link
+              href={`${pathname}?date=${format(props.slotDate, "yyyy-MM-dd")}&view=day`}
+              className="text-xs text-primary ml-2"
+            >
+              +{props.count}つの予定
+            </Link>
+          );
+        },
+      }}
     />
   );
 }

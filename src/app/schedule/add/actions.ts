@@ -1,15 +1,17 @@
 "use server";
 
-import { eventSchema } from "@/app/schedule/schemas";
+import { createEventSchema } from "@/app/schedule/schemas";
 import { auth } from "@/auth";
 import prisma from "@/lib/prisma";
+import { flash } from "@/utils/flash";
 import { parseWithZod } from "@conform-to/zod";
 import { AuthError } from "next-auth";
 import { redirect } from "next/navigation";
+import "server-only";
 
-export async function addEvent(prevState: unknown, formData: FormData) {
+export async function addEvent(_: unknown, formData: FormData) {
   const submission = parseWithZod(formData, {
-    schema: eventSchema,
+    schema: createEventSchema,
   });
 
   if (submission.status !== "success") {
@@ -22,7 +24,7 @@ export async function addEvent(prevState: unknown, formData: FormData) {
     startTime,
     endTime,
     urls,
-    categories,
+    categoryId,
     note,
     tasks,
   } = submission.value;
@@ -33,10 +35,11 @@ export async function addEvent(prevState: unknown, formData: FormData) {
       throw new AuthError();
     }
     await prisma.$transaction(async (prisma) => {
-      return await prisma.schedule.create({
+      await prisma.schedule.create({
         data: {
           title,
           description,
+          categoryId,
           startTime,
           endTime,
           userId,
@@ -46,7 +49,8 @@ export async function addEvent(prevState: unknown, formData: FormData) {
               title: task.title,
               userId,
               description: task.description,
-              status: "TO_DO",
+              status: task.status,
+              priority: task.priority,
             })),
           },
           urls: {
@@ -55,17 +59,11 @@ export async function addEvent(prevState: unknown, formData: FormData) {
               name: url.name,
             })),
           },
-          categoryRelations: {
-            create: categories.map((categoryId) => ({
-              category: {
-                connect: { id: categoryId },
-              },
-            })),
-          },
         },
       });
     });
-    return submission.reply();
+    await flash("予定が追加されました！");
+    redirect("/schedule/calendar");
   } catch (e) {
     if (e instanceof AuthError) {
       return redirect("/auth/sign-in");
