@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import type React from "react";
 import "./globals.css";
+import "@/styles/calendar-custom.css";
+import "react-big-calendar/lib/css/react-big-calendar.css";
 import { FlashMessage } from "@/components/functional/FlashMessage/flash-message.server";
 import { Toaster } from "@/components/ui/toaster";
 import { Providers } from "./providers";

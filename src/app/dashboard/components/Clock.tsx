@@ -4,12 +4,17 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useEffect, useState } from "react";
 
 export function Clock() {
-  const [time, setTime] = useState(new Date());
+  const [time, setTime] = useState<Date | null>(null);
 
   useEffect(() => {
+    setTime(new Date());
     const timer = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
+
+  if (!time) {
+    return null; // Render nothing on the server
+  }
 
   const days = ["日", "月", "火", "水", "木", "金", "土"];
 
@@ -24,8 +29,7 @@ export function Clock() {
         {/* アナログ時計 */}
         <div className="relative w-44 h-44">
           {/* 時計の外枠 */}
-          {/* biome-ignore lint/style/useSelfClosingElements: <explanation> */}
-          <div className="absolute inset-0 rounded-full border-4 border-orange-300"></div>
+          <div className="absolute inset-0 rounded-full border-4 border-orange-300" />
 
           {/* 時間のマーカー */}
           {[...Array(12)].map((_, i) => (
@@ -43,7 +47,6 @@ export function Clock() {
           ))}
 
           {/* 時針 */}
-          {/* biome-ignore lint/style/useSelfClosingElements: <explanation> */}
           <div
             className="absolute top-1/2 left-1/2 w-1.5 bg-orange-400 rounded-full"
             style={{
@@ -53,10 +56,9 @@ export function Clock() {
                 (time.getHours() % 12) * 30 + time.getMinutes() * 0.5
               }deg)`,
             }}
-          ></div>
+          />
 
           {/* 分針 */}
-          {/* biome-ignore lint/style/useSelfClosingElements: <explanation> */}
           <div
             className="absolute top-1/2 left-1/2 w-1 bg-orange-400 rounded-full"
             style={{
@@ -66,10 +68,9 @@ export function Clock() {
                 time.getMinutes() * 6
               }deg)`,
             }}
-          ></div>
+          />
 
           {/* 秒針 */}
-          {/* biome-ignore lint/style/useSelfClosingElements: <explanation> */}
           <div
             className="absolute top-1/2 left-1/2 w-0.5 bg-red-400 rounded-full"
             style={{
@@ -79,11 +80,10 @@ export function Clock() {
                 time.getSeconds() * 6
               }deg)`,
             }}
-          ></div>
+          />
 
           {/* 時計の中心点 */}
-          {/* biome-ignore lint/style/useSelfClosingElements: <explanation> */}
-          <div className="absolute top-1/2 left-1/2 w-3 h-3 bg-orange-400 rounded-full transform -translate-x-1/2 -translate-y-1/2 z-10"></div>
+          <div className="absolute top-1/2 left-1/2 w-3 h-3 bg-orange-400 rounded-full transform -translate-x-1/2 -translate-y-1/2 z-10" />
         </div>
 
         <div className="space-y-6">

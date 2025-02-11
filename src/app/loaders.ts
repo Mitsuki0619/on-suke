@@ -7,6 +7,8 @@ import { AuthError } from "next-auth";
 import { redirect } from "next/navigation";
 import "server-only";
 
+export async function fetchTasks() {}
+
 export async function fetchSchedules(params: { from: string; to: string }) {
   try {
     const session = await auth();
