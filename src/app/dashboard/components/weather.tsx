@@ -1,59 +1,29 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Sun, Cloud, CloudRain, CloudSnow, CloudLightning } from "lucide-react";
-
-const weatherIcons = {
-  Sun: Sun,
-  Cloud: Cloud,
-  CloudRain: CloudRain,
-  CloudSnow: CloudSnow,
-  CloudLightning: CloudLightning,
-};
-
-const weatherData = [
-  { day: "日", icon: "Sun", temp: 26 },
-  { day: "月", icon: "Cloud", temp: 25 },
-  { day: "火", icon: "CloudRain", temp: 22 },
-  { day: "水", icon: "CloudLightning", temp: 20 },
-  { day: "木", icon: "Sun", temp: 24 },
-  { day: "金", icon: "CloudSnow", temp: 18 },
-  { day: "土", icon: "Cloud", temp: 23 },
-];
-
-const getWeatherColor = (temp: number) => {
-  if (temp >= 25) return "text-theme-orange-600";
-  if (temp >= 20) return "text-theme-orange-500";
-  if (temp >= 15) return "text-theme-orange-400";
-  return "text-blue-400";
-};
 
 export function Weather() {
   return (
-    <Card className="bg-white/80 backdrop-blur-md shadow-xl hover:shadow-2xl transition-shadow duration-300">
-      <CardHeader>
-        <CardTitle className="text-2xl text-theme-orange-600">
+    <Card className="overflow-hidden bg-gradient-to-br from-orange-50 to-yellow-100 shadow-2xl">
+      <CardHeader className="bg-gradient-to-r from-orange-400 to-yellow-300 py-2">
+        <CardTitle className="text-2xl font-bold text-white">
           今週の天気
         </CardTitle>
       </CardHeader>
-      <CardContent>
-        <div className="grid grid-cols-7 gap-4">
-          {weatherData.map((day) => {
-            const Icon = weatherIcons[day.icon as keyof typeof weatherIcons];
-            return (
-              <div key={day.day} className="text-center">
-                <div className="font-bold text-lg">{day.day}</div>
-                <div className="my-2">
-                  <Icon className="w-10 h-10 mx-auto text-theme-orange-500" />
-                </div>
-                <div
-                  className={`text-lg font-semibold ${getWeatherColor(
-                    day.temp,
-                  )}`}
-                >
-                  {day.temp}°C
-                </div>
-              </div>
-            );
-          })}
+      <CardContent className="p-6">
+        <div className="flex flex-col sm:flex-row gap-4">
+          <div className="w-full sm:w-1/3 bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300">
+            <iframe
+              src="https://www.sunny-spot.net/get_fcst/parts_fcst.php?ID=6200&CL=ORANGE"
+              title="today's weather"
+              className="w-full h-64 sm:h-80 border-none"
+            />
+          </div>
+          <div className="w-full sm:w-2/3 bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300">
+            <iframe
+              src="https://www.sunny-spot.net/get_fcst/parts_week.php?ID=276280&CL=ORANGE"
+              title="week's weather"
+              className="w-full h-64 sm:h-80 border-none"
+            />
+          </div>
         </div>
       </CardContent>
     </Card>

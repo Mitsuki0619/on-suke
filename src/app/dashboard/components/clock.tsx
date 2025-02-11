@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useEffect, useState } from "react";
 
 export function Clock() {
   const [time, setTime] = useState(new Date());
@@ -11,16 +11,93 @@ export function Clock() {
     return () => clearInterval(timer);
   }, []);
 
+  const days = ["日", "月", "火", "水", "木", "金", "土"];
+
   return (
-    <Card className="h-full flex flex-col bg-white/80 backdrop-blur-md shadow-xl hover:shadow-2xl transition-shadow duration-300">
-      <CardHeader>
-        <CardTitle className="text-2xl text-theme-orange-600">
-          現在の時刻
+    <Card className="h-full overflow-hidden bg-gradient-to-br from-orange-50 to-yellow-100 shadow-2xl">
+      <CardHeader className="bg-gradient-to-r from-orange-400 to-yellow-300 py-2">
+        <CardTitle className="text-2xl font-bold text-white">
+          現在時刻
         </CardTitle>
       </CardHeader>
-      <CardContent className="flex-grow flex items-center justify-center">
-        <div className="text-5xl font-bold text-center text-theme-orange-500 animate-pulse">
-          {time.toLocaleTimeString()}
+      <CardContent className="flex-1 flex flex-col items-center justify-between p-8">
+        {/* アナログ時計 */}
+        <div className="relative w-44 h-44">
+          {/* 時計の外枠 */}
+          {/* biome-ignore lint/style/useSelfClosingElements: <explanation> */}
+          <div className="absolute inset-0 rounded-full border-4 border-orange-300"></div>
+
+          {/* 時間のマーカー */}
+          {[...Array(12)].map((_, i) => (
+            <div
+              // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+              key={i}
+              className="absolute w-1 h-4 bg-orange-300"
+              style={{
+                left: "50%",
+                top: "0",
+                transformOrigin: "50% 88px",
+                transform: `translateX(-50%) rotate(${i * 30}deg)`,
+              }}
+            />
+          ))}
+
+          {/* 時針 */}
+          {/* biome-ignore lint/style/useSelfClosingElements: <explanation> */}
+          <div
+            className="absolute top-1/2 left-1/2 w-1.5 bg-orange-400 rounded-full"
+            style={{
+              height: "30%",
+              transformOrigin: "50% 100%",
+              transform: `translate(-50%, -100%) rotate(${
+                (time.getHours() % 12) * 30 + time.getMinutes() * 0.5
+              }deg)`,
+            }}
+          ></div>
+
+          {/* 分針 */}
+          {/* biome-ignore lint/style/useSelfClosingElements: <explanation> */}
+          <div
+            className="absolute top-1/2 left-1/2 w-1 bg-orange-400 rounded-full"
+            style={{
+              height: "40%",
+              transformOrigin: "50% 100%",
+              transform: `translate(-50%, -100%) rotate(${
+                time.getMinutes() * 6
+              }deg)`,
+            }}
+          ></div>
+
+          {/* 秒針 */}
+          {/* biome-ignore lint/style/useSelfClosingElements: <explanation> */}
+          <div
+            className="absolute top-1/2 left-1/2 w-0.5 bg-red-400 rounded-full"
+            style={{
+              height: "45%",
+              transformOrigin: "50% 100%",
+              transform: `translate(-50%, -100%) rotate(${
+                time.getSeconds() * 6
+              }deg)`,
+            }}
+          ></div>
+
+          {/* 時計の中心点 */}
+          {/* biome-ignore lint/style/useSelfClosingElements: <explanation> */}
+          <div className="absolute top-1/2 left-1/2 w-3 h-3 bg-orange-400 rounded-full transform -translate-x-1/2 -translate-y-1/2 z-10"></div>
+        </div>
+
+        <div className="space-y-6">
+          {/* デジタル時計 */}
+          <div className="text-5xl font-bold text-orange-500">
+            {time.toLocaleTimeString("ja-JP", { hour12: false })}
+          </div>
+
+          {/* 日付 */}
+          <div className="text-2xl font-medium text-orange-400">
+            {`${time.getFullYear()}年${
+              time.getMonth() + 1
+            }月${time.getDate()}日 (${days[time.getDay()]})`}
+          </div>
         </div>
       </CardContent>
     </Card>
