@@ -2,7 +2,7 @@ import { Sidebar } from "@/components/ui/sidebar";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import type React from "react";
-import "./globals.css";
+import "@/styles/globals.css";
 import "@/styles/calendar-custom.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { FlashMessage } from "@/components/functional/FlashMessage/flash-message.server";
