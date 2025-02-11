@@ -65,42 +65,130 @@
   font-family: var(--font-noto-sans-jp);
 }
 
-/* react-big-calendar */
+/* react-big-calendar custom styles */
+.rbc-calendar {
+  font-family: "Noto Sans JP", sans-serif;
+  border-radius: 12px;
+  overflow: visible;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
 .rbc-day-bg {
   background-color: white;
+  transition: background-color 0.3s ease;
+}
+
+.rbc-day-bg:hover {
+  background-color: rgba(255, 167, 38, 0.1);
+}
+
+.rbc-date-cell {
+  padding: 8px;
+  font-weight: bold;
 }
 
 .rbc-date-cell:last-child {
-  color: blue;
+  color: #3f51b5; /* インディゴ */
 }
 
 .rbc-date-cell:first-child {
-  color: red;
+  color: #e91e63; /* ピンク */
 }
 
 .rbc-header,
 .rbc-header.rbc-today {
-  background-color: rgb(255, 223, 186);
+  background-color: #ff9800; /* オレンジ */
+  color: white;
+  padding: 10px;
+  font-weight: bold;
+  text-transform: uppercase;
 }
 
 .rbc-today.rbc-day-bg,
 .rbc-today.rbc-day-slot {
-  background-color: hsl(24.6 95% 94.1%);
+  background-color: rgba(255, 167, 38, 0.2);
+  border: 2px solid #ff9800;
 }
 
 .rbc-today .rbc-time-slot {
-  background-color: hsl(24.6 95% 94.1%);
+  background-color: rgba(255, 167, 38, 0.1);
 }
 
 .rbc-time-gutter,
 .rbc-time-header-gutter,
 .rbc-time-gutter .rbc-time-slot {
-  background-color: rgb(255, 223, 186);
+  background-color: #ffcc80; /* 薄いオレンジ */
+  color: #333;
+  font-weight: bold;
 }
+
 .rbc-time-slot {
   background-color: white;
+  border-top: 1px dashed #e0e0e0;
 }
 
 .rbc-month-row {
   overflow: visible !important;
+}
+
+.rbc-event {
+  background-color: #ff5722; /* ディープオレンジ */
+  border: none;
+  border-radius: 4px;
+  color: white;
+  padding: 2px 5px;
+  font-size: 0.9em;
+  transition: all 0.3s ease;
+}
+
+.rbc-event:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.rbc-toolbar {
+  margin-bottom: 20px;
+}
+
+.rbc-toolbar button {
+  background-color: #ff9800;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+}
+
+.rbc-toolbar button:hover {
+  background-color: #f57c00;
+  transform: translateY(-2px);
+}
+
+.rbc-toolbar button.rbc-active {
+  background-color: #e65100;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.rbc-month-view,
+.rbc-time-view {
+  border: none;
+  background-color: white;
+}
+
+.rbc-day-slot .rbc-event {
+  border-left: 4px solid #e65100;
+}
+
+.rbc-agenda-view table {
+  border: 1px solid #ff9800;
+}
+
+.rbc-agenda-view table thead {
+  background-color: #ff9800;
+  color: white;
+}
+
+.rbc-agenda-view table .rbc-agenda-time-cell {
+  padding: 5px 10px;
+  color: #ff5722;
 }
