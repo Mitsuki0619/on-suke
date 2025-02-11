@@ -1,47 +1,52 @@
-import { auth } from "@/auth";
+"use client";
+
+import { usePathname } from "next/navigation";
 import { AccountPopover } from "@/components/ui/account-popover";
 import { Calendar, LayoutDashboard, ListTodo, Settings } from "lucide-react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
-export async function Sidebar() {
-  const session = await auth();
+const navItems = [
+  { href: "/", icon: LayoutDashboard, label: "ダッシュボード" },
+  { href: "/schedule/calendar", icon: Calendar, label: "カレンダー" },
+  { href: "/tasks", icon: ListTodo, label: "タスク一覧" },
+  { href: "/settings", icon: Settings, label: "設定" },
+];
+
+export function Sidebar() {
+  const session = useSession();
+
+  const pathname = usePathname();
 
   return (
-    <div className="w-64 bg-primary text-white h-full p-4 flex flex-col">
-      <div className="text-2xl font-bold mb-8">on-suke</div>
-      {session?.user && (
+    <div className="w-64 bg-gradient-to-b from-primary to-primary-dark text-white h-full p-4 flex flex-col">
+      <div className="text-3xl font-bold mb-8 text-center text-yellow-300 animate-pulse">
+        on-suke
+      </div>
+      {session.data?.user && (
         <>
           <nav className="space-y-2 flex-grow">
-            <Link
-              href="/"
-              className="flex items-center space-x-2 p-2 rounded hover:bg-sidebar-hover transition-colors"
-            >
-              <LayoutDashboard className="h-5 w-5" />
-              <span>ダッシュボード</span>
-            </Link>
-            <Link
-              href="/schedule/calendar"
-              className="flex items-center space-x-2 p-2 rounded hover:bg-sidebar-hover transition-colors"
-            >
-              <Calendar className="h-5 w-5" />
-              <span>カレンダー</span>
-            </Link>
-            <Link
-              href="/tasks"
-              className="flex items-center space-x-2 p-2 rounded hover:bg-sidebar-hover transition-colors"
-            >
-              <ListTodo className="h-5 w-5" />
-              <span>タスク一覧</span>
-            </Link>
-            <Link
-              href="/settings"
-              className="flex items-center space-x-2 p-2 rounded hover:bg-sidebar-hover transition-colors"
-            >
-              <Settings className="h-5 w-5" />
-              <span>設定</span>
-            </Link>
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`flex items-center space-x-2 p-3 rounded-lg transition-all duration-300 ease-in-out
+                  ${
+                    pathname === item.href
+                      ? "bg-white text-primary font-bold shadow-lg transform scale-105"
+                      : "hover:bg-primary-light hover:text-yellow-300 hover:translate-x-2"
+                  }`}
+              >
+                <item.icon
+                  className={`h-6 w-6 ${
+                    pathname === item.href ? "animate-bounce" : ""
+                  }`}
+                />
+                <span>{item.label}</span>
+              </Link>
+            ))}
           </nav>
-          {session.user && <AccountPopover user={session.user} />}
+          {session.data.user && <AccountPopover user={session.data.user} />}
         </>
       )}
     </div>
