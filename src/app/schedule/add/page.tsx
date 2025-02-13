@@ -5,7 +5,7 @@ export default function AddSchedulePage() {
   return (
     <div className="space-y-6">
       <h1 className="text-3xl font-bold">予定の登録</h1>
-      <ScheduleEventForm eventMutateAction={addEvent} />
+      <ScheduleEventForm type="add" eventMutateAction={addEvent} />
     </div>
   );
 }

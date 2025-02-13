@@ -45,25 +45,29 @@ import type { z } from "zod";
 type FormError = string[];
 
 type TaskItemProps = {
+  tasks: FieldMetadata<z.infer<typeof createEventSchema>["tasks"]>;
   task: FieldMetadata<z.infer<typeof createEventSchema>["tasks"][number]>;
   form: FormMetadata<UpdateEventSchemaType & CreateEventSchemaType, FormError>;
   index: number;
 };
 
 type UrlItemProps = {
+  urls: FieldMetadata<z.infer<typeof createEventSchema>["urls"]>;
   urlItem: FieldMetadata<z.infer<typeof createEventSchema>["urls"][number]>;
   form: FormMetadata<UpdateEventSchemaType & CreateEventSchemaType, FormError>;
   index: number;
 };
 
 export function ScheduleEventFormClient({
+  type,
   eventMutateAction,
   categories,
   initialValues,
 }: {
+  type: "add" | "edit";
   eventMutateAction: (
     _: unknown,
-    formData: FormData,
+    formData: FormData
   ) => Promise<SubmissionResult<string[]>>;
   scheduleId?: Schedule["id"];
   initialValues?: UpdateEventSchemaType;
@@ -79,10 +83,7 @@ export function ScheduleEventFormClient({
     defaultValue: initialValues,
     onValidate: ({ formData }) => {
       return parseWithZod(formData, {
-        schema:
-          initialValues?.scheduleId != null
-            ? updateEventSchema
-            : createEventSchema,
+        schema: type === "edit" ? updateEventSchema : createEventSchema,
       });
     },
     shouldRevalidate: "onInput",
@@ -107,7 +108,7 @@ export function ScheduleEventFormClient({
       action={action}
       className="space-y-8 bg-white p-6 rounded-lg shadow-md"
     >
-      {initialValues?.scheduleId != null && (
+      {type === "edit" && (
         <input
           type="hidden"
           value={initialValues?.scheduleId}
@@ -227,6 +228,7 @@ export function ScheduleEventFormClient({
                   {tasks.map((task, index) => (
                     <TaskItem
                       key={task.key}
+                      tasks={fields.tasks}
                       task={task}
                       form={form}
                       index={index}
@@ -258,6 +260,7 @@ export function ScheduleEventFormClient({
                   {urls.map((urlItem, index) => (
                     <UrlItem
                       key={urlItem.key}
+                      urls={fields.urls}
                       urlItem={urlItem}
                       form={form}
                       index={index}
@@ -284,7 +287,7 @@ export function ScheduleEventFormClient({
       {/* 登録 */}
       <div className="flex justify-end">
         <Button type="submit" className="text-lg px-6 py-3">
-          {initialValues != null ? (
+          {type === "edit" ? (
             <>
               <CheckCircle className="mr-2" />
               保存
@@ -301,7 +304,7 @@ export function ScheduleEventFormClient({
   );
 }
 
-function TaskItem({ task, form, index }: TaskItemProps) {
+function TaskItem({ tasks, task, form, index }: TaskItemProps) {
   const { title, description, status, priority } = task.getFieldset();
   const { key: _1, ...statusProps } = getSelectProps(status);
   const { key: _2, ...priorityProps } = getSelectProps(priority);
@@ -321,7 +324,7 @@ function TaskItem({ task, form, index }: TaskItemProps) {
         <Button
           variant="outline"
           {...form.remove.getButtonProps({
-            name: task.name,
+            name: tasks.name,
             index: index,
           })}
         >
@@ -394,7 +397,7 @@ function TaskItem({ task, form, index }: TaskItemProps) {
   );
 }
 
-function UrlItem({ urlItem, form, index }: UrlItemProps) {
+function UrlItem({ urls, urlItem, form, index }: UrlItemProps) {
   const { name, url } = urlItem.getFieldset();
 
   return (
@@ -420,7 +423,7 @@ function UrlItem({ urlItem, form, index }: UrlItemProps) {
       <Button
         variant="outline"
         {...form.remove.getButtonProps({
-          name: urlItem.name,
+          name: urls.name,
           index: index,
         })}
       >

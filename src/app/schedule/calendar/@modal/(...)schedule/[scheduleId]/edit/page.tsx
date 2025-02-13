@@ -19,6 +19,7 @@ export default async function EditScheduleModal({
     <>
       <ScheduleEventFormModal type="edit">
         <ScheduleEventForm
+          type="edit"
           eventMutateAction={editEvent}
           initialValues={{
             scheduleId,
