@@ -2,6 +2,9 @@ import { TodaySchedule } from "@/app/dashboard/components/TodaysSchedules/Todays
 import { Weather } from "@/app/dashboard/components/Weather";
 import { Clock } from "@/app/dashboard/components/Clock";
 import { TaskList } from "@/app/dashboard/components/TaskList/TaskList.server";
+import { Suspense } from "react";
+import { TodayScheduleClient } from "@/app/dashboard/components/TodaysSchedules/TodaysSchedules.client";
+import { LoadingOverlay } from "@/components/ui/loading-overlay";
 
 export default function DashboardPage() {
   return (
@@ -9,16 +12,30 @@ export default function DashboardPage() {
       <h1 className="text-3xl font-bold">ダッシュボード</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div className="md:col-span-2">
-          <TodaySchedule />
+          <Suspense
+            fallback={
+              <LoadingOverlay isLoading message="Loading...">
+                <TodayScheduleClient todaysSchedules={[]} />
+              </LoadingOverlay>
+            }
+          >
+            <TodaySchedule />
+          </Suspense>
         </div>
         <div>
-          <TaskList />
+          <Suspense>
+            <TaskList />
+          </Suspense>
         </div>
         <div className="md:col-span-2">
-          <Weather />
+          <Suspense>
+            <Weather />
+          </Suspense>
         </div>
         <div>
-          <Clock />
+          <Suspense>
+            <Clock />
+          </Suspense>
         </div>
       </div>
     </div>

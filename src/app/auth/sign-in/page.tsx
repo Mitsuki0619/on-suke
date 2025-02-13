@@ -5,16 +5,21 @@ import { Icons } from "@/components/ui/icons";
 
 export default function SignInPage() {
   return (
-    <div className="flex items-center justify-center pt-72">
-      <Card className="w-[350px]">
-        <CardHeader>
-          <CardTitle className="text-md text-center">ログイン</CardTitle>
+    <div className="flex-1 flex items-center justify-center p-4">
+      <Card className="w-full max-w-[350px] shadow-lg border border-orange-200 dark:border-orange-700 bg-white/90 dark:bg-gray-800/90 backdrop-blur-md transition-all duration-300 hover:shadow-xl">
+        <CardHeader className="pb-4">
+          <CardTitle className="text-2xl font-bold text-center text-primary">
+            ログイン
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <form className="w-full" action={signInWithGoogle}>
-            <Button variant="outline" className="w-full mt-2">
-              <Icons.google className="w-5 h-5 mr-2" />
-              Signin with Google
+            <Button
+              variant="outline"
+              className="w-full py-6 text-lg font-semibold transition-colors hover:bg-primary hover:text-primary-foreground"
+            >
+              <Icons.google className="w-6 h-6 mr-2" />
+              Googleでログイン
             </Button>
           </form>
         </CardContent>

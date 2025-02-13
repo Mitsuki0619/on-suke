@@ -77,7 +77,10 @@ export function ScheduleEventFormClient({
     color: string;
   }[];
 }) {
-  const [lastResult, action] = useActionState(eventMutateAction, undefined);
+  const [lastResult, action, isPending] = useActionState(
+    eventMutateAction,
+    undefined,
+  );
   const [form, fields] = useForm({
     lastResult,
     defaultValue: initialValues,
@@ -286,7 +289,11 @@ export function ScheduleEventFormClient({
 
       {/* 登録 */}
       <div className="flex justify-end">
-        <Button type="submit" className="text-lg px-6 py-3">
+        <Button
+          type="submit"
+          className="text-lg px-6 py-3"
+          disabled={isPending}
+        >
           {type === "edit" ? (
             <>
               <CheckCircle className="mr-2" />
