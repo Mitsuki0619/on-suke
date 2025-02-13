@@ -15,7 +15,7 @@ const dateSchema = (target: string) =>
       },
       {
         message: "無効な日付形式です",
-      }
+      },
     )
     .transform((str) => {
       if (!str) {
@@ -71,7 +71,7 @@ const baseEventSchema = z.object({
       priority: z.enum(TaskPriorityEnum, {
         required_error: "タスクの優先度は必須です",
       }),
-    })
+    }),
   ),
   urls: z.array(
     z.object({
@@ -83,7 +83,7 @@ const baseEventSchema = z.object({
         .string({ required_error: "URLは必須です" })
         .url("有効なURLを入力してください")
         .max(200, { message: "URLは200文字以下で入力してください" }),
-    })
+    }),
   ),
 });
 
@@ -102,7 +102,7 @@ export const createEventSchema = createBaseEventSchema.refine(
   {
     message: "開始日時は終了日時より前でなければなりません",
     path: ["startTime"],
-  }
+  },
 );
 
 export const updateEventSchema = updateBaseEventSchema.refine(
@@ -110,7 +110,7 @@ export const updateEventSchema = updateBaseEventSchema.refine(
   {
     message: "開始日時は終了日時より前でなければなりません",
     path: ["startTime"],
-  }
+  },
 );
 
 export type CreateEventSchemaType = z.infer<typeof createBaseEventSchema>;
