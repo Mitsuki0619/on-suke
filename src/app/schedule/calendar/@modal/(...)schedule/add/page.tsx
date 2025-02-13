@@ -6,7 +6,7 @@ export default function AddScheduleModal() {
   return (
     <>
       <ScheduleEventFormModal type="add">
-        <ScheduleEventForm eventMutateAction={addEvent} />
+        <ScheduleEventForm type="add" eventMutateAction={addEvent} />
       </ScheduleEventFormModal>
     </>
   );

@@ -18,6 +18,7 @@ export default async function EditSchedulePage({
     <div className="space-y-6">
       <h1 className="text-3xl font-bold">予定の編集</h1>
       <ScheduleEventForm
+        type="edit"
         eventMutateAction={editEvent}
         initialValues={{
           scheduleId,

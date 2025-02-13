@@ -6,9 +6,11 @@ import type { UpdateEventSchemaType } from "@/app/schedule/schemas";
 import type { SubmissionResult } from "@conform-to/react";
 
 export async function ScheduleEventForm({
+  type,
   initialValues,
   eventMutateAction,
 }: {
+  type: "add" | "edit";
   initialValues?: UpdateEventSchemaType;
   eventMutateAction: (
     _: unknown,
@@ -18,6 +20,7 @@ export async function ScheduleEventForm({
   const categories = await fetchAllCategories();
   return (
     <ScheduleEventFormClient
+      type={type}
       categories={categories}
       initialValues={initialValues}
       eventMutateAction={eventMutateAction}
