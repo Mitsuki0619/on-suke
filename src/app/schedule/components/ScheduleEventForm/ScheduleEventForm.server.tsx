@@ -14,7 +14,7 @@ export async function ScheduleEventForm({
   initialValues?: UpdateEventSchemaType;
   eventMutateAction: (
     _: unknown,
-    formData: FormData
+    formData: FormData,
   ) => Promise<SubmissionResult<string[]>>;
 }) {
   const categories = await fetchAllCategories();

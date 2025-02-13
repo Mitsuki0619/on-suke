@@ -67,7 +67,7 @@ export function ScheduleEventFormClient({
   type: "add" | "edit";
   eventMutateAction: (
     _: unknown,
-    formData: FormData
+    formData: FormData,
   ) => Promise<SubmissionResult<string[]>>;
   scheduleId?: Schedule["id"];
   initialValues?: UpdateEventSchemaType;
