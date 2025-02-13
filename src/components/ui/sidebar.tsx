@@ -2,15 +2,15 @@
 
 import { usePathname } from "next/navigation";
 import { AccountPopover } from "@/components/ui/account-popover";
-import { Calendar, LayoutDashboard, ListTodo, Settings } from "lucide-react";
+import { Calendar, LayoutDashboard } from "lucide-react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 
 const navItems = [
   { href: "/", icon: LayoutDashboard, label: "ダッシュボード" },
   { href: "/schedule/calendar", icon: Calendar, label: "カレンダー" },
-  { href: "/tasks", icon: ListTodo, label: "タスク一覧" },
-  { href: "/settings", icon: Settings, label: "設定" },
+  // { href: "/tasks", icon: ListTodo, label: "タスク一覧" },
+  // { href: "/settings", icon: Settings, label: "設定" },
 ];
 
 export function Sidebar() {
