@@ -1,30 +1,38 @@
 import { TaskPriorityEnum } from "@/enums/taskPriority";
 import { TaskStatusEnum } from "@/enums/taskStatus";
-import { z, ZodError } from "zod";
+import { parseISO } from "date-fns";
+import { fromZonedTime } from "date-fns-tz";
+import { ZodError, z } from "zod";
 
+const timeZone = "Asia/Tokyo"; // 例: 東京のタイムゾーン
 const dateSchema = (target: string) =>
-  z.string({ required_error: `${target}は必須です` }).transform((str) => {
-    if (!str) {
-      throw new ZodError([
-        {
-          code: "custom",
-          message: "無効な日付形式です",
-          path: [],
-        },
-      ]);
-    }
-    const date = new Date(str);
-    if (Number.isNaN(date.getTime())) {
-      throw new ZodError([
-        {
-          code: "custom",
-          message: "無効な日付形式です",
-          path: [],
-        },
-      ]);
-    }
-    return date.toISOString(); // ISO 8601 形式に変換
-  });
+  z
+    .string({ required_error: `${target}は必須です` })
+    .refine(
+      (str) => {
+        // ISO 8601形式の日付文字列かどうかをチェック
+        return !Number.isNaN(Date.parse(str));
+      },
+      {
+        message: "無効な日付形式です",
+      }
+    )
+    .transform((str) => {
+      if (!str) {
+        throw new ZodError([
+          {
+            code: "custom",
+            message: "無効な日付形式です",
+            path: [],
+          },
+        ]);
+      }
+      // 文字列をパースしてUTC日時として解釈
+      const date = parseISO(str);
+      // UTCからタイムゾーンを考慮した日時に変換
+      const formattedDate = fromZonedTime(date, timeZone).toISOString();
+      return formattedDate;
+    });
 
 const baseEventSchema = z.object({
   title: z
@@ -63,7 +71,7 @@ const baseEventSchema = z.object({
       priority: z.enum(TaskPriorityEnum, {
         required_error: "タスクの優先度は必須です",
       }),
-    }),
+    })
   ),
   urls: z.array(
     z.object({
@@ -75,7 +83,7 @@ const baseEventSchema = z.object({
         .string({ required_error: "URLは必須です" })
         .url("有効なURLを入力してください")
         .max(200, { message: "URLは200文字以下で入力してください" }),
-    }),
+    })
   ),
 });
 
@@ -86,11 +94,10 @@ const updateBaseEventSchema = baseEventSchema.extend({
 });
 
 const validateDateOrder = (data: { startTime?: string; endTime?: string }) => {
-  return (
-    data.startTime &&
-    data.endTime &&
-    new Date(data.startTime) < new Date(data.endTime)
-  );
+  if (!data.startTime || !data.endTime) return false;
+  const startTime = new Date(data.startTime);
+  const endTime = new Date(data.endTime);
+  return startTime < endTime;
 };
 
 export const createEventSchema = createBaseEventSchema.refine(
@@ -98,7 +105,7 @@ export const createEventSchema = createBaseEventSchema.refine(
   {
     message: "開始日時は終了日時より前でなければなりません",
     path: ["startTime"],
-  },
+  }
 );
 
 export const updateEventSchema = updateBaseEventSchema.refine(
@@ -106,7 +113,7 @@ export const updateEventSchema = updateBaseEventSchema.refine(
   {
     message: "開始日時は終了日時より前でなければなりません",
     path: ["startTime"],
-  },
+  }
 );
 
 export type CreateEventSchemaType = z.infer<typeof createBaseEventSchema>;
