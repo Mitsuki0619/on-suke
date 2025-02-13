@@ -9,7 +9,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Calendar, type View } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
-export function ScheduleCalendar({
+export function ScheduleCalendarClient({
   schedules,
   date,
   view,

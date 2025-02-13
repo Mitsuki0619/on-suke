@@ -1,20 +1,11 @@
-import { ScheduleCalendar } from "@/app/schedule/calendar/components/ScheduleCalendar";
-import { fetchSchedules } from "@/app/schedule/calendar/loaders";
+import { ScheduleCalendar } from "@/app/schedule/calendar/components/ScheduleCalendar/ScheduleCalendar.server";
 import { searchParamsSchema } from "@/app/schedule/calendar/schemas";
 import { Button } from "@/components/ui/button";
-import {
-  endOfMonth,
-  endOfWeek,
-  formatISO,
-  setHours,
-  setMilliseconds,
-  setMinutes,
-  setSeconds,
-  startOfMonth,
-  startOfWeek,
-} from "date-fns";
 import { PlusCircle } from "lucide-react";
 import Link from "next/link";
+import { Suspense } from "react";
+import { ScheduleCalendarClient } from "@/app/schedule/calendar/components/ScheduleCalendar/ScheduleCalendar.client";
+import { LoadingOverlay } from "@/components/ui/loading-overlay";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
 interface SearchParams {
@@ -32,41 +23,6 @@ export default async function CalendarPage({
   if (!success) {
     throw new Error(error.message);
   }
-  const targetDate = data.date ? new Date(data.date) : new Date();
-  const startOfPeriod =
-    view === "month"
-      ? startOfMonth(targetDate)
-      : view === "week"
-        ? startOfWeek(targetDate)
-        : view === "day"
-          ? new Date(targetDate)
-          : startOfMonth(targetDate); // default to month if view is not specified
-  const endOfPeriod =
-    view === "month"
-      ? endOfMonth(targetDate)
-      : view === "week"
-        ? endOfWeek(targetDate)
-        : view === "day"
-          ? new Date(targetDate)
-          : endOfMonth(targetDate); // default to month if view is not specified
-
-  const startOfMonthISO = formatISO(
-    setMilliseconds(
-      setSeconds(setMinutes(setHours(startOfPeriod, 0), 0), 0),
-      0,
-    ),
-  );
-  const endOfMonthISO = formatISO(
-    setMilliseconds(
-      setSeconds(setMinutes(setHours(endOfPeriod, 23), 59), 59),
-      999,
-    ),
-  );
-
-  const schedules = await fetchSchedules({
-    from: startOfMonthISO,
-    to: endOfMonthISO,
-  });
 
   return (
     <div className="space-y-6">
@@ -77,11 +33,19 @@ export default async function CalendarPage({
           予定を追加
         </Link>
       </Button>
-      <ScheduleCalendar
-        date={data.date}
-        view={data.view}
-        schedules={schedules}
-      />
+      <Suspense
+        fallback={
+          <LoadingOverlay isLoading message="Loading...">
+            <ScheduleCalendarClient
+              schedules={[]}
+              date={data.date}
+              view={data.view}
+            />
+          </LoadingOverlay>
+        }
+      >
+        <ScheduleCalendar date={data.date} view={data.view} />
+      </Suspense>
     </div>
   );
 }

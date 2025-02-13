@@ -41,7 +41,7 @@ export default function RootLayout({
                 </div>
 
                 {/* コンテンツコンテナ */}
-                <div className="relative z-10 max-w-7xl w-full mx-auto bg-white/90 dark:bg-gray-800/90 backdrop-blur-md rounded-xl shadow-lg p-6 transition-all duration-300 hover:shadow-2xl border border-orange-200 dark:border-orange-700">
+                <div className="relative z-10 max-w-7xl w-full mx-auto bg-white/90 dark:bg-gray-800/90 backdrop-blur-md rounded-xl shadow-lg p-6 transition-all duration-300 border border-orange-200 dark:border-orange-700">
                   <div className="animate-fadeIn">{children}</div>
                 </div>
               </div>
