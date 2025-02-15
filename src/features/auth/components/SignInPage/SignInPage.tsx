@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Icons } from "@/components/ui/icons";
-import { signInWithGoogle } from "@/features/auth/actions";
+import { signInWithLINE } from "@/features/auth/actions/signInWithLine";
+import { signInWithGoogle } from "@/features/auth/actions/singnInWithGoogle";
 
 export function SignInPage() {
   return (
@@ -12,14 +13,25 @@ export function SignInPage() {
             ログイン
           </CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-4">
           <form className="w-full" action={signInWithGoogle}>
             <Button
+              type="submit"
               variant="outline"
-              className="w-full py-6 text-lg font-semibold transition-colors hover:bg-primary hover:text-primary-foreground"
+              className="w-full py-6 text-lg font-semibold transition-all duration-200 ease-in-out bg-white text-black hover:bg-[#4285F4] hover:text-white hover:border-[#4285F4] group"
             >
-              <Icons.google className="w-6 h-6 mr-2" />
+              <Icons.google className="w-6 h-6 mr-2 transition-all duration-200 ease-in-out" />
               Googleでログイン
+            </Button>
+          </form>
+          <form className="w-full" action={signInWithLINE}>
+            <Button
+              type="submit"
+              variant="outline"
+              className="w-full py-6 text-lg font-semibold transition-all duration-200 ease-in-out bg-white text-black hover:bg-[#06C755] hover:text-white hover:border-[#06C755] group"
+            >
+              <Icons.line className="w-6 h-6 mr-2 transition-all duration-200 ease-in-out text-[#06C755] group-hover:text-white" />
+              LINEでログイン
             </Button>
           </form>
         </CardContent>

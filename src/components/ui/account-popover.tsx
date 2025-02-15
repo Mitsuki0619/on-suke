@@ -7,7 +7,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { logout } from "@/features/auth/actions";
+import { logout } from "@/features/auth/actions/logout";
+import { PopoverClose } from "@radix-ui/react-popover";
 import { LogOut, Settings } from "lucide-react";
 import type { User } from "next-auth";
 import Link from "next/link";
@@ -33,12 +34,14 @@ export function AccountPopover({ user }: Props) {
         </PopoverTrigger>
         <PopoverContent className="w-56">
           <div className="space-y-2">
-            <Button variant="ghost" className="w-full justify-start" asChild>
-              <Link href="/settings">
-                <Settings className="mr-2 h-4 w-4" />
-                設定
-              </Link>
-            </Button>
+            <PopoverClose asChild>
+              <Button variant="ghost" className="w-full justify-start" asChild>
+                <Link href="/settings/user">
+                  <Settings className="mr-2 h-4 w-4" />
+                  設定
+                </Link>
+              </Button>
+            </PopoverClose>
             <form className="w-full" action={logout}>
               <Button
                 variant="ghost"

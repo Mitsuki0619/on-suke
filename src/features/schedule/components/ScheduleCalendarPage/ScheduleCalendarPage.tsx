@@ -8,7 +8,7 @@ import { Suspense } from "react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { z } from "zod";
 
-export type ScheduleCalendarPageParams = Promise<{
+export type ScheduleCalendarPageSearchParams = Promise<{
   date?: string;
   view?: string;
 }>;
@@ -31,11 +31,12 @@ export const searchParamsSchema = z.object({
 });
 
 export async function ScheduleCalendarPage({
-  params,
+  searchParams,
 }: {
-  params: ScheduleCalendarPageParams;
+  searchParams: ScheduleCalendarPageSearchParams;
 }) {
-  const { date, view } = await params;
+  const { date, view } = await searchParams;
+
   const { data, success, error } = searchParamsSchema.safeParse({ date, view });
   if (!success) {
     throw new Error(error.message);

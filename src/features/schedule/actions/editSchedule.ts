@@ -122,7 +122,7 @@ export async function editSchedule(_: unknown, formData: FormData) {
         },
       });
     });
-    await flash("予定が更新されました！");
+    await flash({ title: "予定が更新されました！" });
     redirect("/schedule/calendar");
   } catch (e) {
     if (e instanceof AuthError) {

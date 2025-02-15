@@ -100,7 +100,7 @@ model Schedule {
   tasks               Task[]               @relation("ScheduleTasks")
   urls                Url[]                @relation("ScheduleUrls")
   userId              String               @map("user_id")
-  user                User                 @relation("UserSchedules", fields: [userId], references: [id])
+  user                User                 @relation("UserSchedules", fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model NotificationMethod {
@@ -140,7 +140,7 @@ model Task {
   updated_at  DateTime     @updatedAt
   timelines   Timeline[]   @relation("TaskTimeline")
   userId      String       @map("user_id")
-  user        User         @relation("UserTasks", fields: [userId], references: [id])
+  user        User         @relation("UserTasks", fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("tasks")
 }
@@ -167,7 +167,7 @@ model Url {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
   scheduleId String   @map("schedule_id")
-  schedule   Schedule @relation("ScheduleUrls", fields: [scheduleId], references: [id])
+  schedule   Schedule @relation("ScheduleUrls", fields: [scheduleId], references: [id], onDelete: Cascade)
 
   @@map("urls")
 }
