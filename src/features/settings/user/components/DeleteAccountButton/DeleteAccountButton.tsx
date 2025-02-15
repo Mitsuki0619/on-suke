@@ -12,7 +12,6 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { deleteUser } from "@/features/settings/user/actions/deleteUser";
-import { signOut } from "next-auth/react";
 
 import { useActionState, useState } from "react";
 
@@ -38,11 +37,7 @@ export function DeleteAccountButton() {
         <AlertDialogFooter>
           <AlertDialogCancel>キャンセル</AlertDialogCancel>
           <form
-            action={async () => {
-              await action();
-              await signOut();
-              location.href = "/auth/sign-in";
-            }}
+            action={action}
           >
             <Button variant="destructive" type="submit" disabled={isPending}>
               削除する

@@ -6,6 +6,7 @@ import { Calendar, LayoutDashboard, ListTodo, Settings } from "lucide-react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { cn } from "@/lib/utils";
+import { useEffect } from "react";
 
 const navItems = [
   { href: "/", icon: LayoutDashboard, label: "ダッシュボード" },
@@ -21,15 +22,16 @@ const navItems = [
 
 export function Sidebar() {
   const session = useSession();
-
   const pathname = usePathname();
+
+  const isAuth = session.data?.user && pathname !== "/auth/sign-in";
 
   return (
     <div className="w-64 bg-gradient-to-b from-primary to-primary-dark text-white h-full p-4 flex flex-col">
       <div className="text-3xl font-bold mb-8 text-center text-yellow-300 animate-pulse">
         on-suke
       </div>
-      {session.data?.user && (
+      {isAuth && (
         <>
           <nav className="space-y-2 flex-grow">
             {navItems.map((item) => (
@@ -57,7 +59,9 @@ export function Sidebar() {
               </Link>
             ))}
           </nav>
-          {session.data.user && <AccountPopover user={session.data.user} />}
+          {session?.data?.user && isAuth && (
+            <AccountPopover user={session.data.user} />
+          )}
         </>
       )}
     </div>
