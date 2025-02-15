@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Icons } from "@/components/ui/icons";
-import { signInWithGoogle } from "@/features/auth/actions";
+import { signInWithLINE } from "@/features/auth/actions/signInWithLine";
+import { signInWithGoogle } from "@/features/auth/actions/singnInWithGoogle";
 
 export function SignInPage() {
   return (
@@ -12,7 +13,7 @@ export function SignInPage() {
             ログイン
           </CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-4">
           <form className="w-full" action={signInWithGoogle}>
             <Button
               variant="outline"
@@ -20,6 +21,15 @@ export function SignInPage() {
             >
               <Icons.google className="w-6 h-6 mr-2" />
               Googleでログイン
+            </Button>
+          </form>
+          <form className="w-full" action={signInWithLINE}>
+            <Button
+              variant="outline"
+              className="w-full py-6 text-lg font-semibold transition-colors hover:bg-[#06C755] hover:text-white"
+            >
+              <Icons.line className="w-6 h-6 mr-2" />
+              LINEでログイン
             </Button>
           </form>
         </CardContent>

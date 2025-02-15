@@ -7,7 +7,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { logout } from "@/features/auth/actions";
+import { logout } from "@/features/auth/actions/logout";
 import { LogOut, Settings } from "lucide-react";
 import type { User } from "next-auth";
 import Link from "next/link";
