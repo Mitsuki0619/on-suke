@@ -64,7 +64,7 @@ export async function addSchedule(_: unknown, formData: FormData) {
         },
       });
     });
-    await flash("予定が追加されました！");
+    await flash({title: "予定が追加されました！"});
     redirect("/schedule/calendar");
   } catch (e) {
     if (e instanceof AuthError) {

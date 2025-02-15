@@ -1,4 +1,4 @@
-class BaseError extends Error {}
+export class BaseError extends Error {}
 
 export class NotFoundException extends BaseError {}
 

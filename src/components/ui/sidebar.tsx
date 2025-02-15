@@ -2,15 +2,21 @@
 
 import { usePathname } from "next/navigation";
 import { AccountPopover } from "@/components/ui/account-popover";
-import { Calendar, LayoutDashboard } from "lucide-react";
+import { Calendar, LayoutDashboard, ListTodo, Settings } from "lucide-react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import { cn } from "@/lib/utils";
 
 const navItems = [
   { href: "/", icon: LayoutDashboard, label: "ダッシュボード" },
-  { href: "/schedule/calendar", icon: Calendar, label: "カレンダー" },
-  // { href: "/tasks", icon: ListTodo, label: "タスク一覧" },
-  // { href: "/settings", icon: Settings, label: "設定" },
+  {
+    href: "/schedule/calendar",
+    slug: "schedule",
+    icon: Calendar,
+    label: "予定表",
+  },
+  { href: "/tasks", icon: ListTodo, label: "タスク一覧" },
+  { href: "/settings", slug: "settings", icon: Settings, label: "設定" },
 ];
 
 export function Sidebar() {
@@ -30,17 +36,22 @@ export function Sidebar() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex items-center space-x-2 p-3 rounded-lg transition-all duration-300 ease-in-out
-                  ${
+                className={cn(
+                  "flex items-center space-x-2 p-3 rounded-lg transition-all duration-300 ease-in-out",
+                  (item.slug && pathname.includes(item.slug)) ||
                     pathname === item.href
-                      ? "bg-white text-primary font-bold shadow-lg transform scale-105"
-                      : "hover:bg-primary-light hover:text-yellow-300 hover:translate-x-2"
-                  }`}
+                    ? "bg-white text-primary font-bold shadow-lg transform scale-105"
+                    : "hover:bg-primary-light hover:text-yellow-300 hover:translate-x-2",
+                )}
               >
                 <item.icon
-                  className={`h-6 w-6 ${
-                    pathname === item.href ? "animate-bounce" : ""
-                  }`}
+                  className={cn(
+                    "h-6 w-6",
+                    (item.slug && pathname.includes(item.slug)) ||
+                      pathname === item.href
+                      ? "animate-bounce"
+                      : "",
+                  )}
                 />
                 <span>{item.label}</span>
               </Link>

@@ -21,12 +21,12 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import {
-  addScheduleSchema,
   type AddScheduleSchema,
+  addScheduleSchema,
 } from "@/features/schedule/schemas/addScheduleSchema";
 import {
-  editScheduleSchema,
   type EditScheduleSchema,
+  editScheduleSchema,
 } from "@/features/schedule/schemas/editScheduleSchema";
 import { taskPriorityOptions } from "@/features/task/enums/taskPriority";
 import { taskStatusOptions } from "@/features/task/enums/taskStatus";
@@ -41,7 +41,7 @@ import {
 import { parseWithZod } from "@conform-to/zod";
 import type { Schedule } from "@prisma/client";
 import { CheckCircle, Plus, PlusCircle, TrashIcon } from "lucide-react";
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 
 type FormError = string[];
 
@@ -78,6 +78,7 @@ export function ScheduleFormClient({
     color: string;
   }[];
 }) {
+  const [isOpenAccordion, setIsOpenAccordion] = useState(false);
   const [lastResult, action, isPending] = useActionState(
     eventMutateAction,
     undefined,
@@ -197,16 +198,19 @@ export function ScheduleFormClient({
           </div>
         </div>
 
-        <Accordion
-          type="single"
-          collapsible
-          className="overflow-hidden rounded-lg border"
-        >
+        <Accordion type="single" className="overflow-hidden rounded-lg border">
           <AccordionItem value="item-1" className="border-none">
-            <AccordionTrigger className="hover:no-underline text-lg font-semibold px-4 py-2 bg-theme-orange-100">
+            <AccordionTrigger
+              className="hover:no-underline text-lg font-semibold px-4 py-2 bg-theme-orange-100"
+              onClick={() => setIsOpenAccordion((prev) => !prev)}
+            >
               詳細情報
             </AccordionTrigger>
-            <AccordionContent className="bg-theme-orange-100/50 p-6 space-y-6">
+            <AccordionContent
+              className="bg-theme-orange-100/50 p-6 space-y-6"
+              forceMount
+              hidden={!isOpenAccordion}
+            >
               {/* メモ */}
               <div className="space-y-2">
                 <Label
