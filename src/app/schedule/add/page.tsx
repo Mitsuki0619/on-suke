@@ -1,11 +1,5 @@
-import { addEvent } from "@/app/schedule/add/actions";
-import { ScheduleEventForm } from "@/app/schedule/components/ScheduleEventForm/ScheduleEventForm.server";
+import { AddSchedulePage } from "@/features/schedule/components/AddSchedulePage/AddSchedulePage";
 
-export default function AddSchedulePage() {
-  return (
-    <div className="space-y-6">
-      <h1 className="text-3xl font-bold">予定の登録</h1>
-      <ScheduleEventForm type="add" eventMutateAction={addEvent} />
-    </div>
-  );
+export default function Index() {
+  return <AddSchedulePage />;
 }

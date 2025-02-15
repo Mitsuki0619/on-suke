@@ -1,13 +1,5 @@
-import { addEvent } from "@/app/schedule/add/actions";
-import { ScheduleEventForm } from "@/app/schedule/components/ScheduleEventForm/ScheduleEventForm.server";
-import ScheduleEventFormModal from "@/app/schedule/components/ScheduleEventFormModal/ScheduleEventFormModal";
+import { AddSchedulePage } from "@/features/schedule/components/AddSchedulePage/AddSchedulePage";
 
-export default function AddScheduleModal() {
-  return (
-    <>
-      <ScheduleEventFormModal type="add">
-        <ScheduleEventForm type="add" eventMutateAction={addEvent} />
-      </ScheduleEventFormModal>
-    </>
-  );
+export default function Index() {
+  return <AddSchedulePage modal />;
 }

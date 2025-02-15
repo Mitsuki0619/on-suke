@@ -132,6 +132,8 @@ model Task {
   description String?
   status      TaskStatus   @default(TODO)
   priority    TaskPriority @default(MEDIUM)
+  startTime   DateTime?
+  endTime     DateTime?
   scheduleId  String       @map("schedule_id")
   schedule    Schedule     @relation("ScheduleTasks", fields: [scheduleId], references: [id])
   created_at  DateTime     @default(now())

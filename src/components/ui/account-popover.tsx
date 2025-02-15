@@ -1,6 +1,5 @@
 "use client";
 
-import { logout } from "@/app/auth/sign-in/actions";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -8,6 +7,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { logout } from "@/features/auth/actions";
 import { LogOut, Settings } from "lucide-react";
 import type { User } from "next-auth";
 import Link from "next/link";

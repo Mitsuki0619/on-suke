@@ -7,7 +7,7 @@
     "build": "prisma generate --no-engine && next build",
     "start": "next start",
     "migrate:gen": "prisma generate --no-engine",
-    "migrate:dev": "prisma migrate dev",
+    "migrate:dev": "prisma migrate dev && prisma generate --no-engine",
     "db:push": "prisma db push",
     "db:studio": "prisma studio",
     "lint:fix": "biome lint --write ./src",
