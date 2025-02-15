@@ -6,7 +6,6 @@ import { Calendar, LayoutDashboard, ListTodo, Settings } from "lucide-react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { cn } from "@/lib/utils";
-import { useEffect } from "react";
 
 const navItems = [
   { href: "/", icon: LayoutDashboard, label: "ダッシュボード" },

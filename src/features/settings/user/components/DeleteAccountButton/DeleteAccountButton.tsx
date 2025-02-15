@@ -36,9 +36,7 @@ export function DeleteAccountButton() {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>キャンセル</AlertDialogCancel>
-          <form
-            action={action}
-          >
+          <form action={action}>
             <Button variant="destructive" type="submit" disabled={isPending}>
               削除する
             </Button>
