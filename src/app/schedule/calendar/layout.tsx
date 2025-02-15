@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 
-export default function CalendarPageLayout({
+export default function Layout({
   children,
   modal,
 }: {
