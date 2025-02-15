@@ -7,7 +7,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import type React from "react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-// import { notoSansJp } from "../assets/fonts/notoSansJp";
+import { notoSansJp } from "../assets/fonts/notoSansJp";
 import { Providers } from "./providers";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -23,8 +23,7 @@ export default function Layout({
   children: React.ReactNode;
 }) {
   return (
-    // <html lang="ja" className={notoSansJp.variable}>
-    <html lang="ja">
+    <html lang="ja" className={notoSansJp.variable}>
       <body className={inter.className}>
         <Providers>
           <RootLayout>{children}</RootLayout>
