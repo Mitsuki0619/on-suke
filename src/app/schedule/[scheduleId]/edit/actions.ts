@@ -83,6 +83,8 @@ export async function editEvent(_: unknown, formData: FormData) {
                 status: task.status,
                 priority: task.priority,
                 scheduleId,
+                startTime,
+                endTime,
               },
             });
           }

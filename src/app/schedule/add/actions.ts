@@ -51,6 +51,8 @@ export async function addEvent(_: unknown, formData: FormData) {
               description: task.description,
               status: task.status,
               priority: task.priority,
+              startTime,
+              endTime,
             })),
           },
           urls: {
