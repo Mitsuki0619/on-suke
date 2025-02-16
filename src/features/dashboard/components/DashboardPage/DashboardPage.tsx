@@ -1,10 +1,10 @@
-import { WeatherWidget } from "@/features/dashboard/components/WeatherWidget/WeatherWidget";
 import { LoadingOverlay } from "@/components/ui/loading-overlay";
 import { ClockWidget } from "@/features/dashboard/components/ClockWidget/ClockWidget";
-import { Suspense } from "react";
+import { TaskListWidget } from "@/features/dashboard/components/TaskListWidget/TaskListWidget.server";
 import { TodaysSchedulesWidgetClient } from "@/features/dashboard/components/TodaysSchedulesWidget/TodaysSchedulesWidget.client";
 import { TodaysSchedulesWidget } from "@/features/dashboard/components/TodaysSchedulesWidget/TodaysSchedulesWidget.server";
-import { TaskListWidget } from "@/features/dashboard/components/TaskListWidget/TaskListWidget.server";
+import { WeatherWidget } from "@/features/dashboard/components/WeatherWidget/WeatherWidget";
+import { Suspense } from "react";
 
 export function DashboardPage() {
   return (
