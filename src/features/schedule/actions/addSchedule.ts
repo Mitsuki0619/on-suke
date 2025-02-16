@@ -18,6 +18,8 @@ export async function addSchedule(_: unknown, formData: FormData) {
     return submission.reply();
   }
 
+  let redirectTo: string;
+
   const {
     title,
     description,
@@ -34,42 +36,45 @@ export async function addSchedule(_: unknown, formData: FormData) {
     if (!userId) {
       throw new AuthError();
     }
-    await prisma.$transaction(async (prisma) => {
-      await prisma.schedule.create({
-        data: {
-          title,
-          description,
-          categoryId,
-          startTime,
-          endTime,
-          userId,
-          note,
-          tasks: {
-            create: tasks.map((task) => ({
-              title: task.title,
-              userId,
-              description: task.description,
-              status: task.status,
-              priority: task.priority,
-              startTime,
-              endTime,
-            })),
-          },
-          urls: {
-            create: urls.map((url) => ({
-              url: url.url,
-              name: url.name,
-            })),
-          },
+    const { id } = await prisma.schedule.create({
+      select: {
+        id: true,
+      },
+      data: {
+        title,
+        description,
+        categoryId,
+        startTime,
+        endTime,
+        userId,
+        note,
+        tasks: {
+          create: tasks.map((task) => ({
+            title: task.title,
+            userId,
+            description: task.description,
+            status: task.status,
+            priority: task.priority,
+            startTime,
+            endTime,
+          })),
         },
-      });
+        urls: {
+          create: urls.map((url) => ({
+            url: url.url,
+            name: url.name,
+          })),
+        },
+      },
     });
     await flash({ title: "予定が追加されました！" });
-    redirect("/schedule/calendar");
+    redirectTo = `/schedule/${id}/edit`;
   } catch (e) {
-    if (e instanceof AuthError) {
-      return redirect("/auth/sign-in");
-    }
+    await flash({ title: "予定の登録中にエラーが発生しました。" });
     throw e;
   }
+  if (redirectTo) {
+    redirect(redirectTo);
+  }
+  return submission.reply();
 }

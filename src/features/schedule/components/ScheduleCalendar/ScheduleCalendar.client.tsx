@@ -3,6 +3,7 @@
 import type { FetchSchedulesManyReturnType } from "@/features/schedule/actions/fetchSchedulesMany";
 import { ScheduleCalendarToolBar } from "@/features/schedule/components/ScheduleCalendar/ScheduleCalendarToolBar";
 import { localizer } from "@/lib/date-fns";
+import { getContrastColor } from "@/utils/getContrastColor";
 import { format } from "date-fns";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -33,7 +34,7 @@ export function ScheduleCalendarClient({
       existTasks: s.tasks.filter(
         (t) => t.status === "TODO" || t.status === "WIP",
       ).length,
-      color: s.category?.color ?? "606060",
+      color: s.category?.color ?? "#606060",
     };
   });
 
@@ -73,11 +74,11 @@ export function ScheduleCalendarClient({
         onSelectEvent={onSelectEvent}
         eventPropGetter={(props) => ({
           style: {
-            backgroundColor: `#${props.color}`,
+            backgroundColor: props.color,
             border: "none",
             borderRadius: "8px",
             padding: "4px 8px",
-            color: "#ffffff",
+            color: getContrastColor(props.color),
             fontWeight: "bold",
             boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
             transition: "all 0.3s ease",

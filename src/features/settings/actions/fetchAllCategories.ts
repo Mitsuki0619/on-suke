@@ -22,6 +22,13 @@ export async function fetchAllCategories() {
         userId: session.user.id,
       },
     },
+    orderBy: {
+      created_at: "asc",
+    },
   });
   return categories;
 }
+
+export type FetchAllCategoriesReturnType = Awaited<
+  ReturnType<typeof fetchAllCategories>
+>;

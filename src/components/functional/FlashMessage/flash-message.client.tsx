@@ -3,15 +3,16 @@
 import { toast } from "@/hooks/use-toast";
 import { useEffect } from "react";
 export function FlashMessageClient({ flash }: { flash: string | undefined }) {
-  const { title, message } = JSON.parse(flash || "{}") as {
+  const { key, title, message } = JSON.parse(flash || "{}") as {
+    key: string;
     title: string;
     message?: string | undefined;
   };
   useEffect(() => {
-    if (title) {
+    if (key) {
       toast({ title, description: message });
     }
-  }, [title, message]);
+  }, [key, title, message]);
 
   return null;
 }

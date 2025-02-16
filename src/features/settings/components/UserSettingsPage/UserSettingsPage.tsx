@@ -1,8 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { checkAuth } from "@/features/auth/actions/checkAuth";
-import { fetchAllProviderAccounts } from "@/features/settings/user/actions/fetchAllProviderAccounts";
-import { DeleteAccountButton } from "@/features/settings/user/components/DeleteAccountButton/DeleteAccountButton";
-import { LineConnectButton } from "@/features/settings/user/components/LineConnectButton/LineConnectButton";
+import { fetchAllProviderAccounts } from "@/features/settings/actions/fetchAllProviderAccounts";
+import { DeleteAccountButton } from "@/features/settings/components/DeleteAccountButton/DeleteAccountButton";
+import { LineConnectButton } from "@/features/settings/components/LineConnectButton/LineConnectButton";
+import { User } from "lucide-react";
 
 export async function UserSettingsPage() {
   const { user } = await checkAuth();
@@ -15,7 +16,12 @@ export async function UserSettingsPage() {
     <div className="container mx-auto px-4 flex justify-center">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold">ユーザー設定</CardTitle>
+          <CardTitle className="text-2xl flex items-center justify-center gap-2 mb-6">
+            <User className="h-6 w-6 text-orange-500" />
+            <span className="text-2xl font-bold text-orange-950">
+              ユーザー設定
+            </span>
+          </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="flex flex-col items-center space-y-4">

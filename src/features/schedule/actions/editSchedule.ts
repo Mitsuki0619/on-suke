@@ -6,7 +6,7 @@ import prisma from "@/lib/prisma";
 import { flash } from "@/utils/flash";
 import { parseWithZod } from "@conform-to/zod";
 import { AuthError } from "next-auth";
-import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 import "server-only";
 
 export async function editSchedule(_: unknown, formData: FormData) {
@@ -36,9 +36,9 @@ export async function editSchedule(_: unknown, formData: FormData) {
       throw new AuthError();
     }
 
-    await prisma.$transaction(async (prisma) => {
+    await prisma.$transaction(async (tx) => {
       // タスクの更新（すでにあるタスクはupdate、新規はcreate、既存から消えたものはdelete）
-      const existingTaskIds = await prisma.task.findMany({
+      const existingTaskIds = await tx.task.findMany({
         where: {
           scheduleId,
           userId,
@@ -53,7 +53,7 @@ export async function editSchedule(_: unknown, formData: FormData) {
       const newTaskIdsSet = new Set(
         tasks.map((task) => task.id).filter((id) => id),
       );
-      await prisma.task.deleteMany({
+      await tx.task.deleteMany({
         where: {
           id: {
             in: Array.from(existingTaskIdsSet).filter(
@@ -65,7 +65,7 @@ export async function editSchedule(_: unknown, formData: FormData) {
       await Promise.all(
         tasks.map(async (task) => {
           if (task.id && existingTaskIdsSet.has(task.id)) {
-            await prisma.task.update({
+            await tx.task.update({
               where: { id: task.id },
               data: {
                 title: task.title,
@@ -75,7 +75,7 @@ export async function editSchedule(_: unknown, formData: FormData) {
               },
             });
           } else {
-            await prisma.task.create({
+            await tx.task.create({
               data: {
                 title: task.title,
                 userId,
@@ -92,12 +92,12 @@ export async function editSchedule(_: unknown, formData: FormData) {
       );
 
       // URLをデリートインサート
-      await prisma.url.deleteMany({
+      await tx.url.deleteMany({
         where: {
           scheduleId,
         },
       });
-      await prisma.url.createMany({
+      await tx.url.createMany({
         data: urls.map((url) => ({
           url: url.url,
           name: url.name,
@@ -106,7 +106,7 @@ export async function editSchedule(_: unknown, formData: FormData) {
       });
 
       // 予定を更新
-      return await prisma.schedule.update({
+      return await tx.schedule.update({
         where: {
           id: scheduleId,
           userId,
@@ -123,11 +123,10 @@ export async function editSchedule(_: unknown, formData: FormData) {
       });
     });
     await flash({ title: "予定が更新されました！" });
-    redirect("/schedule/calendar");
+    revalidatePath(`/schedule/${scheduleId}/edit`);
+    return submission.reply();
   } catch (e) {
-    if (e instanceof AuthError) {
-      return redirect("/auth/sign-in");
-    }
+    await flash({ title: "予定の更新中にエラーが発生しました。" });
     throw e;
   }
 }

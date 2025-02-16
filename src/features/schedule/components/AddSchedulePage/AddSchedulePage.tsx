@@ -1,7 +1,7 @@
 import { addSchedule } from "@/features/schedule/actions/addSchedule";
 import { ScheduleForm } from "@/features/schedule/components/ScheduleForm/ScheduleForm.server";
 import { ScheduleFormModal } from "@/features/schedule/components/ScheduleFormModal/ScheduleFormModal";
-import { Calendar, PlusCircle } from "lucide-react";
+import { PlusCircle } from "lucide-react";
 
 export function AddSchedulePage({ modal = false }: { modal?: boolean }) {
   if (modal) {

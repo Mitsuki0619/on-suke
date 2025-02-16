@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { LoadingOverlay } from "@/components/ui/loading-overlay";
 import { ScheduleCalendarClient } from "@/features/schedule/components/ScheduleCalendar/ScheduleCalendar.client";
 import { ScheduleCalendar } from "@/features/schedule/components/ScheduleCalendar/ScheduleCalendar.server";
-import { Calendar, PlusCircle, Settings } from "lucide-react";
+import { Calendar, PlusCircle } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
@@ -26,7 +26,7 @@ export const searchParamsSchema = z.object({
       },
       {
         message: "無効なパラメータです",
-      }
+      },
     ),
 });
 

@@ -11,7 +11,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { deleteUser } from "@/features/settings/user/actions/deleteUser";
+import { deleteUser } from "@/features/settings/actions/deleteUser";
 
 import { useActionState, useState } from "react";
 

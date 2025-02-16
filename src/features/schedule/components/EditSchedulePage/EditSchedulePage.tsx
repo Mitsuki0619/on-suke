@@ -26,12 +26,12 @@ export async function EditSchedulePage({
     startTime: formatInTimeZone(
       schedule.startTime,
       "Asia/Tokyo",
-      "yyyy-MM-dd HH:mm:ss"
+      "yyyy-MM-dd HH:mm:ss",
     ),
     endTime: formatInTimeZone(
       schedule.endTime,
       "Asia/Tokyo",
-      "yyyy-MM-dd HH:mm:ss"
+      "yyyy-MM-dd HH:mm:ss",
     ),
     note: schedule.note,
     tasks:

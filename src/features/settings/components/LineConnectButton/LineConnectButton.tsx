@@ -1,10 +1,10 @@
 "use client";
 
-import { connectLineAccount } from "@/features/settings/user/actions/connectLineAccount";
+import { connectLineAccount } from "@/features/settings/actions/connectLineAccount";
 import { useActionState } from "react";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/ui/icons";
-import { disconnectLineAccount } from "@/features/settings/user/actions/disconnectLineAccount";
+import { disconnectLineAccount } from "@/features/settings/actions/disconnectLineAccount";
 
 export function LineConnectButton({
   isLineConnected,
