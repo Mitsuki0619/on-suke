@@ -46,6 +46,7 @@ export async function fetchSchedulesManyForNotification(userId: User["id"]) {
         { startTime: { lte: tomorrowEndISO } },
         { endTime: { gte: tomorrowStartISO } },
       ],
+      deleted_at: null,
       userId,
     },
     orderBy: {

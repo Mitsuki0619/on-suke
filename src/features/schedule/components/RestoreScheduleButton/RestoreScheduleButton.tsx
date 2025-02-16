@@ -4,21 +4,19 @@ import {
   AlertDialog,
   AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { deleteSchedule } from "@/features/schedule/actions/deleteSchedule";
 
+import { restoreSchedule } from "@/features/schedule/actions/restoreSchedule";
 import { useActionState, useState } from "react";
 
-export function DeleteScheduleButton({ scheduleId }: { scheduleId: string }) {
+export function RestoreScheduleButton({ scheduleId }: { scheduleId: string }) {
   const [, action, isPending] = useActionState(async () => {
-    await deleteSchedule(scheduleId);
-    location.href = "/schedule/calendar";
+    restoreSchedule(scheduleId);
   }, undefined);
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -26,22 +24,17 @@ export function DeleteScheduleButton({ scheduleId }: { scheduleId: string }) {
   return (
     <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <AlertDialogTrigger asChild>
-        <Button variant="destructive" className="">
-          削除
-        </Button>
+        <Button variant="outline">復元</Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>本当にこの予定を削除しますか？</AlertDialogTitle>
-          <AlertDialogDescription>
-            ※この操作は後で元に戻すことができます。この予定は一時的に削除され、後で復元することができます。
-          </AlertDialogDescription>
+          <AlertDialogTitle>この予定を復元しますか？</AlertDialogTitle>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>キャンセル</AlertDialogCancel>
           <form action={action} onSubmit={(e) => e.stopPropagation()}>
-            <Button variant="destructive" type="submit" disabled={isPending}>
-              削除する
+            <Button variant="default" type="submit" disabled={isPending}>
+              復元する
             </Button>
           </form>
         </AlertDialogFooter>

@@ -8,10 +8,12 @@ import type { SubmissionResult } from "@conform-to/react";
 export async function ScheduleForm({
   type,
   initialValues,
+  isDeleted,
   eventMutateAction,
 }: {
   type: "add" | "edit";
   initialValues?: EditScheduleSchema;
+  isDeleted?: boolean;
   eventMutateAction: (
     _: unknown,
     formData: FormData,
@@ -23,6 +25,7 @@ export async function ScheduleForm({
       type={type}
       categories={categories}
       initialValues={initialValues}
+      isDeleted={isDeleted}
       eventMutateAction={eventMutateAction}
     />
   );

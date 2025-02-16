@@ -23,7 +23,7 @@ export function TodaysSchedulesWidgetClient({
       start: s.startTime ? new Date(s.startTime) : undefined,
       end: s.endTime ? new Date(s.endTime) : undefined,
       existTasks: s.tasks.filter(
-        (t) => t.status === "TODO" || t.status === "WIP"
+        (t) => t.status === "TODO" || t.status === "WIP",
       ).length,
       color: s.category?.color ?? "#606060",
     };

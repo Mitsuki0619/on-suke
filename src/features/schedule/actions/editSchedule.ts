@@ -48,16 +48,16 @@ export async function editSchedule(_: unknown, formData: FormData) {
         },
       });
       const existingTaskIdsSet = new Set(
-        existingTaskIds.map((task) => task.id)
+        existingTaskIds.map((task) => task.id),
       );
       const newTaskIdsSet = new Set(
-        tasks.map((task) => task.id).filter((id) => id)
+        tasks.map((task) => task.id).filter((id) => id),
       );
       await tx.task.deleteMany({
         where: {
           id: {
             in: Array.from(existingTaskIdsSet).filter(
-              (id) => !newTaskIdsSet.has(id)
+              (id) => !newTaskIdsSet.has(id),
             ),
           },
         },
@@ -88,7 +88,7 @@ export async function editSchedule(_: unknown, formData: FormData) {
               },
             });
           }
-        })
+        }),
       );
 
       // URLをデリートインサート

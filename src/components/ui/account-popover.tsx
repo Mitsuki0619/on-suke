@@ -27,7 +27,10 @@ export function AccountPopover({ user }: Props) {
             className="w-full justify-start hover:bg-primary/20 hover:text-white text-black/50"
           >
             <Avatar className="h-8 w-8 mr-2">
-              <AvatarImage src={user?.image || ""} alt={user?.name ? `Avatar of ${user.name}` : "User avatar"} />
+              <AvatarImage
+                src={user?.image || ""}
+                alt={user?.name ? `Avatar of ${user.name}` : "User avatar"}
+              />
               <AvatarFallback className="bg-primary-dark text-white">
                 {user?.name?.[0] || "U"}
               </AvatarFallback>

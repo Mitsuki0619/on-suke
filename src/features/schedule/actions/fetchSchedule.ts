@@ -6,7 +6,6 @@ import prisma from "@/lib/prisma";
 import { convertNullsToUndefined } from "@/utils/convertNullsToUndefined";
 import type { Schedule } from "@prisma/client";
 import { AuthError } from "next-auth";
-import { flash } from "@/utils/flash";
 
 export async function fetchSchedule(scheduleId: Schedule["id"]) {
   const session = await auth();
@@ -22,6 +21,7 @@ export async function fetchSchedule(scheduleId: Schedule["id"]) {
         categoryId: true,
         startTime: true,
         endTime: true,
+        deleted_at: true,
         note: true,
         tasks: {
           select: {
@@ -48,6 +48,7 @@ export async function fetchSchedule(scheduleId: Schedule["id"]) {
     if (schedule == null) {
       throw new NotFoundException("予定が見つかりませんでした");
     }
+
     return convertNullsToUndefined(schedule);
   } catch (e) {
     console.log(e);

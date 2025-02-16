@@ -57,6 +57,7 @@ export async function EditSchedulePage({
           type="edit"
           eventMutateAction={editSchedule}
           initialValues={initialValues}
+          isDeleted={schedule.deleted_at != null}
         />
       </ScheduleFormModal>
     );
@@ -71,6 +72,7 @@ export async function EditSchedulePage({
         type="edit"
         eventMutateAction={editSchedule}
         initialValues={initialValues}
+        isDeleted={schedule.deleted_at != null}
       />
     </div>
   );

@@ -6,7 +6,6 @@ import prisma from "@/lib/prisma";
 import { flash } from "@/utils/flash";
 import { parseWithZod } from "@conform-to/zod";
 import { AuthError } from "next-auth";
-import { redirect } from "next/navigation";
 import "server-only";
 
 export async function addSchedule(_: unknown, formData: FormData) {
