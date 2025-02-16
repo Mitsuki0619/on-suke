@@ -48,11 +48,7 @@ export default function RadioGroupBadge({
             <Badge
               variant={selectedOption === option.value ? "default" : "outline"}
               className="text-sm"
-              style={
-                selectedOption === option.value
-                  ? { backgroundColor: `#${option.color}` }
-                  : undefined
-              }
+              color={selectedOption === option.value ? option.color : "#f8f8f8"}
             >
               {option.label}
             </Badge>

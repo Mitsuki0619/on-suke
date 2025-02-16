@@ -11,7 +11,7 @@ export async function GET() {
     lineConnectedUsers.map(async (user) => {
       const schedules = await fetchSchedulesManyForNotification(user.id);
       await sendScheduleMessage(user.lineUserId, schedules);
-    })
+    }),
   );
   return NextResponse.json({ ok: true });
 }

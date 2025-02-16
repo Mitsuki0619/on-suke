@@ -98,7 +98,7 @@ export function ScheduleFormClient({
   const urls = fields.urls.getFieldList();
 
   const categoryOptions = [
-    { label: "なし", value: "", color: "606060" },
+    { label: "なし", value: "", color: "#606060" },
     ...categories.map((cat) => ({
       label: cat.name,
       value: cat.id.toString(),
@@ -111,7 +111,7 @@ export function ScheduleFormClient({
       id={form.id}
       onSubmit={form.onSubmit}
       action={action}
-      className="space-y-8 bg-white p-6 rounded-lg shadow-md"
+      className="bg-white p-6 rounded-lg shadow-md"
     >
       {type === "edit" && (
         <input
@@ -132,7 +132,7 @@ export function ScheduleFormClient({
             className="text-lg"
             placeholder="イベントのタイトルを入力"
           />
-          <FieldErrors errors={fields.title.allErrors} />
+          <FieldErrors errors={fields.title.errors} />
         </div>
 
         {/* カテゴリ選択 */}
@@ -145,7 +145,7 @@ export function ScheduleFormClient({
               defaultValue={fields.categoryId.initialValue}
             />
           </div>
-          <FieldErrors errors={fields.categoryId.allErrors} />
+          <FieldErrors errors={fields.categoryId.errors} />
         </div>
 
         {/* 概要入力 */}
@@ -163,7 +163,7 @@ export function ScheduleFormClient({
             placeholder="イベントの概要を入力"
             className="resize-none"
           />
-          <FieldErrors errors={fields.description.allErrors} />
+          <FieldErrors errors={fields.description.errors} />
         </div>
 
         {/* 開始・終了日時 */}
@@ -180,7 +180,7 @@ export function ScheduleFormClient({
               key={fields.startTime.key}
               className="text-lg"
             />
-            <FieldErrors errors={fields.startTime.allErrors} />
+            <FieldErrors errors={fields.startTime.errors} />
           </div>
           <div className="space-y-2 w-1/2">
             <Label
@@ -194,7 +194,7 @@ export function ScheduleFormClient({
               key={fields.endTime.key}
               className="text-lg"
             />
-            <FieldErrors errors={fields.endTime.allErrors} />
+            <FieldErrors errors={fields.endTime.errors} />
           </div>
         </div>
 
@@ -226,7 +226,7 @@ export function ScheduleFormClient({
                   placeholder="追加のメモを入力"
                   className="resize-none"
                 />
-                <FieldErrors errors={fields.note.allErrors} />
+                <FieldErrors errors={fields.note.errors} />
               </div>
 
               {/* タスク一覧 */}
@@ -293,7 +293,7 @@ export function ScheduleFormClient({
       </div>
 
       {/* 登録 */}
-      <div className="flex justify-end">
+      <div className="flex justify-end mt-8">
         <Button
           type="submit"
           className="text-lg px-6 py-3"
@@ -331,7 +331,7 @@ function TaskItem({ tasks, task, form, index }: TaskItemProps) {
             key={title.key}
             className="text-lg"
           />
-          <FieldErrors errors={title.allErrors} />
+          <FieldErrors errors={title.errors} />
         </div>
         <Button
           variant="outline"
@@ -367,7 +367,7 @@ function TaskItem({ tasks, task, form, index }: TaskItemProps) {
               ))}
             </SelectContent>
           </Select>
-          <FieldErrors errors={status.allErrors} />
+          <FieldErrors errors={status.errors} />
         </div>
         <div className="w-1/2">
           <Label className="text-sm">優先度</Label>
@@ -392,7 +392,7 @@ function TaskItem({ tasks, task, form, index }: TaskItemProps) {
               ))}
             </SelectContent>
           </Select>
-          <FieldErrors errors={priority.allErrors} />
+          <FieldErrors errors={priority.errors} />
         </div>
       </div>
       <div>
@@ -403,7 +403,7 @@ function TaskItem({ tasks, task, form, index }: TaskItemProps) {
           rows={2}
           className="resize-none"
         />
-        <FieldErrors errors={description.allErrors} />
+        <FieldErrors errors={description.errors} />
       </div>
     </Card>
   );
@@ -421,7 +421,7 @@ function UrlItem({ urls, urlItem, form, index }: UrlItemProps) {
           key={name.key}
           className="mb-2"
         />
-        <FieldErrors errors={name.allErrors} />
+        <FieldErrors errors={name.errors} />
       </div>
       <div className="flex-1">
         <Input
@@ -430,7 +430,7 @@ function UrlItem({ urls, urlItem, form, index }: UrlItemProps) {
           placeholder="URL"
           className="mb-2"
         />
-        <FieldErrors errors={url.allErrors} />
+        <FieldErrors errors={url.errors} />
       </div>
       <Button
         variant="outline"

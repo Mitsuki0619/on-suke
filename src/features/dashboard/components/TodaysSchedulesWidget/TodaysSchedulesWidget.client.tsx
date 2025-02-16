@@ -3,6 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { FetchSchedulesManyReturnType } from "@/features/schedule/actions/fetchSchedulesMany";
 import { localizer } from "@/lib/date-fns";
+import { getContrastColor } from "@/utils/getContrastColor";
 import { Calendar } from "react-big-calendar";
 
 export function TodaysSchedulesWidgetClient({
@@ -21,7 +22,7 @@ export function TodaysSchedulesWidgetClient({
       existTasks: s.tasks.filter(
         (t) => t.status === "TODO" || t.status === "WIP",
       ).length,
-      color: s.category?.color ?? "606060",
+      color: s.category?.color ?? "#606060",
     };
   });
 
@@ -46,11 +47,11 @@ export function TodaysSchedulesWidgetClient({
             culture="ja"
             eventPropGetter={(props) => ({
               style: {
-                backgroundColor: `#${props.color}`,
+                backgroundColor: props.color,
                 border: "none",
                 borderRadius: "6px",
                 padding: "2px 8px",
-                color: "#ffffff",
+                color: getContrastColor(props.color),
                 fontWeight: "bold",
                 boxShadow: "0 1px 2px rgba(0,0,0,0.1)",
               },

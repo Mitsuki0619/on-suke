@@ -3,6 +3,7 @@ import { fetchSchedule } from "@/features/schedule/actions/fetchSchedule";
 import { ScheduleForm } from "@/features/schedule/components/ScheduleForm/ScheduleForm.server";
 import { ScheduleFormModal } from "@/features/schedule/components/ScheduleFormModal/ScheduleFormModal";
 import { formatInTimeZone } from "date-fns-tz";
+import { Pencil } from "lucide-react";
 
 export type EditSchedulePageParams = Promise<{
   scheduleId: string;
@@ -61,8 +62,11 @@ export async function EditSchedulePage({
     );
   }
   return (
-    <div className="space-y-6">
-      <h1 className="text-3xl font-bold">予定の編集</h1>
+    <div className="space-y-3">
+      <div className="flex items-center gap-2">
+        <Pencil className="h-6 w-6 text-orange-500" />
+        <h1 className="text-2xl font-bold text-orange-950">予定の編集</h1>
+      </div>
       <ScheduleForm
         type="edit"
         eventMutateAction={editSchedule}

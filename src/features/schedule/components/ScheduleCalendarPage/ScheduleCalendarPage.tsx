@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { LoadingOverlay } from "@/components/ui/loading-overlay";
 import { ScheduleCalendarClient } from "@/features/schedule/components/ScheduleCalendar/ScheduleCalendar.client";
 import { ScheduleCalendar } from "@/features/schedule/components/ScheduleCalendar/ScheduleCalendar.server";
-import { PlusCircle } from "lucide-react";
+import { Calendar, PlusCircle } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
@@ -44,7 +44,10 @@ export async function ScheduleCalendarPage({
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold">カレンダー</h1>
+      <div className="flex items-center gap-2 mb-3">
+        <Calendar className="h-6 w-6 text-orange-500" />
+        <h1 className="text-2xl font-bold text-orange-950">カレンダー</h1>
+      </div>
       <Button className="mb-4" asChild>
         <Link href={`/schedule/add?date=${date || ""}&view=${view || ""}`}>
           <PlusCircle />

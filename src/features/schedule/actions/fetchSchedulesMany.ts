@@ -3,8 +3,8 @@
 import { auth } from "@/auth";
 import { fetchSchedulesManySchema } from "@/features/schedule/schemas/fetchSchedulesManySchema";
 import prisma from "@/lib/prisma";
+import { flash } from "@/utils/flash";
 import { AuthError } from "next-auth";
-import { redirect } from "next/navigation";
 import "server-only";
 
 export async function fetchSchedulesMany(params: { from: string; to: string }) {
@@ -49,9 +49,7 @@ export async function fetchSchedulesMany(params: { from: string; to: string }) {
     });
     return schedules;
   } catch (e) {
-    if (e instanceof AuthError) {
-      redirect("/login");
-    }
+    await flash({ title: "予定の取得に失敗しました。" });
   }
 }
 
