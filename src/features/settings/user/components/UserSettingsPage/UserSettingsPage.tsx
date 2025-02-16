@@ -12,7 +12,7 @@ export async function UserSettingsPage() {
   const canDisconnectLine = isLineConnected && providers.length > 1;
 
   return (
-    <div className="container mx-auto px-4 py-20 flex justify-center">
+    <div className="container mx-auto px-4 flex justify-center">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-bold">ユーザー設定</CardTitle>

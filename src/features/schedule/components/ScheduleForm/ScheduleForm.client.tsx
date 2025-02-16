@@ -68,7 +68,7 @@ export function ScheduleFormClient({
   type: "add" | "edit";
   eventMutateAction: (
     _: unknown,
-    formData: FormData,
+    formData: FormData
   ) => Promise<SubmissionResult<string[]>>;
   scheduleId?: Schedule["id"];
   initialValues?: EditScheduleSchema;
@@ -81,7 +81,7 @@ export function ScheduleFormClient({
   const [isOpenAccordion, setIsOpenAccordion] = useState(false);
   const [lastResult, action, isPending] = useActionState(
     eventMutateAction,
-    undefined,
+    undefined
   );
   const [form, fields] = useForm({
     lastResult,
@@ -111,7 +111,7 @@ export function ScheduleFormClient({
       id={form.id}
       onSubmit={form.onSubmit}
       action={action}
-      className="space-y-8 bg-white p-6 rounded-lg shadow-md"
+      className="bg-white p-6 rounded-lg shadow-md"
     >
       {type === "edit" && (
         <input
@@ -293,7 +293,7 @@ export function ScheduleFormClient({
       </div>
 
       {/* 登録 */}
-      <div className="flex justify-end">
+      <div className="flex justify-end mt-8">
         <Button
           type="submit"
           className="text-lg px-6 py-3"

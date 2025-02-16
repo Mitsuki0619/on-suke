@@ -17,14 +17,10 @@ export const metadata: Metadata = {
   description: "A simple calendar application",
 };
 
-export default function Layout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ja" className={notoSansJp.variable}>
-      <body className={inter.className}>
+      <body className={`${inter.className} text-orange-950`}>
         <Providers>
           <RootLayout>{children}</RootLayout>
           <FlashMessage />
