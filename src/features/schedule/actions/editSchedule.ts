@@ -124,7 +124,7 @@ export async function editSchedule(_: unknown, formData: FormData) {
     });
     await flash({ title: "予定が更新されました！" });
     revalidatePath(`/schedule/${scheduleId}/edit`);
-    return submission.reply();
+    return submission.reply({ resetForm: true });
   } catch (e) {
     await flash({ title: "予定の更新中にエラーが発生しました。" });
     throw e;

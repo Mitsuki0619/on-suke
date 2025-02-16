@@ -45,6 +45,7 @@ export async function fetchSchedulesMany(params: { from: string; to: string }) {
         userId: session.user.id,
         startTime: { lte: data.to },
         endTime: { gte: data.from },
+        deleted_at: null,
       },
     });
     return schedules;

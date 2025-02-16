@@ -6,7 +6,6 @@ import prisma from "@/lib/prisma";
 import { flash } from "@/utils/flash";
 import { parseWithZod } from "@conform-to/zod";
 import { AuthError } from "next-auth";
-import { redirect } from "next/navigation";
 import "server-only";
 
 export async function addSchedule(_: unknown, formData: FormData) {
@@ -36,7 +35,7 @@ export async function addSchedule(_: unknown, formData: FormData) {
     if (!userId) {
       throw new AuthError();
     }
-    const { id } = await prisma.schedule.create({
+    await prisma.schedule.create({
       select: {
         id: true,
       },
@@ -68,13 +67,9 @@ export async function addSchedule(_: unknown, formData: FormData) {
       },
     });
     await flash({ title: "予定が追加されました！" });
-    redirectTo = `/schedule/${id}/edit`;
   } catch (e) {
     await flash({ title: "予定の登録中にエラーが発生しました。" });
     throw e;
   }
-  if (redirectTo) {
-    redirect(redirectTo);
-  }
-  return submission.reply();
+  return submission.reply({ resetForm: true });
 }

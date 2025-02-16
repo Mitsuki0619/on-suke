@@ -5,12 +5,15 @@ import type { FetchSchedulesManyReturnType } from "@/features/schedule/actions/f
 import { localizer } from "@/lib/date-fns";
 import { getContrastColor } from "@/utils/getContrastColor";
 import { Calendar } from "react-big-calendar";
+import { useRouter } from "next/navigation";
 
 export function TodaysSchedulesWidgetClient({
   todaysSchedules,
 }: {
   todaysSchedules: FetchSchedulesManyReturnType;
 }) {
+  const router = useRouter();
+
   const validDate = new Date();
 
   const events = todaysSchedules?.map((s) => {
@@ -25,6 +28,10 @@ export function TodaysSchedulesWidgetClient({
       color: s.category?.color ?? "#606060",
     };
   });
+
+  const onSelectEvent = (event: NonNullable<typeof events>[number]) => {
+    router.push(`/schedule/${event.id}/edit`);
+  };
 
   return (
     <Card className="overflow-hidden bg-gradient-to-br from-orange-50 to-yellow-100 shadow-2xl">
@@ -41,6 +48,7 @@ export function TodaysSchedulesWidgetClient({
             view="day"
             views={["day"]}
             events={events}
+            onSelectEvent={onSelectEvent}
             startAccessor="start"
             endAccessor="end"
             style={{ height: 480 }}

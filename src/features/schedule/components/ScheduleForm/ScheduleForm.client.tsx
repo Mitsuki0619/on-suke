@@ -20,6 +20,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { DeleteScheduleButton } from "@/features/schedule/components/DeleteScheduleButton/DeleteScheduleButton";
+import { RestoreScheduleButton } from "@/features/schedule/components/RestoreScheduleButton/RestoreScheduleButton";
 import {
   type AddScheduleSchema,
   addScheduleSchema,
@@ -64,6 +66,7 @@ export function ScheduleFormClient({
   eventMutateAction,
   categories,
   initialValues,
+  isDeleted,
 }: {
   type: "add" | "edit";
   eventMutateAction: (
@@ -72,6 +75,7 @@ export function ScheduleFormClient({
   ) => Promise<SubmissionResult<string[]>>;
   scheduleId?: Schedule["id"];
   initialValues?: EditScheduleSchema;
+  isDeleted?: boolean;
   categories: {
     id: number;
     name: string;
@@ -112,6 +116,7 @@ export function ScheduleFormClient({
       onSubmit={form.onSubmit}
       action={action}
       className="bg-white p-6 rounded-lg shadow-md"
+      key={form.key}
     >
       {type === "edit" && (
         <input
@@ -293,10 +298,16 @@ export function ScheduleFormClient({
       </div>
 
       {/* 登録 */}
-      <div className="flex justify-end mt-8">
+      <div className="flex mt-8 justify-between w-full">
+        {initialValues?.scheduleId &&
+          (isDeleted ? (
+            <RestoreScheduleButton scheduleId={initialValues.scheduleId} />
+          ) : (
+            <DeleteScheduleButton scheduleId={initialValues.scheduleId} />
+          ))}
         <Button
           type="submit"
-          className="text-lg px-6 py-3"
+          className="text-lg px-6 py-3 ml-auto"
           disabled={isPending}
         >
           {type === "edit" ? (
