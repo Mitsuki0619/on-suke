@@ -94,6 +94,7 @@ model Schedule {
   endTime             DateTime
   created_at          DateTime             @default(now())
   updated_at          DateTime             @updatedAt
+  deleted_at          DateTime?
   notificationMethods NotificationMethod[]
   categoryId          Int?
   category            Category?            @relation(fields: [categoryId], references: [id])

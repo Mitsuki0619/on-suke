@@ -164,6 +164,7 @@ function CategoryInputItem({
           index: index,
         })}
         className="flex-shrink-0"
+        aria-label="Remove category"
       >
         <TrashIcon className="h-4 w-4" />
       </Button>

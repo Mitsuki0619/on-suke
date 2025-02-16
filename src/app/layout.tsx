@@ -5,8 +5,8 @@ import "@/styles/calendar-custom.css";
 import "@/styles/globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import type React from "react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import type { ReactNode } from "react";
 import { notoSansJp } from "../assets/fonts/notoSansJp";
 import { Providers } from "./providers";
 
@@ -17,12 +17,21 @@ export const metadata: Metadata = {
   description: "A simple calendar application",
 };
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function Layout({
+  children,
+  modal,
+}: {
+  children: ReactNode;
+  modal: ReactNode;
+}) {
   return (
     <html lang="ja" className={notoSansJp.variable}>
       <body className={`${inter.className} text-orange-950`}>
         <Providers>
-          <RootLayout>{children}</RootLayout>
+          <RootLayout>
+            {modal}
+            {children}
+          </RootLayout>
           <FlashMessage />
           <Toaster />
         </Providers>
