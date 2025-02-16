@@ -6,7 +6,7 @@ import { signInWithGoogle } from "@/features/auth/actions/singnInWithGoogle";
 
 export function SignInPage() {
   return (
-    <div className="flex-1 flex items-center justify-center p-4">
+    <div className="flex-1 flex items-center justify-center px-4 py-48">
       <Card className="w-full max-w-[350px] shadow-lg border border-orange-200 dark:border-orange-700 bg-white/90 dark:bg-gray-800/90 backdrop-blur-md transition-all duration-300 hover:shadow-xl">
         <CardHeader className="pb-4">
           <CardTitle className="text-2xl font-bold text-center text-primary">

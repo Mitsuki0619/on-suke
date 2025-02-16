@@ -113,14 +113,12 @@ function formatMessage(schedules: FetchSchedulesManyForNotificationReturnType) {
   const tomorrowDateStr = format(tomorrowStart, "yyyy/MM/dd EEEE", {
     locale: ja,
   });
-  const noticeMessage = `
-  明日（${tomorrowDateStr}）の予定
+  const noticeMessage = `■ 明日（${tomorrowDateStr}）の予定
   ${regularSchedules.join("\n")}
 
   ${
     longTermSchedules.length > 0
-      ? `
-  長期進行の予定
+      ? `■ 長期進行の予定
   ${longTermSchedules.join("\n")}
   `
       : ""
