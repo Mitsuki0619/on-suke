@@ -52,7 +52,7 @@ export function AccountPopover({ user }: Props) {
             <form className="w-full" action={logout}>
               <Button
                 variant="ghost"
-                className="w-full justify-start text-red-500 hover:bg-red-50"
+                className="w-full justify-start text-red-500 hover:text-red-600 hover:bg-red-100"
                 type="submit"
               >
                 <LogOut className="mr-2 h-4 w-4" />
