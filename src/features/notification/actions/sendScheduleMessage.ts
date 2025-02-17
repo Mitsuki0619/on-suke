@@ -15,7 +15,7 @@ import { ja } from "date-fns/locale";
 
 export async function sendScheduleMessage(
   lineUserId: string,
-  schedules: FetchSchedulesManyForNotificationReturnType
+  schedules: FetchSchedulesManyForNotificationReturnType,
 ) {
   const noticeMessage = formatMessage(schedules);
 
@@ -71,18 +71,18 @@ function formatMessage(schedules: FetchSchedulesManyForNotificationReturnType) {
     };
 
     return Object.keys(timePatterns).find(
-      (key) => timePatterns[key as keyof typeof timePatterns]
+      (key) => timePatterns[key as keyof typeof timePatterns],
     )
       ? timeStrings[
           Object.keys(timePatterns).find(
-            (key) => timePatterns[key as keyof typeof timePatterns]
+            (key) => timePatterns[key as keyof typeof timePatterns],
           ) as keyof typeof timeStrings
         ]
       : timeStrings.regular;
   };
 
   const formatSchedule = (
-    s: FetchSchedulesManyForNotificationReturnType[number]
+    s: FetchSchedulesManyForNotificationReturnType[number],
   ) => {
     const startTime = toZonedTime(s.startTime, timeZone);
     const endTime = toZonedTime(s.endTime, timeZone);
@@ -107,22 +107,18 @@ function formatMessage(schedules: FetchSchedulesManyForNotificationReturnType) {
         [category]: [...acc[category], formatSchedule(s)],
       };
     },
-    { regularSchedules: [], longTermSchedules: [] }
+    { regularSchedules: [], longTermSchedules: [] },
   );
 
   const tomorrowDateStr = format(tomorrowStart, "yyyy/MM/dd EEEE", {
     locale: ja,
   });
-  const noticeMessage = `■ 明日（${tomorrowDateStr}）の予定
-  ${regularSchedules.join("\n")}
-
-  ${
-    longTermSchedules.length > 0
-      ? `■ 長期進行の予定
-  ${longTermSchedules.join("\n")}
-  `
-      : ""
-  }
+  const noticeMessage =
+    `■ 明日（${tomorrowDateStr}）の予定\n${regularSchedules.join("\n")}\n\n${
+      longTermSchedules.length > 0
+        ? `■ 長期進行の予定\n${longTermSchedules.join("\n")}`
+        : ""
+    }
   `.trim();
 
   return noticeMessage;
