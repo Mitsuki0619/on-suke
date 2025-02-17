@@ -2,13 +2,15 @@
 
 import prisma from "@/lib/prisma";
 import { addDays, endOfDay, startOfDay } from "date-fns";
-import { formatInTimeZone, toDate } from "date-fns-tz";
+import { formatInTimeZone } from "date-fns-tz";
 import type { User } from "next-auth";
 import "server-only";
 
 export async function fetchSchedulesManyForNotification(userId: User["id"]) {
   const timeZone = "Asia/Tokyo";
-  const nowInJapan = toDate(new Date(), { timeZone });
+  const nowInJapan = new Date().toLocaleString("ja-JP", {
+    timeZone,
+  });
 
   const tomorrowStart = startOfDay(addDays(nowInJapan, 1));
   const tomorrowEnd = endOfDay(tomorrowStart);
@@ -16,12 +18,12 @@ export async function fetchSchedulesManyForNotification(userId: User["id"]) {
   const tomorrowStartISO = formatInTimeZone(
     tomorrowStart,
     timeZone,
-    "yyyy-MM-dd'T'HH:mm:ssXXX",
+    "yyyy-MM-dd'T'HH:mm:ssXXX"
   );
   const tomorrowEndISO = formatInTimeZone(
     tomorrowEnd,
     timeZone,
-    "yyyy-MM-dd'T'HH:mm:ssXXX",
+    "yyyy-MM-dd'T'HH:mm:ssXXX"
   );
 
   const schedules = await prisma.schedule.findMany({
