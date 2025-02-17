@@ -10,12 +10,12 @@ import {
   isBefore,
   startOfDay,
 } from "date-fns";
-import { toDate } from "date-fns-tz";
+import { toZonedTime } from "date-fns-tz";
 import { ja } from "date-fns/locale";
 
 export async function sendScheduleMessage(
   lineUserId: string,
-  schedules: FetchSchedulesManyForNotificationReturnType,
+  schedules: FetchSchedulesManyForNotificationReturnType
 ) {
   const noticeMessage = formatMessage(schedules);
 
@@ -40,7 +40,7 @@ export async function sendScheduleMessage(
 
 function formatMessage(schedules: FetchSchedulesManyForNotificationReturnType) {
   const timeZone = "Asia/Tokyo";
-  const nowInJapan = toDate(new Date(), { timeZone });
+  const nowInJapan = toZonedTime(new Date(), timeZone);
 
   const tomorrowStart = startOfDay(addDays(nowInJapan, 1));
   const tomorrowEnd = endOfDay(tomorrowStart);
@@ -71,21 +71,21 @@ function formatMessage(schedules: FetchSchedulesManyForNotificationReturnType) {
     };
 
     return Object.keys(timePatterns).find(
-      (key) => timePatterns[key as keyof typeof timePatterns],
+      (key) => timePatterns[key as keyof typeof timePatterns]
     )
       ? timeStrings[
           Object.keys(timePatterns).find(
-            (key) => timePatterns[key as keyof typeof timePatterns],
+            (key) => timePatterns[key as keyof typeof timePatterns]
           ) as keyof typeof timeStrings
         ]
       : timeStrings.regular;
   };
 
   const formatSchedule = (
-    s: FetchSchedulesManyForNotificationReturnType[number],
+    s: FetchSchedulesManyForNotificationReturnType[number]
   ) => {
-    const startTime = toDate(s.startTime, { timeZone });
-    const endTime = toDate(s.endTime, { timeZone });
+    const startTime = toZonedTime(s.startTime, timeZone);
+    const endTime = toZonedTime(s.endTime, timeZone);
     const timeStr = getTimeString(startTime, endTime);
     return `- ${timeStr} : ${s.title}（未完了のタスク${s.tasks.length}件）`;
   };
@@ -96,8 +96,8 @@ function formatMessage(schedules: FetchSchedulesManyForNotificationReturnType) {
 
   const { regularSchedules, longTermSchedules } = schedules.reduce(
     (acc, s) => {
-      const startTime = toDate(s.startTime, { timeZone });
-      const endTime = toDate(s.endTime, { timeZone });
+      const startTime = toZonedTime(s.startTime, timeZone);
+      const endTime = toZonedTime(s.endTime, timeZone);
       const category = isRegularSchedule(startTime, endTime)
         ? "regularSchedules"
         : "longTermSchedules";
@@ -107,7 +107,7 @@ function formatMessage(schedules: FetchSchedulesManyForNotificationReturnType) {
         [category]: [...acc[category], formatSchedule(s)],
       };
     },
-    { regularSchedules: [], longTermSchedules: [] },
+    { regularSchedules: [], longTermSchedules: [] }
   );
 
   const tomorrowDateStr = format(tomorrowStart, "yyyy/MM/dd EEEE", {
