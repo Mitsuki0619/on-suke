@@ -18,7 +18,6 @@ import { useActionState, useState } from "react";
 export function DeleteScheduleButton({ scheduleId }: { scheduleId: string }) {
   const [, action, isPending] = useActionState(async () => {
     await deleteSchedule(scheduleId);
-    location.href = "/schedule/calendar";
   }, undefined);
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);

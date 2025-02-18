@@ -34,8 +34,8 @@ export function TodaysSchedulesWidgetClient({
   };
 
   return (
-    <Card className="overflow-hidden bg-gradient-to-br from-orange-50 to-yellow-100 shadow-2xl">
-      <CardHeader className="bg-gradient-to-r from-orange-300 to-yellow-300 py-2">
+    <Card className="h-[562px] overflow-hidden bg-gradient-to-br from-orange-50 to-yellow-100 shadow-2xl">
+      <CardHeader className="bg-gradient-to-r from-orange-400 to-amber-300 py-2 sticky top-0">
         <CardTitle className="text-2xl font-bold text-white">
           今日の予定
         </CardTitle>

@@ -1,5 +1,6 @@
 "use server";
 
+import { TIME_ZONE } from "@/const/config";
 import type { FetchSchedulesManyForNotificationReturnType } from "@/features/notification/actions/fetchSchedulesManyForNotification";
 import lineMessagingApiClient from "@/lib/line-bot-sdk";
 import {
@@ -39,8 +40,7 @@ export async function sendScheduleMessage(
 }
 
 function formatMessage(schedules: FetchSchedulesManyForNotificationReturnType) {
-  const timeZone = "Asia/Tokyo";
-  const nowInJapan = toZonedTime(new Date(), timeZone);
+  const nowInJapan = toZonedTime(new Date(), TIME_ZONE);
 
   const tomorrowStart = startOfDay(addDays(nowInJapan, 1));
   const tomorrowEnd = endOfDay(tomorrowStart);
@@ -84,8 +84,8 @@ function formatMessage(schedules: FetchSchedulesManyForNotificationReturnType) {
   const formatSchedule = (
     s: FetchSchedulesManyForNotificationReturnType[number],
   ) => {
-    const startTime = toZonedTime(s.startTime, timeZone);
-    const endTime = toZonedTime(s.endTime, timeZone);
+    const startTime = toZonedTime(s.startTime, TIME_ZONE);
+    const endTime = toZonedTime(s.endTime, TIME_ZONE);
     const timeStr = getTimeString(startTime, endTime);
     return `- ${timeStr} : ${s.title}（未完了のタスク${s.tasks.length}件）`;
   };
@@ -96,8 +96,8 @@ function formatMessage(schedules: FetchSchedulesManyForNotificationReturnType) {
 
   const { regularSchedules, longTermSchedules } = schedules.reduce(
     (acc, s) => {
-      const startTime = toZonedTime(s.startTime, timeZone);
-      const endTime = toZonedTime(s.endTime, timeZone);
+      const startTime = toZonedTime(s.startTime, TIME_ZONE);
+      const endTime = toZonedTime(s.endTime, TIME_ZONE);
       const category = isRegularSchedule(startTime, endTime)
         ? "regularSchedules"
         : "longTermSchedules";
