@@ -6,6 +6,7 @@ import { TodaysSchedulesWidget } from "@/features/dashboard/components/TodaysSch
 import { WeatherWidget } from "@/features/dashboard/components/WeatherWidget/WeatherWidget";
 import { LayoutDashboard } from "lucide-react";
 import { Suspense } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export function DashboardPage() {
   return (
@@ -15,7 +16,7 @@ export function DashboardPage() {
         <h1 className="text-2xl font-bold text-orange-950">ダッシュボード</h1>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div className="md:col-span-2">
+        <div className="md:col-span-2 h-[562px]">
           <Suspense
             fallback={
               <LoadingOverlay isLoading message="Loading...">
@@ -26,8 +27,23 @@ export function DashboardPage() {
             <TodaysSchedulesWidget />
           </Suspense>
         </div>
-        <div>
-          <Suspense>
+        <div className="h-[562px]">
+          <Suspense
+            fallback={
+              <LoadingOverlay isLoading message="Loading...">
+                <Card className="h-[562px] bg-gradient-to-br from-orange-50 to-amber-100 shadow-2xl">
+                  <CardHeader className="bg-gradient-to-r from-orange-400 to-amber-300 py-2">
+                    <CardTitle className="text-2xl font-bold text-white">
+                      タスク一覧
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="flex items-center justify-center h-full">
+                    {" "}
+                  </CardContent>
+                </Card>
+              </LoadingOverlay>
+            }
+          >
             <TaskListWidget />
           </Suspense>
         </div>
