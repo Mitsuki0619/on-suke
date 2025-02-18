@@ -15,7 +15,7 @@ const navItems = [
     icon: Calendar,
     label: "予定表",
   },
-  { href: "/tasks", icon: ListTodo, label: "タスク一覧" },
+  // { href: "/tasks", icon: ListTodo, label: "タスク一覧" },
   { href: "/settings", slug: "settings", icon: Settings, label: "設定" },
 ];
 
