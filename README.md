@@ -1,37 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# on-suke | オンスケ　-予定管理アプリ-
 
-## Getting Started
+※実際に運用中のURL：https://on-suke.vercel.app/
 
-First, run the development server:
+## 起動手順
+本リポジトリをクローン後、envに環境変数を記述し、下記のコマンドを実行する
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
+```
+pnpm i
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+※nodeはv22.11.0, pnpmは9.15.4
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## アプリの説明
+予定の登録、編集、削除といった基本的な予定表機能に加え、カレンダーで確認できる機能や、予定に対してタスクが登録できたり、予定のカテゴリを登録できたりするアプリ。
+LINEアカウントと連携することで、毎日18時ごろに明日の予定がLINEのon-sukeアカウントから通知される。
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 主要選定技術と意見
 
-## Learn More
+**アプリケーション**
+- React：特に言うことはない。SvelteとかVue使うなら安定のReactを使う。
 
-To learn more about Next.js, take a look at the following resources:
+- Next.js(App Router)：このアプリを作った根本的な理由がNext.jsのApp Routerを素振りしたいからである。したがって確定選定。DynamicIOも使いたかったが、Intercepting Routesを使ってみたく、現状併用するとビルドが落ちるらしいので断念。またいつか使いたい。
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Conform：サーバーアクションに対応しているのがこれだけっぽいのと、単純に以前使った際に体験が良かったため選定。React Hook Formが個人的にはあまり好きでないことからもConformは今後も使っていきたい。
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- zod：バリデーションに使用。軽量のvalibotも考えられたがまだzodが安牌な気がしたため選定。
 
-## Deploy on Vercel
+- TailwindCSS：正直プロダクトではCSS Modulesを素直に使いたいが、これは個人開発なので気楽にスタイリングできるTailwindを選定。プロダクトで使うなら気楽さではなくデザインシステムの利点を最大限に活用する使い方をしたい。
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- ShadcnUI：これも個人開発であまりスタイリングに時間を割きたくなかったため選定。とはいえかなり開発者体験はいいと感じた。余談だが、base UIがでてきたのでradixからちゃんと移行されるのか心配。
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-# on-suke
+- Prisma：正直この選定は若干しくじったような気がする。理由は次のAccelerateに通ずる。
+
+- Prisma Accelerate：PrismaはTCP接続ベースのORMライブラリだが、VercelのEdge FunctionでDBにアクセスしたかったため、その場合TCPではなくHTTPベースとなり、それを実現するにはPrisma Accelerateが必要だったため導入。ただ、DrizzleORMは最初からエッジで動くらしく、Drizzleにしたらよかったとちょっと後悔した。とはいえ明らかにPrismaのほうが慣れている。
+
+**インフラ**
+- Prisma Postgres：エッジからの接続を可能とするPostgresのDBかつ、現状日本リージョンがあるのはこのサービスだであるため選定。ただ、超新進気鋭なので普通にsupabaseとかのほうが安心できる。
+- Vercel：Next.js使うならVercelが最適だろうということで選定。CronもVercel Cron Jobsを使ってる。
+
+**開発環境**
+- Biome.js：とにかく早くていい。懸念だった依存配列のクイックフィックス機能だが、もうReact Compilerを使うためメモ化もしないし、useEffectなんてめったに使わないからこれからはBiomeでいいと思う。いや、Denoが流行ればDenoのビルトインリンターもあるかも。。。？
+- React Compiler：まだベータとはいえ、導入するメリットのほうがでかいと感じるため採用。もうプロダクトでも使っていいとは思ってる。
+- Turbopack：試したかっただけ。esmっていうのもあるだろうけどviteのほうがhmrが圧倒的に早そう。RollDownがかなり楽しみ。
+
+## まだ改善が見込める点・未実装機能
+- SlackやDiscordとも連携できるようにしたい。
+- できれば予定が始まる10分前にも通知したい（が、Cronはホビープランだと1日1回なのでCronの根底を変えないと無理そう）
+- タスク一覧画面を別途作りたい。
+- レスポンシブ対応したい。ただこれやるならReactNativeとExpoの素振りがてらアプリ化したい。
+- 予定表の絞り込み条件充実させる（カテゴリ選択、日付プルダウン等）
+- DynamicIOを導入し、キャッシュを活用してパフォーマンスを上げたい。
+- intercepting routesバグが多いのでやめたさがある
+- 処理が遅いのでEdge FunctionのCPUグレード上げたい（無料じゃ無理）
+

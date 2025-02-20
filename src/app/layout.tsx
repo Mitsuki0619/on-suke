@@ -13,8 +13,8 @@ import { Providers } from "./providers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Calendar App",
-  description: "A simple calendar application",
+  title: "on-suke | ダッシュボード",
+  description: "on-sukeのダッシュボードページ",
 };
 
 export default function Layout({
@@ -26,6 +26,7 @@ export default function Layout({
 }) {
   return (
     <html lang="ja" className={notoSansJp.variable}>
+      <link rel="icon" href="/on-suke.svg" sizes="any" />
       <body className={`${inter.className} text-orange-950`}>
         <Providers>
           <RootLayout>

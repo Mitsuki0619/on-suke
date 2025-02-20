@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { AccountPopover } from "@/components/ui/account-popover";
-import { Calendar, LayoutDashboard, ListTodo, Settings } from "lucide-react";
+import { Calendar, LayoutDashboard, Settings } from "lucide-react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { cn } from "@/lib/utils";
@@ -15,7 +15,6 @@ const navItems = [
     icon: Calendar,
     label: "予定表",
   },
-  // { href: "/tasks", icon: ListTodo, label: "タスク一覧" },
   { href: "/settings", slug: "settings", icon: Settings, label: "設定" },
 ];
 
