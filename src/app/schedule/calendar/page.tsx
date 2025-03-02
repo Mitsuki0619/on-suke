@@ -9,6 +9,8 @@ export const metadata: Metadata = {
   description: "カレンダーで予定が確認できるページ",
 };
 
+export const experimental_ppr = true;
+
 export default function Index({
   searchParams,
 }: {

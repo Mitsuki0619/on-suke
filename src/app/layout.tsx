@@ -1,12 +1,10 @@
-import { FlashMessage } from "@/components/functional/FlashMessage/flash-message.server";
 import RootLayout from "@/components/layout/RootLayout/RootLayout";
-import { Toaster } from "@/components/ui/toaster";
 import "@/styles/calendar-custom.css";
 import "@/styles/globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "react-big-calendar/lib/css/react-big-calendar.css";
 import type { ReactNode } from "react";
+import "react-big-calendar/lib/css/react-big-calendar.css";
 import { notoSansJp } from "../assets/fonts/notoSansJp";
 import { Providers } from "./providers";
 
@@ -33,8 +31,6 @@ export default function Layout({
             {modal}
             {children}
           </RootLayout>
-          <FlashMessage />
-          <Toaster />
         </Providers>
       </body>
     </html>

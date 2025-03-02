@@ -3,7 +3,6 @@
 import { auth } from "@/auth";
 import { fetchSchedulesManySchema } from "@/features/schedule/schemas/fetchSchedulesManySchema";
 import prisma from "@/lib/prisma";
-import { flash } from "@/utils/flash";
 import { AuthError } from "next-auth";
 import "server-only";
 
@@ -49,9 +48,7 @@ export async function fetchSchedulesMany(params: { from: string; to: string }) {
       },
     });
     return schedules;
-  } catch (e) {
-    await flash({ title: "予定の取得に失敗しました。" });
-  }
+  } catch (e) {}
 }
 
 export type FetchSchedulesManyReturnType = Awaited<

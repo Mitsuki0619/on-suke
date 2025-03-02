@@ -6,6 +6,8 @@ export const metadata: Metadata = {
   description: "on-sukeの各種設定リンク一覧ページ",
 };
 
+export const experimental_ppr = true;
+
 export default function Index() {
   return <SettingsMenuPage />;
 }

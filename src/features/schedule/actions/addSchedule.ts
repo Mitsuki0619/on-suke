@@ -3,9 +3,9 @@
 import { auth } from "@/auth";
 import { addScheduleSchema } from "@/features/schedule/schemas/addScheduleSchema";
 import prisma from "@/lib/prisma";
-import { flash } from "@/utils/flash";
 import { parseWithZod } from "@conform-to/zod";
 import { AuthError } from "next-auth";
+import { revalidatePath } from "next/cache";
 import "server-only";
 
 export async function addSchedule(_: unknown, formData: FormData) {
@@ -66,9 +66,9 @@ export async function addSchedule(_: unknown, formData: FormData) {
         },
       },
     });
-    await flash({ title: "予定が追加されました！" });
+    revalidatePath("/schedule/calendar");
   } catch (e) {
-    await flash({ title: "予定の登録中にエラーが発生しました。" });
+    console.log(e);
     throw e;
   }
   return submission.reply({ resetForm: true });
