@@ -1,4 +1,4 @@
-import { FlashMessage } from "@/components/functional/FlashMessage/flash-message.server";
+// import { FlashMessage } from "@/components/functional/FlashMessage/flash-message.server";
 import RootLayout from "@/components/layout/RootLayout/RootLayout";
 import { Toaster } from "@/components/ui/toaster";
 import "@/styles/calendar-custom.css";
@@ -33,7 +33,7 @@ export default function Layout({
             {modal}
             {children}
           </RootLayout>
-          <FlashMessage />
+          {/* <FlashMessage /> */}
           <Toaster />
         </Providers>
       </body>
