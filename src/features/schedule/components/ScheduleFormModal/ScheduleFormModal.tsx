@@ -35,7 +35,7 @@ export function ScheduleFormModal({
               back();
             }
           }}
-          className="w-[95vw] max-w-4xl max-h-[90vh] overflow-auto p-4 sm:p-6 md:p-8 rounded-lg sm:rounded-xl md:rounded-2xl"
+          className="w-[90vw] max-w-4xl max-h-[75vh] lg:max-h-[90vh] overflow-auto p-4 sm:p-6 md:p-8 rounded-lg sm:rounded-xl md:rounded-2xl"
         >
           <DialogHeader className="mb-4 sm:mb-6">
             <DialogTitle className="flex items-center gap-2 text-lg sm:text-xl md:text-2xl">

@@ -7,7 +7,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col md:flex-row h-screen">
+    <div className="flex flex-col md:flex-row h-screen pt-16 pb-10">
       <Sidebar />
       <main className="flex-1 overflow-y-auto bg-gradient-to-br from-orange-50 via-orange-100 to-yellow-100 dark:from-orange-900 dark:via-orange-800 dark:to-yellow-900 transition-colors duration-500 pt-8 px-4 pb-20 md:p-8">
         <div className="relative min-h-[calc(100vh-5rem)] md:min-h-full">

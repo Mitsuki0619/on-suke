@@ -27,7 +27,7 @@ export default function RadioGroupBadge({
     <RadioGroup
       value={selectedOption}
       onValueChange={setSelectedOption}
-      className="flex"
+      className="flex flex-wrap gap-2"
     >
       {options.map((option) => (
         <div key={option.value} className="flex items-center">
@@ -47,7 +47,7 @@ export default function RadioGroupBadge({
           >
             <Badge
               variant={selectedOption === option.value ? "default" : "outline"}
-              className="text-sm"
+              className="text-sm whitespace-nowrap"
               color={selectedOption === option.value ? option.color : "#f8f8f8"}
             >
               {option.label}
