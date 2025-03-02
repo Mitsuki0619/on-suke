@@ -11,14 +11,24 @@ import {
   startOfMonth,
   startOfWeek,
 } from "date-fns";
+import {
+  searchParamsSchema,
+  type ScheduleCalendarPageSearchParams,
+} from "@/features/schedule/components/ScheduleCalendarPage/ScheduleCalendarPage";
 
 export async function ScheduleCalendar({
-  date,
-  view,
+  searchParams,
 }: {
-  date: string | undefined;
-  view: "month" | "week" | "day" | undefined;
+  searchParams: ScheduleCalendarPageSearchParams;
 }) {
+  const params = await searchParams;
+
+  const { data, success, error } = searchParamsSchema.safeParse({ ...params });
+  if (!success) {
+    throw new Error(error.message);
+  }
+  const { date, view } = data;
+
   const targetDate = date ? new Date(date) : new Date();
   const startOfPeriod =
     view === "month"

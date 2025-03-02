@@ -6,7 +6,7 @@ import { localizer } from "@/lib/date-fns";
 import { getContrastColor } from "@/utils/getContrastColor";
 import { format } from "date-fns";
 import Link from "next/link";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Calendar, type View } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
@@ -21,7 +21,6 @@ export function ScheduleCalendarClient({
 }) {
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
 
   const validDate = date ? new Date(date) : new Date();
   const validView = view ?? "month";
@@ -39,7 +38,13 @@ export function ScheduleCalendarClient({
   });
 
   const createQueryString = (name: string, value: string) => {
-    const params = new URLSearchParams(searchParams.toString());
+    const params = new URLSearchParams();
+    if (date) {
+      params.set("date", date);
+    }
+    if (view) {
+      params.set("view", view);
+    }
     params.set(name, value);
     return params.toString();
   };
