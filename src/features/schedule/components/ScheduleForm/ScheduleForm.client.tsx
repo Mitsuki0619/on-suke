@@ -122,7 +122,7 @@ export function ScheduleFormClient({
       id={form.id}
       onSubmit={form.onSubmit}
       action={action}
-      className="bg-white p-6 rounded-lg shadow-md"
+      className="bg-white"
       key={form.key}
     >
       {type === "edit" && (
@@ -132,10 +132,13 @@ export function ScheduleFormClient({
           name="scheduleId"
         />
       )}
-      <div className="space-y-6">
+      <div className="space-y-4 sm:space-y-6">
         {/* タイトル入力 */}
         <div className="space-y-2">
-          <Label htmlFor={fields.title.id} className="text-lg font-semibold">
+          <Label
+            htmlFor={fields.title.id}
+            className="text-base sm:text-lg font-semibold"
+          >
             タイトル
           </Label>
           <Input
@@ -149,7 +152,7 @@ export function ScheduleFormClient({
 
         {/* カテゴリ選択 */}
         <div className="space-y-2">
-          <Label className="text-lg font-semibold">カテゴリ</Label>
+          <Label className="text-base sm:text-lg font-semibold">カテゴリ</Label>
           <div className="flex flex-wrap gap-2">
             <RadioGroupBadge
               options={categoryOptions}
@@ -164,7 +167,7 @@ export function ScheduleFormClient({
         <div className="space-y-2">
           <Label
             htmlFor={fields.description.id}
-            className="text-lg font-semibold"
+            className="text-base sm:text-lg font-semibold"
           >
             概要
           </Label>
@@ -179,11 +182,11 @@ export function ScheduleFormClient({
         </div>
 
         {/* 開始・終了日時 */}
-        <div className="flex gap-8">
-          <div className="space-y-2 w-1/2">
+        <div className="flex flex-col sm:flex-row gap-4 sm:gap-8">
+          <div className="space-y-2 w-full sm:w-1/2">
             <Label
               htmlFor={fields.startTime.id}
-              className="text-lg font-semibold"
+              className="text-base sm:text-lg font-semibold"
             >
               開始日時
             </Label>
@@ -194,10 +197,10 @@ export function ScheduleFormClient({
             />
             <FieldErrors errors={fields.startTime.errors} />
           </div>
-          <div className="space-y-2 w-1/2">
+          <div className="space-y-2 w-full sm:w-1/2">
             <Label
               htmlFor={fields.endTime.id}
-              className="text-lg font-semibold"
+              className="text-base sm:text-lg font-semibold"
             >
               終了日時
             </Label>
@@ -213,13 +216,13 @@ export function ScheduleFormClient({
         <Accordion type="single" className="overflow-hidden rounded-lg border">
           <AccordionItem value="item-1" className="border-none">
             <AccordionTrigger
-              className="hover:no-underline text-lg font-semibold px-4 py-2 bg-theme-orange-100"
+              className="hover:no-underline text-base sm:text-lg font-semibold px-3 sm:px-4 py-2 bg-theme-orange-100"
               onClick={() => setIsOpenAccordion((prev) => !prev)}
             >
               詳細情報
             </AccordionTrigger>
             <AccordionContent
-              className="bg-theme-orange-100/50 p-6 space-y-6"
+              className="bg-theme-orange-100/50 p-4 sm:p-6 space-y-4 sm:space-y-6"
               forceMount
               hidden={!isOpenAccordion}
             >
@@ -227,7 +230,7 @@ export function ScheduleFormClient({
               <div className="space-y-2">
                 <Label
                   htmlFor={fields.note.id}
-                  className="text-lg font-semibold"
+                  className="text-base sm:text-lg font-semibold"
                 >
                   メモ
                 </Label>
@@ -243,7 +246,9 @@ export function ScheduleFormClient({
 
               {/* タスク一覧 */}
               <div className="space-y-4">
-                <Label className="text-lg font-semibold">タスク</Label>
+                <Label className="text-base sm:text-lg font-semibold">
+                  タスク
+                </Label>
                 <div className="space-y-4">
                   {tasks.map((task, index) => (
                     <TaskItem
@@ -275,7 +280,9 @@ export function ScheduleFormClient({
 
               {/* URL一覧 */}
               <div className="space-y-4">
-                <Label className="text-lg font-semibold">URL</Label>
+                <Label className="text-base sm:text-lg font-semibold">
+                  URL
+                </Label>
                 <div className="space-y-4">
                   {urls.map((urlItem, index) => (
                     <UrlItem
@@ -305,7 +312,7 @@ export function ScheduleFormClient({
       </div>
 
       {/* 登録 */}
-      <div className="flex mt-8 justify-between w-full">
+      <div className="flex flex-col sm:flex-row mt-6 sm:mt-8 justify-between w-full gap-4">
         {initialValues?.scheduleId &&
           (isDeleted ? (
             <RestoreScheduleButton scheduleId={initialValues.scheduleId} />
@@ -314,7 +321,7 @@ export function ScheduleFormClient({
           ))}
         <Button
           type="submit"
-          className="text-lg px-6 py-3 ml-auto"
+          className="text-base sm:text-lg px-4 sm:px-6 py-2 sm:py-3 w-full sm:w-auto ml-0 sm:ml-auto"
           disabled={isPending}
         >
           {type === "edit" ? (
@@ -340,19 +347,20 @@ function TaskItem({ tasks, task, form, index }: TaskItemProps) {
   const { key: _2, ...priorityProps } = getSelectProps(priority);
 
   return (
-    <Card className="p-4 border rounded-lg shadow-sm space-y-4">
-      <div className="flex gap-4">
+    <Card className="p-3 sm:p-4 border rounded-lg shadow-sm space-y-3 sm:space-y-4">
+      <div className="flex items-center gap-2">
         <div className="flex-1">
           <Input
             {...getInputProps(title, { type: "text" })}
             placeholder="タスクタイトル"
             key={title.key}
-            className="text-lg"
+            className="w-full"
           />
           <FieldErrors errors={title.errors} />
         </div>
         <Button
           variant="outline"
+          className="p-2 h-10 w-10 flex items-center justify-center"
           {...form.remove.getButtonProps({
             name: tasks.name,
             index: index,
@@ -361,8 +369,8 @@ function TaskItem({ tasks, task, form, index }: TaskItemProps) {
           <TrashIcon className="h-4 w-4" />
         </Button>
       </div>
-      <div className="flex gap-4">
-        <div className="w-1/2">
+      <div className="flex flex-col sm:flex-row gap-4">
+        <div className="w-full sm:w-1/2">
           <Label className="text-sm">ステータス</Label>
           <Select
             {...statusProps}
@@ -387,7 +395,7 @@ function TaskItem({ tasks, task, form, index }: TaskItemProps) {
           </Select>
           <FieldErrors errors={status.errors} />
         </div>
-        <div className="w-1/2">
+        <div className="w-full sm:w-1/2">
           <Label className="text-sm">優先度</Label>
           <Select
             {...priorityProps}
@@ -431,14 +439,24 @@ function UrlItem({ urls, urlItem, form, index }: UrlItemProps) {
   const { name, url } = urlItem.getFieldset();
 
   return (
-    <Card className="p-4 border rounded-lg shadow-sm flex gap-4">
-      <div className="flex-1">
+    <Card className="p-3 sm:p-4 border rounded-lg shadow-sm flex flex-col sm:flex-row gap-2 sm:gap-4">
+      <div className="flex-1 flex items-center gap-2 sm:block">
         <Input
           {...getInputProps(name, { type: "text" })}
           placeholder="名前"
           key={name.key}
-          className="mb-2"
+          className="flex-1 sm:w-full mb-0 sm:mb-2"
         />
+        <Button
+          variant="outline"
+          className="p-2 h-10 w-10 flex items-center justify-center sm:hidden"
+          {...form.remove.getButtonProps({
+            name: urls.name,
+            index: index,
+          })}
+        >
+          <TrashIcon className="h-4 w-4" />
+        </Button>
         <FieldErrors errors={name.errors} />
       </div>
       <div className="flex-1">
@@ -452,6 +470,7 @@ function UrlItem({ urls, urlItem, form, index }: UrlItemProps) {
       </div>
       <Button
         variant="outline"
+        className="hidden sm:block w-full sm:w-auto mt-2 sm:mt-0"
         {...form.remove.getButtonProps({
           name: urls.name,
           index: index,

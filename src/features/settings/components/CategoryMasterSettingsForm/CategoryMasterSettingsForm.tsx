@@ -1,7 +1,6 @@
 "use client";
 
 import { Badge } from "@/components/ui/badge";
-import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import type { FetchAllCategoriesReturnType } from "@/features/settings/actions/fetchAllCategories";
 import { updateCategories } from "@/features/settings/actions/updateCategories";
@@ -52,12 +51,13 @@ export function CategoryMasterSettingsForm({
   const categoryFields = fields.items.getFieldList();
 
   return (
-    <Card className="p-6">
+    <div className="space-y-6">
       <form
         id={form.id}
         onSubmit={form.onSubmit}
         action={action}
         key={form.key}
+        className="space-y-6"
       >
         <ul className="space-y-4">
           {categoryFields.map((c, i) => (
@@ -71,7 +71,7 @@ export function CategoryMasterSettingsForm({
           ))}
         </ul>
         <FieldErrors errors={fields.items.errors} className="mt-4" />
-        <div className="mt-4">
+        <div>
           <Button
             variant="outline"
             className="w-full"
@@ -85,18 +85,18 @@ export function CategoryMasterSettingsForm({
             カテゴリを追加（最大8個）
           </Button>
         </div>
-        <div className="flex justify-end mt-8">
+        <div className="flex justify-end">
           <Button
             type="submit"
-            className="text-lg px-6 py-3"
+            className="text-base sm:text-lg px-4 sm:px-6 py-2 sm:py-3"
             disabled={isPending}
           >
-            <CheckCircle className="mr-2 h-5 w-5" />
+            <CheckCircle className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
             保存
           </Button>
         </div>
       </form>
-    </Card>
+    </div>
   );
 }
 
@@ -119,11 +119,11 @@ function CategoryInputItem({
     color: color.initialValue,
   });
   return (
-    <li className="flex items-start">
+    <li className="flex items-start gap-2 sm:gap-4 w-full">
       {id.value != null && (
         <input type="hidden" value={id.value} name={id.name} />
       )}
-      <div className="flex-grow grid grid-cols-[1fr,auto,150px] gap-2 items-start">
+      <div className="flex-grow grid grid-cols-[1fr,auto] sm:grid-cols-[1fr,auto,150px] gap-2 items-start w-full">
         <div className="w-full">
           <Input
             {...getInputProps(name, { type: "text" })}
@@ -150,7 +150,7 @@ function CategoryInputItem({
           />
           <FieldErrors errors={color.errors} />
         </div>
-        <div className="h-10 flex items-center justify-center">
+        <div className="h-10 items-center justify-center hidden sm:flex">
           <Badge className="truncate max-w-full" color={previewState.color}>
             {previewState.name || "カテゴリ"}
           </Badge>
@@ -163,7 +163,7 @@ function CategoryInputItem({
           name: categories.name,
           index: index,
         })}
-        className="flex-shrink-0"
+        className="flex-shrink-0 h-10"
         aria-label="Remove category"
       >
         <TrashIcon className="h-4 w-4" />
