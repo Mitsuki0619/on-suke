@@ -30,18 +30,13 @@ export const searchParamsSchema = z.object({
     ),
 });
 
-export async function ScheduleCalendarPage({
+export const experimental_ppr = true;
+
+export function ScheduleCalendarPage({
   searchParams,
 }: {
   searchParams: ScheduleCalendarPageSearchParams;
 }) {
-  const { date, view } = await searchParams;
-
-  const { data, success, error } = searchParamsSchema.safeParse({ date, view });
-  if (!success) {
-    throw new Error(error.message);
-  }
-
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-2 mb-3">
@@ -49,7 +44,7 @@ export async function ScheduleCalendarPage({
         <h1 className="text-2xl font-bold text-orange-950">カレンダー</h1>
       </div>
       <Button className="mb-4" asChild>
-        <Link href={`/schedule/add?date=${date || ""}&view=${view || ""}`}>
+        <Link href="/schedule/add">
           <PlusCircle />
           予定を追加
         </Link>
@@ -57,15 +52,11 @@ export async function ScheduleCalendarPage({
       <Suspense
         fallback={
           <LoadingOverlay isLoading message="Loading...">
-            <ScheduleCalendarClient
-              schedules={[]}
-              date={data.date}
-              view={data.view}
-            />
+            <ScheduleCalendarClient schedules={[]} date="" view="month" />
           </LoadingOverlay>
         }
       >
-        <ScheduleCalendar date={data.date} view={data.view} />
+        <ScheduleCalendar searchParams={searchParams} />
       </Suspense>
     </div>
   );
