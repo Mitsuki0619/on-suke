@@ -12,10 +12,12 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { deleteSchedule } from "@/features/schedule/actions/deleteSchedule";
+import { useRouter } from "next/navigation";
 
 import { useActionState, useState } from "react";
 
 export function DeleteScheduleButton({ scheduleId }: { scheduleId: string }) {
+  const router = useRouter();
   const [, action, isPending] = useActionState(async () => {
     await deleteSchedule(scheduleId);
   }, undefined);

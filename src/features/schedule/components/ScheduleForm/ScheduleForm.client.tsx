@@ -43,6 +43,7 @@ import {
 import { parseWithZod } from "@conform-to/zod";
 import type { Schedule } from "@prisma/client";
 import { CheckCircle, Plus, PlusCircle, TrashIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useActionState, useState } from "react";
 
 type FormError = string[];
@@ -83,8 +84,14 @@ export function ScheduleFormClient({
   }[];
 }) {
   const [isOpenAccordion, setIsOpenAccordion] = useState(false);
+  const router = useRouter();
+  const submitFunction = async (_: unknown, formData: FormData) => {
+    const res = await eventMutateAction(_, formData);
+    router.back();
+    return res;
+  };
   const [lastResult, action, isPending] = useActionState(
-    eventMutateAction,
+    submitFunction,
     undefined,
   );
   const [form, fields] = useForm({

@@ -3,7 +3,6 @@
 import { TIME_ZONE } from "@/const/config";
 import { checkAuth } from "@/features/auth/actions/checkAuth";
 import prisma from "@/lib/prisma";
-import { flash } from "@/utils/flash";
 import { addDays, endOfDay } from "date-fns";
 import { toZonedTime } from "date-fns-tz";
 
@@ -79,9 +78,7 @@ export async function fetchRecentlyTasks() {
       expiredTasks,
       otherTasks,
     };
-  } catch (e) {
-    await flash({ title: "タスクの取得に失敗しました。" });
-  }
+  } catch (e) {}
 }
 
 export type FetchRecentlyTasksReturnType = Awaited<

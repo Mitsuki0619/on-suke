@@ -10,6 +10,7 @@ export async function GET() {
   await Promise.all(
     lineConnectedUsers.map(async (user) => {
       const schedules = await fetchSchedulesManyForNotification(user.id);
+      if (schedules.length === 0) return;
       await sendScheduleMessage(user.lineUserId, schedules);
     }),
   );

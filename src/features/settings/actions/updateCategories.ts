@@ -4,7 +4,6 @@ import { LogicException } from "@/errors";
 import { checkAuth } from "@/features/auth/actions/checkAuth";
 import { updateCategoriesSchema } from "@/features/settings/schemas/updateCategoriesSchema";
 import prisma from "@/lib/prisma";
-import { flash } from "@/utils/flash";
 import { parseWithZod } from "@conform-to/zod";
 import { revalidatePath } from "next/cache";
 
@@ -96,10 +95,7 @@ export async function updateCategories(_: unknown, formData: FormData) {
         }
       }
     });
-    await flash({ title: "カテゴリが更新されました！" });
     revalidatePath("/settings/master/category");
     return submission.reply({ resetForm: true });
-  } catch (e) {
-    await flash({ title: "カテゴリの更新中にエラーが発生しました。" });
-  }
+  } catch (e) {}
 }

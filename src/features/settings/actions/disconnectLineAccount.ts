@@ -3,7 +3,6 @@
 import { LogicException } from "@/errors";
 import { checkAuth } from "@/features/auth/actions/checkAuth";
 import prisma from "@/lib/prisma";
-import { flash } from "@/utils/flash";
 import { revalidatePath } from "next/cache";
 
 export async function disconnectLineAccount() {
@@ -17,6 +16,5 @@ export async function disconnectLineAccount() {
       userId: user.id,
     },
   });
-  await flash({ title: "LINEとの連携を解除しました" });
   revalidatePath("/settings/user");
 }
