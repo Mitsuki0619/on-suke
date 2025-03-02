@@ -35,20 +35,24 @@ export function ScheduleFormModal({
               back();
             }
           }}
-          className="max-w-4xl max-h-[90vh] overflow-auto"
+          className="w-[95vw] max-w-4xl max-h-[90vh] overflow-auto p-4 sm:p-6 md:p-8 rounded-lg sm:rounded-xl md:rounded-2xl"
         >
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
+          <DialogHeader className="mb-4 sm:mb-6">
+            <DialogTitle className="flex items-center gap-2 text-lg sm:text-xl md:text-2xl">
               {type === "add" ? (
-                <PlusCircle className="h-6 w-6 text-orange-500" />
+                <PlusCircle className="h-5 w-5 sm:h-6 sm:w-6 text-orange-500" />
               ) : (
-                <Pencil className="h-6 w-6 text-orange-500" />
+                <Pencil className="h-5 w-5 sm:h-6 sm:w-6 text-orange-500" />
               )}
               {type === "add" ? "予定の登録" : "予定の編集"}
             </DialogTitle>
-            <DialogDescription> </DialogDescription>
+            <DialogDescription className="text-sm sm:text-base mt-1 sm:mt-2">
+              {type === "add"
+                ? "新しい予定を登録します。"
+                : "既存の予定を編集します。"}
+            </DialogDescription>
           </DialogHeader>
-          {children}
+          <div>{children}</div>
         </DialogContent>
       </Dialog>
     </>

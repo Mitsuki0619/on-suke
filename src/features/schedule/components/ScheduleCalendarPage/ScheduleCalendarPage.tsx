@@ -38,17 +38,24 @@ export function ScheduleCalendarPage({
   searchParams: ScheduleCalendarPageSearchParams;
 }) {
   return (
-    <div className="space-y-6">
-      <div className="flex items-center gap-2 mb-3">
-        <Calendar className="h-6 w-6 text-orange-500" />
-        <h1 className="text-2xl font-bold text-orange-950">カレンダー</h1>
+    <div className="space-y-4 sm:space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-6">
+        <div className="flex items-center gap-2">
+          <Calendar className="h-5 w-5 sm:h-6 sm:w-6 text-orange-500" />
+          <h1 className="text-xl sm:text-2xl font-bold text-orange-950">
+            カレンダー
+          </h1>
+        </div>
+        <Button className="w-full sm:w-auto" asChild>
+          <Link
+            href="/schedule/add"
+            className="flex items-center justify-center gap-2"
+          >
+            <PlusCircle className="h-5 w-5" />
+            <span>予定を追加</span>
+          </Link>
+        </Button>
       </div>
-      <Button className="mb-4" asChild>
-        <Link href="/schedule/add">
-          <PlusCircle />
-          予定を追加
-        </Link>
-      </Button>
       <Suspense
         fallback={
           <LoadingOverlay isLoading message="Loading...">
@@ -56,7 +63,11 @@ export function ScheduleCalendarPage({
           </LoadingOverlay>
         }
       >
-        <ScheduleCalendar searchParams={searchParams} />
+        <div className="overflow-x-auto">
+          <div className="min-w-full sm:min-w-0">
+            <ScheduleCalendar searchParams={searchParams} />
+          </div>
+        </div>
       </Suspense>
     </div>
   );
