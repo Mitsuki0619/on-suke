@@ -3,6 +3,7 @@
 import { checkAuth } from "@/features/auth/actions/checkAuth";
 import { logout } from "@/features/auth/actions/logout";
 import prisma from "@/lib/prisma";
+import { flash } from "@/utils/flash";
 import { revalidatePath } from "next/cache";
 
 export async function deleteUser() {
@@ -13,5 +14,6 @@ export async function deleteUser() {
     },
   });
   await logout();
+  await flash({ title: "アカウントを削除しました。" });
   revalidatePath("/auth/sign-in");
 }
