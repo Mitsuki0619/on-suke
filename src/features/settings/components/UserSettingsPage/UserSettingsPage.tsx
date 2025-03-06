@@ -2,9 +2,10 @@ import { checkAuth } from "@/features/auth/actions/checkAuth";
 import { fetchAllProviderAccounts } from "@/features/settings/actions/fetchAllProviderAccounts";
 import { DeleteAccountButton } from "@/features/settings/components/DeleteAccountButton/DeleteAccountButton";
 import { LineConnectButton } from "@/features/settings/components/LineConnectButton/LineConnectButton";
+import { LineFriendButton } from "@/features/settings/components/LineFriendButton/LineFriendButton";
 import { User } from "lucide-react";
 
-export async function UserSettingsPage() {
+export default async function UserSettingsPage() {
   const { user } = await checkAuth();
   const providers = await fetchAllProviderAccounts();
 
@@ -45,6 +46,10 @@ export async function UserSettingsPage() {
                 isLineConnected={isLineConnected}
                 canDisconnectLine={canDisconnectLine}
               />
+              <LineFriendButton />
+              <p className="text-xs text-muted-foreground text-start mt-2">
+                LINE連携を行い、on-sukeのLINE公式アカウントを友達追加すると、毎日18時ごろに明日の予定をリマインドする機能が利用できます。
+              </p>
             </div>
           </div>
           <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
