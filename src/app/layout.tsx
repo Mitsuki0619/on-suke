@@ -27,6 +27,10 @@ export default function Layout({
   return (
     <html lang="ja" className={notoSansJp.variable}>
       <link rel="icon" href="/on-suke.svg" sizes="any" />
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, viewport-fit=cover"
+      />
       <body className={`${inter.className} text-orange-950`}>
         <Providers>
           <RootLayout>
