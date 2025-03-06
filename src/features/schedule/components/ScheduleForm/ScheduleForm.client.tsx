@@ -312,7 +312,7 @@ export function ScheduleFormClient({
       </div>
 
       {/* 登録 */}
-      <div className="flex flex-col sm:flex-row mt-6 sm:mt-8 justify-between w-full gap-4">
+      <div className="flex flex-row mt-6 sm:mt-8 justify-between w-full gap-4">
         {initialValues?.scheduleId &&
           (isDeleted ? (
             <RestoreScheduleButton scheduleId={initialValues.scheduleId} />

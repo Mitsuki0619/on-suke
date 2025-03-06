@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { deleteSchedule } from "@/features/schedule/actions/deleteSchedule";
+import { Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useActionState, useState } from "react";
 
@@ -27,6 +28,7 @@ export function DeleteScheduleButton({ scheduleId }: { scheduleId: string }) {
     <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <AlertDialogTrigger asChild>
         <Button variant="destructive" className="w-full sm:w-auto">
+          <Trash />
           削除
         </Button>
       </AlertDialogTrigger>
