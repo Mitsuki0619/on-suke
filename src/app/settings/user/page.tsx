@@ -1,4 +1,4 @@
-import { UserSettingsPage } from "@/features/settings/components/UserSettingsPage/UserSettingsPage";
+import UserSettingsPage from "@/features/settings/components/UserSettingsPage/UserSettingsPage";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
