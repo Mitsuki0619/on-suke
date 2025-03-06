@@ -3,6 +3,7 @@
 import { checkAuth } from "@/features/auth/actions/checkAuth";
 import prisma from "@/lib/prisma";
 import type { Schedule } from "@prisma/client";
+import { flash } from "@/utils/flash";
 
 export async function restoreSchedule(scheduleId: Schedule["id"]) {
   const { user } = await checkAuth();
@@ -16,8 +17,8 @@ export async function restoreSchedule(scheduleId: Schedule["id"]) {
         userId: user.id,
       },
     });
+    await flash({ title: "予定を復元しました！" });
   } catch (e) {
-    console.log(e);
-    throw e;
+    await flash({ title: "予定の復元に失敗しました。" });
   }
 }

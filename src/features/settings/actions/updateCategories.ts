@@ -6,6 +6,7 @@ import { updateCategoriesSchema } from "@/features/settings/schemas/updateCatego
 import prisma from "@/lib/prisma";
 import { parseWithZod } from "@conform-to/zod";
 import { revalidatePath } from "next/cache";
+import { flash } from "@/utils/flash";
 
 type CategoryInput = {
   id?: number;
@@ -95,7 +96,10 @@ export async function updateCategories(_: unknown, formData: FormData) {
         }
       }
     });
+    await flash({ title: "カテゴリを保存しました！" });
     revalidatePath("/settings/master/category");
     return submission.reply({ resetForm: true });
-  } catch (e) {}
+  } catch (e) {
+    await flash({ title: "カテゴリの保存に失敗しました。" });
+  }
 }

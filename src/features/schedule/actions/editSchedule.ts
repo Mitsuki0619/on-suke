@@ -3,6 +3,7 @@
 import { auth } from "@/auth";
 import { editScheduleSchema } from "@/features/schedule/schemas/editScheduleSchema";
 import prisma from "@/lib/prisma";
+import { flash } from "@/utils/flash";
 import { parseWithZod } from "@conform-to/zod";
 import { AuthError } from "next-auth";
 import { revalidatePath } from "next/cache";
@@ -121,10 +122,11 @@ export async function editSchedule(_: unknown, formData: FormData) {
         },
       });
     });
+    await flash({ title: "予定を更新しました！" });
     revalidatePath("/schedule/calendar");
     return submission.reply({ resetForm: true });
   } catch (e) {
-    console.log(e);
+    await flash({ title: "予定の更新に失敗しました。" });
     throw e;
   }
 }

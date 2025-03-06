@@ -7,6 +7,8 @@ import type { ReactNode } from "react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { notoSansJp } from "../assets/fonts/notoSansJp";
 import { Providers } from "./providers";
+import { Toaster } from "@/components/ui/toaster";
+import { FlashToaster } from "@/components/functional/FlashToaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -31,6 +33,8 @@ export default function Layout({
             {modal}
             {children}
           </RootLayout>
+          <FlashToaster />
+          <Toaster />
         </Providers>
       </body>
     </html>

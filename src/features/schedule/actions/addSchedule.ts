@@ -6,6 +6,7 @@ import prisma from "@/lib/prisma";
 import { parseWithZod } from "@conform-to/zod";
 import { AuthError } from "next-auth";
 import { revalidatePath } from "next/cache";
+import { flash } from "@/utils/flash";
 import "server-only";
 
 export async function addSchedule(_: unknown, formData: FormData) {
@@ -66,9 +67,10 @@ export async function addSchedule(_: unknown, formData: FormData) {
         },
       },
     });
+    await flash({ title: "予定を登録しました！" });
     revalidatePath("/schedule/calendar");
   } catch (e) {
-    console.log(e);
+    await flash({ title: "予定の登録に失敗しました。" });
     throw e;
   }
   return submission.reply({ resetForm: true });
