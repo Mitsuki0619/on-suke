@@ -1,6 +1,7 @@
 import { fetchSchedulesMany } from "@/features/schedule/actions/fetchSchedulesMany";
 import { ScheduleCalendarClient } from "@/features/schedule/components/ScheduleCalendar/ScheduleCalendar.client";
 import {
+  addDays,
   endOfMonth,
   endOfWeek,
   formatISO,
@@ -10,6 +11,7 @@ import {
   setSeconds,
   startOfMonth,
   startOfWeek,
+  subDays,
 } from "date-fns";
 import {
   searchParamsSchema,
@@ -32,20 +34,20 @@ export async function ScheduleCalendar({
   const targetDate = date ? new Date(date) : new Date();
   const startOfPeriod =
     view === "month"
-      ? startOfMonth(targetDate)
+      ? subDays(startOfMonth(targetDate), 7)
       : view === "week"
         ? startOfWeek(targetDate)
         : view === "day"
           ? new Date(targetDate)
-          : startOfMonth(targetDate); // default to month if view is not specified
+          : subDays(startOfMonth(targetDate), 7); // default to month if view is not specified
   const endOfPeriod =
     view === "month"
-      ? endOfMonth(targetDate)
+      ? addDays(endOfMonth(targetDate), 7)
       : view === "week"
         ? endOfWeek(targetDate)
         : view === "day"
           ? new Date(targetDate)
-          : endOfMonth(targetDate); // default to month if view is not specified
+          : addDays(endOfMonth(targetDate), 7); // default to month if view is not specified
 
   const startOfMonthISO = formatISO(
     setMilliseconds(

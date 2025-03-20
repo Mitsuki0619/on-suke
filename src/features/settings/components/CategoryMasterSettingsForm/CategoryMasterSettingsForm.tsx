@@ -26,6 +26,7 @@ export function CategoryMasterSettingsForm({
 }: {
   categories: FetchAllCategoriesReturnType;
 }) {
+  "use no memo";
   const [lastResult, action, isPending] = useActionState(
     updateCategories,
     undefined,

@@ -13,14 +13,14 @@ export default function SettingsPageLayout({
 }) {
   const navItems = [
     {
-      href: "/settings/user",
-      label: "ユーザー設定",
-      icon: User,
-    },
-    {
       href: "/settings/master/category",
       label: "カテゴリ設定",
       icon: Grid2X2,
+    },
+    {
+      href: "/settings/user",
+      label: "ユーザー設定",
+      icon: User,
     },
   ];
   const pathname = usePathname();
