@@ -87,9 +87,12 @@ export function ScheduleFormClient({
   const router = useRouter();
   const submitFunction = async (_: unknown, formData: FormData) => {
     const res = await eventMutateAction(_, formData);
-    router.back();
+    if (res.status === "success") {
+      router.back();
+    }
     return res;
   };
+
   const [lastResult, action, isPending] = useActionState(
     submitFunction,
     undefined,

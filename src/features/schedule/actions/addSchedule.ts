@@ -18,8 +18,6 @@ export async function addSchedule(_: unknown, formData: FormData) {
     return submission.reply();
   }
 
-  let redirectTo: string;
-
   const {
     title,
     description,
