@@ -58,7 +58,9 @@ export function ScheduleCalendarClient({
     );
   };
   const onSelectEvent = (event: NonNullable<typeof events>[number]) => {
-    router.push(`/schedule/${event.id}?date=${date || ""}&view=${view || ""}`);
+    router.push(
+      `/schedule/${event.id}/edit?date=${date || ""}&view=${view || ""}`,
+    );
   };
 
   return (
