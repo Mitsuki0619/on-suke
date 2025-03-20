@@ -17,7 +17,7 @@ export function LoadingOverlay({
       {children}
       {isLoading && (
         <div
-          className="absolute z-50 inset-0 flex items-center justify-center bg-background/80 backdrop-blur-sm"
+          className="absolute z-50 inset-0 flex items-center justify-center bg-background/80 backdrop-blur-sm rounded-lg"
           aria-busy="true"
           aria-live="polite"
         >

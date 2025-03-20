@@ -48,14 +48,10 @@ export function DashboardPage() {
           </Suspense>
         </div>
         <div className="lg:col-span-2">
-          <Suspense>
-            <WeatherWidget />
-          </Suspense>
+          <WeatherWidget />
         </div>
         <div>
-          <Suspense>
-            <ClockWidget />
-          </Suspense>
+          <ClockWidget />
         </div>
       </div>
     </div>
