@@ -15,7 +15,12 @@ const navItems = [
     icon: Calendar,
     label: "予定表",
   },
-  { href: "/settings", slug: "settings", icon: Settings, label: "設定" },
+  {
+    href: "/settings/master/category",
+    slug: "settings",
+    icon: Settings,
+    label: "設定",
+  },
 ];
 
 export function Sidebar() {

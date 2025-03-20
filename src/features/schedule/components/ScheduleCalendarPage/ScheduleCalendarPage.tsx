@@ -63,10 +63,8 @@ export function ScheduleCalendarPage({
           </LoadingOverlay>
         }
       >
-        <div className="overflow-x-auto">
-          <div className="min-w-full sm:min-w-0">
-            <ScheduleCalendar searchParams={searchParams} />
-          </div>
+        <div className="min-w-full sm:min-w-0">
+          <ScheduleCalendar searchParams={searchParams} />
         </div>
       </Suspense>
     </div>

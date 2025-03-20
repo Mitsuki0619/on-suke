@@ -41,7 +41,7 @@ export function TodaysSchedulesWidgetClient({
         </CardTitle>
       </CardHeader>
       <CardContent className="p-4">
-        <div className="calendar-wrapper rounded-lg overflow-hidden">
+        <div className="rounded-lg overflow-hidden">
           <Calendar
             date={validDate}
             localizer={localizer}

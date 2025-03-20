@@ -58,13 +58,11 @@ export function ScheduleCalendarClient({
     );
   };
   const onSelectEvent = (event: NonNullable<typeof events>[number]) => {
-    router.push(
-      `/schedule/${event.id}/edit?date=${date || ""}&view=${view || ""}`,
-    );
+    router.push(`/schedule/${event.id}?date=${date || ""}&view=${view || ""}`);
   };
 
   return (
-    <div className="calendar-wrapper p-2 sm:p-4 bg-gradient-to-br from-theme-orange-100 to-theme-orange-200 rounded-lg shadow-lg">
+    <div className="p-2 sm:p-4 bg-gradient-to-br from-theme-orange-100 to-theme-orange-200 rounded-lg shadow-lg">
       <Calendar
         date={validDate}
         view={validView}
@@ -72,7 +70,7 @@ export function ScheduleCalendarClient({
         events={events}
         startAccessor="start"
         endAccessor="end"
-        style={{ height: "calc(100vh - 200px)", minHeight: "400px" }}
+        style={{ minHeight: "calc(100vh - 220px)" }}
         culture={"ja"}
         onNavigate={onNavigate}
         onView={onView}
