@@ -69,7 +69,7 @@ export async function editSchedule(_: unknown, formData: FormData) {
               where: { id: task.id },
               data: {
                 title: task.title,
-                description: task.description,
+                description: task.description ?? null,
                 status: task.status,
                 priority: task.priority,
               },
@@ -113,12 +113,12 @@ export async function editSchedule(_: unknown, formData: FormData) {
         },
         data: {
           title,
-          description,
+          description: description ?? null,
           categoryId,
           startTime,
           endTime,
           userId,
-          note,
+          note: note ?? null,
         },
       });
     });

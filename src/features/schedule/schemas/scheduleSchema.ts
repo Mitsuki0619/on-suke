@@ -12,13 +12,13 @@ export const scheduleSchema = z.object({
   categoryId: z.string().regex(/^\d+$/).transform(Number).optional(),
   description: z
     .string()
-    .max(500, { message: "説明は500文字以下で入力してください" })
+    .max(3000, { message: "説明は3000文字以下で入力してください" })
     .optional(),
   startTime: dateTime("開始日時"),
   endTime: dateTime("終了日時"),
   note: z
     .string()
-    .max(500, { message: "メモは500文字以下で入力してください" })
+    .max(3000, { message: "メモは3000文字以下で入力してください" })
     .optional(),
   tasks: z.array(
     z.object({
