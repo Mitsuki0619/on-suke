@@ -15,6 +15,10 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "on-suke | ダッシュボード",
   description: "on-sukeのダッシュボードページ",
+  icons: {
+    icon: "/on-suke.svg",
+    apple: "/apple-icon.png",
+  },
 };
 
 export default function Layout({
