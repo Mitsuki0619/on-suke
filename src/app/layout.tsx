@@ -5,10 +5,10 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import type { ReactNode } from "react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import { FlashToaster } from "@/components/functional/FlashToaster";
+import { Toaster } from "@/components/ui/toaster";
 import { notoSansJp } from "../assets/fonts/notoSansJp";
 import { Providers } from "./providers";
-import { Toaster } from "@/components/ui/toaster";
-import { FlashToaster } from "@/components/functional/FlashToaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,6 +27,7 @@ export default function Layout({
   return (
     <html lang="ja" className={notoSansJp.variable}>
       <link rel="icon" href="/on-suke.svg" sizes="any" />
+      <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       <meta
         name="viewport"
         content="width=device-width, initial-scale=1, viewport-fit=cover"
