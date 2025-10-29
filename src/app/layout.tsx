@@ -15,6 +15,10 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "on-suke | ダッシュボード",
   description: "on-sukeのダッシュボードページ",
+  icons: {
+    icon: "/on-suke.svg",
+    apple: "/apple-touch-icon.png",
+  },
 };
 
 export default function Layout({
@@ -26,12 +30,12 @@ export default function Layout({
 }) {
   return (
     <html lang="ja" className={notoSansJp.variable}>
-      <link rel="icon" href="/on-suke.svg" sizes="any" />
-      <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-      <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1, viewport-fit=cover"
-      />
+      <head>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, viewport-fit=cover"
+        />
+      </head>
       <body className={`${inter.className} text-orange-950`}>
         <Providers>
           <RootLayout>
