@@ -11,24 +11,21 @@ export default function CheckboxBadge({
   ...props
 }: { label: string } & React.ComponentProps<"input">) {
   const [isChecked, setIsChecked] = React.useState(props.defaultChecked);
-  const id = React.useId();
 
   const toggleChecked = () => setIsChecked((prev) => !prev);
 
   return (
     <Label className="cursor-pointer">
-      {/* biome-ignore lint/a11y/noAriaHiddenOnFocusable: <explanation> */}
       <input
         type="checkbox"
         {...props}
         onChange={toggleChecked}
         className={clsx("sr-only", props.className)}
-        aria-hidden="true"
+        tabIndex={-1}
       />
       <Badge
         variant={isChecked ? "default" : "outline"}
         className="text-sm transition-all duration-200 ease-in-out hover:shadow-md"
-        // biome-ignore lint/a11y/useSemanticElements: <explanation>
         role="checkbox"
         aria-checked={isChecked}
         tabIndex={0}
