@@ -34,7 +34,7 @@ export function ClockWidget() {
           {/* 時間のマーカー */}
           {[...Array(12)].map((_, i) => (
             <div
-              // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+              // biome-ignore lint/suspicious/noArrayIndexKey: fixed array of 12 clock markers
               key={i}
               className="absolute w-1 h-4 bg-orange-300"
               style={{

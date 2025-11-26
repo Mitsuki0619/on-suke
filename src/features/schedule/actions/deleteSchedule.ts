@@ -20,7 +20,7 @@ export async function deleteSchedule(scheduleId: Schedule["id"]) {
     });
     await flash({ title: "予定を削除しました！" });
     revalidatePath(`/schedule/${scheduleId}/edit`);
-  } catch (e) {
+  } catch (_e) {
     await flash({ title: "予定の削除に失敗しました。" });
   }
 }

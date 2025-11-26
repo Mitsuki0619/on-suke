@@ -102,7 +102,7 @@ function formatMessage(schedules: FetchSchedulesManyForNotificationReturnType) {
         ? "regularSchedules"
         : "longTermSchedules";
       return {
-        // biome-ignore lint/performance/noAccumulatingSpread: <explanation>
+        // biome-ignore lint/performance/noAccumulatingSpread: schedule list is small, readability preferred
         ...acc,
         [category]: [...acc[category], formatSchedule(s)],
       };
