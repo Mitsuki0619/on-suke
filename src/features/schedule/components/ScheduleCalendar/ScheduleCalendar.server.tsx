@@ -1,5 +1,3 @@
-import { fetchSchedulesMany } from "@/features/schedule/actions/fetchSchedulesMany";
-import { ScheduleCalendarClient } from "@/features/schedule/components/ScheduleCalendar/ScheduleCalendar.client";
 import {
   addDays,
   endOfMonth,
@@ -13,9 +11,12 @@ import {
   startOfWeek,
   subDays,
 } from "date-fns";
+import { connection } from "next/server";
+import { fetchSchedulesMany } from "@/features/schedule/actions/fetchSchedulesMany";
+import { ScheduleCalendarClient } from "@/features/schedule/components/ScheduleCalendar/ScheduleCalendar.client";
 import {
-  searchParamsSchema,
   type ScheduleCalendarPageSearchParams,
+  searchParamsSchema,
 } from "@/features/schedule/components/ScheduleCalendarPage/ScheduleCalendarPage";
 
 export async function ScheduleCalendar({
@@ -23,6 +24,8 @@ export async function ScheduleCalendar({
 }: {
   searchParams: ScheduleCalendarPageSearchParams;
 }) {
+  await connection();
+
   const params = await searchParams;
 
   const { data, success, error } = searchParamsSchema.safeParse({ ...params });

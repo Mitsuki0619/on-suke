@@ -18,7 +18,7 @@ export async function restoreSchedule(scheduleId: Schedule["id"]) {
       },
     });
     await flash({ title: "予定を復元しました！" });
-  } catch (e) {
+  } catch (_e) {
     await flash({ title: "予定の復元に失敗しました。" });
   }
 }

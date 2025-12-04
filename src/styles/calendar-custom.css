@@ -43,8 +43,9 @@
   border: 2px solid #ff9800;
 }
 
-.rbc-today .rbc-time-slot {
-  background-color: rgba(255, 167, 38, 0.1);
+.rbc-time-slot {
+  background-color: white;
+  border-top: 1px dashed #e0e0e0;
 }
 
 .rbc-time-gutter,
@@ -55,13 +56,12 @@
   font-weight: bold;
 }
 
-.rbc-time-slot {
-  background-color: white;
-  border-top: 1px dashed #e0e0e0;
+.rbc-today .rbc-time-slot {
+  background-color: rgba(255, 167, 38, 0.1);
 }
 
 .rbc-month-row {
-  overflow: visible !important;
+  overflow: visible;
 }
 
 .rbc-event {

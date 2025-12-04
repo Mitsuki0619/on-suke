@@ -48,7 +48,7 @@ export async function fetchSchedulesMany(params: { from: string; to: string }) {
       },
     });
     return schedules;
-  } catch (e) {}
+  } catch (_e) {}
 }
 
 export type FetchSchedulesManyReturnType = Awaited<

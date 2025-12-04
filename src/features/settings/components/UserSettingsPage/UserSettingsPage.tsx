@@ -1,9 +1,9 @@
+import { User } from "lucide-react";
 import { checkAuth } from "@/features/auth/actions/checkAuth";
 import { fetchAllProviderAccounts } from "@/features/settings/actions/fetchAllProviderAccounts";
 import { DeleteAccountButton } from "@/features/settings/components/DeleteAccountButton/DeleteAccountButton";
 import { LineConnectButton } from "@/features/settings/components/LineConnectButton/LineConnectButton";
 import { LineFriendButton } from "@/features/settings/components/LineFriendButton/LineFriendButton";
-import { User } from "lucide-react";
 
 export default async function UserSettingsPage() {
   const { user } = await checkAuth();
@@ -25,6 +25,7 @@ export default async function UserSettingsPage() {
         </div>
         <div className="space-y-6">
           <div className="flex flex-col items-center space-y-4">
+            {/** biome-ignore lint/performance/noImgElement: it's external domain */}
             <img
               src={user?.image || "/placeholder.svg"}
               alt="プロフィール画像"

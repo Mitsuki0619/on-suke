@@ -78,7 +78,7 @@ export async function fetchRecentlyTasks() {
       expiredTasks,
       otherTasks,
     };
-  } catch (e) {}
+  } catch (_e) {}
 }
 
 export type FetchRecentlyTasksReturnType = Awaited<

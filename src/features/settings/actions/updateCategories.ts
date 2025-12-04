@@ -99,7 +99,7 @@ export async function updateCategories(_: unknown, formData: FormData) {
     await flash({ title: "カテゴリを保存しました！" });
     revalidatePath("/settings/master/category");
     return submission.reply({ resetForm: true });
-  } catch (e) {
+  } catch (_e) {
     await flash({ title: "カテゴリの保存に失敗しました。" });
   }
 }

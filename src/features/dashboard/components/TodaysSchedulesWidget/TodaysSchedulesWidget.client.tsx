@@ -1,11 +1,12 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { Calendar } from "react-big-calendar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { FetchSchedulesManyReturnType } from "@/features/schedule/actions/fetchSchedulesMany";
 import { localizer } from "@/lib/date-fns";
 import { getContrastColor } from "@/utils/getContrastColor";
-import { Calendar } from "react-big-calendar";
-import { useRouter } from "next/navigation";
 
 export function TodaysSchedulesWidgetClient({
   todaysSchedules,
@@ -13,8 +14,11 @@ export function TodaysSchedulesWidgetClient({
   todaysSchedules: FetchSchedulesManyReturnType;
 }) {
   const router = useRouter();
+  const [validDate, setValidDate] = useState<Date | null>(null);
 
-  const validDate = new Date();
+  useEffect(() => {
+    setValidDate(new Date());
+  }, []);
 
   const events = todaysSchedules?.map((s) => {
     return {
@@ -32,6 +36,10 @@ export function TodaysSchedulesWidgetClient({
   const onSelectEvent = (event: NonNullable<typeof events>[number]) => {
     router.push(`/schedule/${event.id}/edit`);
   };
+
+  if (!validDate) {
+    return null;
+  }
 
   return (
     <Card className="h-[562px] overflow-hidden bg-gradient-to-br from-orange-50 to-yellow-100 shadow-2xl">
