@@ -1,5 +1,6 @@
-import { Sidebar } from "@/components/ui/sidebar";
 import type React from "react";
+import { Suspense } from "react";
+import { Sidebar } from "@/components/ui/sidebar";
 
 export default function RootLayout({
   children,
@@ -8,7 +9,9 @@ export default function RootLayout({
 }) {
   return (
     <div className="flex flex-col md:flex-row min-h-screen">
-      <Sidebar />
+      <Suspense fallback={<div />}>
+        <Sidebar />
+      </Suspense>
       <main
         className="
       flex-1 overflow-y-auto 

@@ -1,11 +1,14 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { fetchRecentlyTasks } from "@/features/task/actions/fetchRecentlyTasks";
 import { format } from "date-fns";
 import { ja } from "date-fns/locale";
 import { AlertCircle, CheckCircle, Clock, List } from "lucide-react";
 import Link from "next/link";
+import { connection } from "next/server";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { fetchRecentlyTasks } from "@/features/task/actions/fetchRecentlyTasks";
 
 export async function TaskListWidget() {
+  await connection();
+
   const tasks = await fetchRecentlyTasks();
 
   if (!tasks) {

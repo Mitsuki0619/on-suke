@@ -6,8 +6,6 @@ export const metadata: Metadata = {
   description: "on-sukeとLINEの連携ができるユーザー設定ページ",
 };
 
-export const experimental_ppr = true;
-
 export default function Index() {
   return <UserSettingsPage />;
 }

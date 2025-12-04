@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "prisma generate --no-engine && next dev --turbopack",
+    "dev": "prisma generate --no-engine && next dev",
     "build": "prisma generate --no-engine && next build",
     "start": "next start",
     "migrate:gen": "prisma generate --no-engine",
@@ -42,11 +42,11 @@
     "date-fns": "^4.1.0",
     "date-fns-tz": "^3.2.0",
     "lucide-react": "^0.555.0",
-    "next": "15.2.1-canary.5",
+    "next": "16.0.7",
     "next-auth": "5.0.0-beta.25",
-    "react": "^19.2.0",
+    "react": "^19.2.1",
     "react-big-calendar": "^1.19.4",
-    "react-dom": "^19.2.0",
+    "react-dom": "^19.2.1",
     "tailwind-merge": "^3.4.0",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.25.76"
